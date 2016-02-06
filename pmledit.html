@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<title>PML Editor Test</title>
+<script type="text/javascript" src=pmledit.js></script>
+
+<!-- Some CSS style stuff -->
+<style type="text/css">
+	.intLink { cursor: pointer; }
+	img.intLink { border: 0; }
+	#toolBar1 select { font-size:10px; }
+	#textBox {
+	  width: 540px;
+	  height: 200px;
+	  border: 1px #000000 solid;
+	  padding: 12px;
+	  overflow: scroll;
+	}
+	#textBox #sourceText {
+	  padding: 0;
+	  margin: 0;
+	  min-width: 498px;
+	  min-height: 200px;
+	}
+	#outputText{
+	  width: 540px;
+	  height: 200px;
+	}
+	#editMode label { cursor: pointer; }
+</style>
+
+</head>
+
+
+<body onload="initDoc();">
+<input type="hidden" name="myDoc">
+
+<!-- Text Box for Code entry -->
+<div id="textBox" contenteditable="true"><p>Enter Code Here</p></div>
+<!-- Compile Button -->
+<p><input type="button" value="Compile" onclick="buttonPress()"/></p>
+<!-- Area for output text -->
+<p><textarea id="outputText" cols="500" rows="200"></textarea></p>
+
+</body>
+</html>
