@@ -1,12 +1,21 @@
 var oDoc, sDefTxt;
 
-function initDoc() {
+/*function initDoc() {
 	oDoc = document.getElementById("textBox");
 	sDefTxt = oDoc.innerHTML;
 	if (document.compForm.switchMode.checked) { setDocMode(true); }
+}*/
+
+function initDoc() {
+	oDoc = CodeMirror(function(elt){
+		inputText.parentNode.replaceChild(elt, inputText)
+	}, { lineNumbers: true,
+		//value: "function aFunction() { return 100; }",
+		mode: "javascript" 
+	});
 }
 
-function formatDoc(sCmd, sValue) {
+/*function formatDoc(sCmd, sValue) {
 	if (validateMode()) { document.execCommand(sCmd, false, sValue); oDoc.focus(); }
 }
 
@@ -39,14 +48,14 @@ function setDocMode(bToSource) {
 	oDoc.contentEditable = true;
 	}
 	oDoc.focus();
-}
+}*/
 
 /**
  *	Function which is executed when "Compile" is pressed
  */
 function buttonPress(){
-	//Grab the content of the text box
-	var text = oDoc.innerText;
+	//Grab the content of the editor
+	var text = oDoc.getValue();
 	//Create new HTTP Request
 	var xhttp = new XMLHttpRequest();
 
