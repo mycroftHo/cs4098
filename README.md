@@ -12,7 +12,7 @@ sudo apt-get install -y build-essential
 sudo apt-get install -y npm
 ```
 
-To build, run `sudo apt-get install -y byacc flex`, `sudo apt-get install -y npm` `make install` in the project's root directory; this will build the required pml dependences, which can be found under the `/pml` directory along with the external dependencies required by the node server; these will be stored in the `/node_modules` directory.
+To build, run `sudo apt-get install -y byacc flex`, `sudo apt-get install -y npm` and finally `make install` in the project's root directory; this will build the required pml dependences, which can be found under the `/pml` directory along with the external dependencies required by the node server; these will be stored in the `/node_modules` directory.
 
 To uninstall, run `make clean`
 
