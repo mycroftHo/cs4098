@@ -2,10 +2,12 @@
 <html>
 <head>
 <title>PML Editor Test</title>
-<script type="text/javascript" src="pmledit.js"></script>
 
 <script src="lib/codemirror.js"></script>
 <link rel = "stylesheet" href = "lib/codemirror.css">
+<script src="addon/mode/simple.js"></script>
+<script type="text/javascript" src="pmledit.js"></script>
+
 <!--For syntax highlighting -->
 <script src="mode/javascript/javascript.js"></script>
 
@@ -13,20 +15,7 @@
 <style type="text/css">
 	.intLink { cursor: pointer; }
 	img.intLink { border: 0; }
-	#toolBar1 select { font-size:10px; }
-	/*#textBox {
-	  width: 540px;
-	  height: 200px;
-	  border: 1px #000000 solid;
-	  padding: 12px;
-	  overflow: scroll;
-	}
-	#textBox #sourceText {
-	  padding: 0;
-	  margin: 0;
-	  min-width: 498px;
-	  min-height: 200px;
-	}*/
+	
 	#outputText{
 	  width: 540px;
 	  height: 200px;
@@ -41,8 +30,9 @@
 <input type="hidden" name="myDoc">
 
 <!-- Text Box for Code entry -->
-<!--<text id="textBox" contenteditable="true"></div>-->
+<!-- This textarea will be replaced by the code editor -->
 <textarea id = "inputText" cols="500" rows="200"></textarea>
+
 <!-- Compile Button -->
 <p><input id = "compileButton" type="button" value="Compile" onclick="buttonPress()"/></p>
 <!-- Area for output text -->
