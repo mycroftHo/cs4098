@@ -1,4 +1,4 @@
-var oDoc, sDefTxt;
+var editor
 
 /*
  * Simple Mode for PML Syntax Highlighting
@@ -71,21 +71,46 @@ CodeMirror.defineSimpleMode("pml", {
 	}
 });
 
-function initDoc() {
-	oDoc = CodeMirror(function(elt){
-		inputText.parentNode.replaceChild(elt, inputText)
-	}, { lineNumbers: true,
-		//value: "function aFunction() { return 100; }",
-		mode: "pml" 
-	});
+var orig = CodeMirror.hint.javascript;
+CodeMirror.hint.javascript = function(cm){
+	var inner = orig(cm) || {from: cm.getCursor(), to: cm.getCursor(), list:[]};
+	inner.list.push("process");
+	inner.list.push("sequence");
+	inner.list.push("action");
+	inner.list.push("branch");
+	inner.list.push("iteration");
+	inner.list.push("requires");
+	inner.list.push("provides");
+	inner.list.push("agent");
+	inner.list.push("script");
+
+	return inner;
 }
 
+function initDoc() {
+	editor = CodeMirror.fromTextArea(document.getElementById("inputText"),{
+		lineNumbers: true,
+
+		//Set pml syntax highlighting
+		mode: "pml",
+
+		//Sets up language independent code folding
+		//Disable? - PML is mad for the use of braces - defeats purpose of folding in a way
+		foldGutter: {
+			rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.brace, CodeMirror.fold.comment)
+		},
+		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+
+		extraKeys: {"Ctrl-Space": "autocomplete"}
+
+	})
+}
 /**
  *	Function which is executed when "Compile" is pressed
  */
 function buttonPress(){
 	//Grab the content of the editor
-	var text = oDoc.getValue();
+	var text = editor.getValue();
 	//Create new HTTP Request
 	var xhttp = new XMLHttpRequest();
 
@@ -104,15 +129,6 @@ function buttonPress(){
 	//Format the text in the form {code : "<code>"} and send	
 	xhttp.send(JSON.stringify({code:text}));
 }
-
-/*function printDoc() {
-	if (!validateMode()) { return; }
-	var oPrntWin = window.open("","_blank","width=450,height=470,left=400,top=100,menubar=yes,toolbar=no,location=no,scrollbars=yes");
-	oPrntWin.document.open();
-	oPrntWin.document.write("<!doctype html><html><head><title>Print<\/title><\/head><body onload=\"print();\">" + oDoc.innerHTML + "<\/body><\/html>");
-	oPrntWin.document.close();
-}*/
-
 
 /*
 //code used for uploading a file
