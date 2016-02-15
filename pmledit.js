@@ -130,7 +130,6 @@ function buttonPress(){
 	xhttp.send(JSON.stringify({code:text}));
 }
 
-/*
 //code used for uploading a file
   function readSingleFile(evt) {
     //Retrieve the first (and only!) File from the FileList object
@@ -152,5 +151,3 @@ function buttonPress(){
     }
   }
 
-  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
-  */
