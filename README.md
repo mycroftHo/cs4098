@@ -1,6 +1,10 @@
 
 # CS4098 - Group Design Project
 
+###Acknowledgements
+
+Implements features from CodeMirror (https://codemirror.net/)
+
 ### Build Instructions
 
 This project requires node.js (https://nodejs.org/) to function; to install node.js, run the following commands:
@@ -9,10 +13,12 @@ This project requires node.js (https://nodejs.org/) to function; to install node
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo apt-get install -y build-essential
-sudo apt-get install -y npm
+sudo npm install -g npm
 ```
 
-To build, run `sudo apt-get install -y byacc flex`, `sudo apt-get install -y npm` and finally `make install` in the project's root directory; this will build the required pml dependences, which can be found under the `/pml` directory along with the external dependencies required by the node server; these will be stored in the `/node_modules` directory.
+To install dependencies for the PML Checker, run `sudo apt-get install -y byacc flex`
+
+To build the project, run `make install` in the project's root directory; this will build the required pml dependences, which can be found under the `/pml` directory along with the external dependencies required by the node server; these will be stored in the `/node_modules` directory.
 
 To uninstall, run `make clean`
 
