@@ -2,6 +2,8 @@ var editor
 
 /*
  * Simple Mode for PML Syntax Highlighting
+ * Courtesy of http://codepen.io/Ephellon/pen/zvvGaz
+ * and https://codemirror.net/demo/simplemode.html
  */
 CodeMirror.defineSimpleMode("pml", {
 	start: [
@@ -18,15 +20,17 @@ CodeMirror.defineSimpleMode("pml", {
 			token: "string"
 		},
 
+		{	//Defining the keywords
+			regex: /(\s*)(process|sequence|action|branch|iteration|requires|provides|agent|script)[\s{]/,
+			token: [null, "keyword"]
+		},
+
 		{
 			regex: /(\s+)([a-z\$][\w\$]*)/,
 			token: [null, "variable-2"]
 		},
 
-		{	//Defining the keywords
-			regex: /(process|sequence|action|branch|iteration|requires|provides|agent|script)/,
-			token: "keyword"
-		}, {
+		{
 			//Pretty sure we don't need some of these
 			regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
 			token: "number"
@@ -136,30 +140,27 @@ function buttonPress(){
 	xhttp.send(JSON.stringify({index:type,code:text}));
 }
 
-/*
+
 //code used for uploading a file
-  function readSingleFile(evt) {
-    //Retrieve the first (and only!) File from the FileList object
-    var f = evt.target.files[0]; 
+function readSingleFile(evt) {
+	//Retrieve the first (and only!) File from the FileList object
+	var f = evt.target.files[0]; 
 
-    if (f) {
-      var r = new FileReader();
-      r.onload = function(e) { 
+	if (f) {
+	  var r = new FileReader();
+	  r.onload = function(e) { 
 	      var contents = e.target.result;
-        alert( "Got the file.n" 
-              +"name: " + f.name + "n"
-              +"type: " + f.type + "n"
-              +"size: " + f.size + " bytesn"
-        );  
-      }
-      r.readAsText(f);
-    } else { 
-      alert("Failed to load file");
-    }
-  }
-
-  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
-  */
+	    alert( "Got the file.n" 
+	          +"name: " + f.name + "n"
+	          +"type: " + f.type + "n"
+	          +"size: " + f.size + " bytesn"
+	    );  
+	  }
+	  r.readAsText(f);
+	} else { 
+	  alert("Failed to load file");
+	}
+}
 
 function saveButton(){
 	//Grab the content of the editor
