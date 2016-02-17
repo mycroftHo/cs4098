@@ -94,6 +94,10 @@ function initDoc() {
 		//Set pml syntax highlighting
 		mode: "pml",
 
+		//Match + Autoclose Brackets & Braces
+		matchBrackets: true,
+		autoCloseBrackets: true,
+
 		//Sets up language independent code folding
 		//Disable? - PML is mad for the use of braces - defeats purpose of folding in a way
 		foldGutter: {
