@@ -42,6 +42,8 @@ server.all('/', function(req, res, next){
 server.post('/', function(req, res, next){
 	var data = '';
 	var output = '';
+	var index = '';
+	var filename = '';
 
 	//Print POST request to the console
 	console.log(req.method);
@@ -50,34 +52,47 @@ server.post('/', function(req, res, next){
 
 	//body = {data : code}
 	//code = the code we have to execute
+
 	data = req.body.code;
 
-	//Write the code to a pml file
-	fs.writeFile("test.pml", data, function(err){
-			  if(err) throw err;
-			  console.log("PML File Written");
+	index = req.body.index;
+	if(index == 1){
+		
+		//Write the code to a pml file
+		fs.writeFile("test.pml", data, function(err){
+				  if(err) throw err;
+				  console.log("PML File Written");
+				});
+
+		//Spawn a "child process" - execute pmlcheck with the newly-created pml file
+		child = exec("./pml/check/pmlcheck test.pml")
+
+		//Handle the stdout & stderr data streams from the checking tool
+		child.stdout.on('data', function(data){
+				//console.log('stdout: ' + data);
+				output += data;
+				console.log(output)
+			});
+		child.stderr.on('data', function(data){
+				console.log('stderr: ' + data);
+				output += data;
 			});
 
-	//Spawn a "child process" - execute pmlcheck with the newly-created pml file
-	child = exec("./pml/check/pmlcheck test.pml")
+		console.log(output);
 
-	//Handle the stdout & stderr data streams from the checking tool
-	child.stdout.on('data', function(data){
-			//console.log('stdout: ' + data);
-			output += data;
-			console.log(output)
+		//Once the child finishes, send the data from either stdout or stderr streams back to frontend
+		child.on('close', function(){
+			res.send(output);
 		});
-	child.stderr.on('data', function(data){
-			console.log('stderr: ' + data);
-			output += data;
-		});
-
-	console.log(output);
-
-	//Once the child finishes, send the data from either stdout or stderr streams back to frontend
-	child.on('close', function(){
-		res.send(output);
-	});
+	}
+	else if(index == 2){
+		filename = req.body.filename;
+		fs.writeFile(filename, data, function(err){
+			if(err) throw err;
+			console.log("PML File Saved")
+		})
+		res.send("File Saved as " + filename );
+	}
 });
 
 server.listen(8080);

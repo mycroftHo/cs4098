@@ -115,6 +115,8 @@ function initDoc() {
 function buttonPress(){
 	//Grab the content of the editor
 	var text = editor.getValue();
+	//type  = compilation
+	var type = 1;
 	//Create new HTTP Request
 	var xhttp = new XMLHttpRequest();
 
@@ -131,9 +133,10 @@ function buttonPress(){
 	xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
 	//Format the text in the form {code : "<code>"} and send	
-	xhttp.send(JSON.stringify({code:text}));
+	xhttp.send(JSON.stringify({index:type,code:text}));
 }
 
+/*
 //code used for uploading a file
   function readSingleFile(evt) {
     //Retrieve the first (and only!) File from the FileList object
@@ -154,4 +157,39 @@ function buttonPress(){
       alert("Failed to load file");
     }
   }
+
+  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+  */
+
+function saveButton(){
+	//Grab the content of the editor
+	var text = editor.getValue();
+	//type  = save File
+	var type = 2;
+
+	var name = window.prompt("Enter Filename:", "e.g test.pml");
+
+	if(name.valueOf() != new String('').valueOf() && name.valueOf() != new String("e.g test.pml").valueOf() ){
+		//Create new HTTP Request
+		var xhttp = new XMLHttpRequest();
+
+		xhttp.onreadystatechange = function(){
+		  if(xhttp.readyState == 4 && xhttp.status == 200){
+		  	//Place response in the output box
+		    document.getElementById("outputText").value = xhttp.responseText;
+		  }
+		};
+
+		//New HTTP POST request
+		xhttp.open("POST", "http://127.0.0.1:8080", true);
+		//Set the content type so that the server knows the data is formatted w/ JSON
+		xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+		//Format the text in the form {code : "<code>"} and send	
+		xhttp.send(JSON.stringify({index:type,code:text,filename:name}));
+	}
+	else{
+		document.getElementById("outputText").value = "ERROR: No Filename Entered!";
+	}
+}
 
