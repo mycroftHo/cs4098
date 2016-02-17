@@ -24,6 +24,9 @@ var child //process
 //Configure the JSON Parser
 server.use(bodyParser.json());
 
+//Serve files in the local directory (so, locahost:6500/pmledit.html)
+server.use('/', express.static(__dirname));
+
 /*
  *	Set the headers
  *	This is important as we can't communicate through localhost w/o 
@@ -95,6 +98,6 @@ server.post('/', function(req, res, next){
 	}
 });
 
-server.listen(8080);
+server.listen(6500);
 
-console.log('Server running on port 8080.');
+console.log('Server running on port 6500.');

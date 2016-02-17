@@ -24,6 +24,6 @@ To uninstall, run `make clean`
 
 ### Running the Editor
 
-Firstly, the run the server; execute `nodejs server.js` in a terminal window; it should then inform you that the server is running on port 8080.
+Firstly, the run the server; execute `nodejs server.js` in a terminal window; it should then inform you that the server is running on port 6500.
 
-To run the editor; open pmledit.html in Chrome/Chromium or Firefox, enter the code in the code editor and select compile. The server will then compile the code and return the output.
+To run the editor; open Chrome/Chromium or Firefox and navigate to *localhost:6500/pmledit.html*, enter the code in the code editor and select compile. The server will then compile the code and return the output.
