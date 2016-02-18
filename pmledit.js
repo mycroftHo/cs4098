@@ -132,7 +132,7 @@ function buttonPress(){
 	  }
 	};
 	//New HTTP POST request
-	xhttp.open("POST", "http://127.0.0.1:8080", true);
+	xhttp.open("POST", "http://127.0.0.1:6500", true);
 	//Set the content type so that the server knows the data is formatted w/ JSON
 	xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
@@ -182,7 +182,7 @@ function saveButton(){
 		};
 
 		//New HTTP POST request
-		xhttp.open("POST", "http://127.0.0.1:8080", true);
+		xhttp.open("POST", "http://127.0.0.1:6500", true);
 		//Set the content type so that the server knows the data is formatted w/ JSON
 		xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
