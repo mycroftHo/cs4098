@@ -80,7 +80,10 @@ server.post('/', function(req, res, next){
 				console.log('stderr: ' + data);
 				output += data;
 			});
-
+		//here pass the error messages to a function to parse errors
+		//the function should return a line number as an int where the error occurs
+		//then work on highlighting that line
+		
 		console.log(output);
 
 		//Once the child finishes, send the data from either stdout or stderr streams back to frontend

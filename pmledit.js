@@ -107,7 +107,7 @@ function initDoc() {
 		foldGutter: {
 			rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.brace, CodeMirror.fold.comment)
 		},
-		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-gutters"],
 
 		extraKeys: {"Ctrl-Space": "autocomplete"}
 
@@ -123,12 +123,17 @@ function buttonPress(){
 	var type = 1;
 	//Create new HTTP Request
 	var xhttp = new XMLHttpRequest();
-
+	var response;
+	var errorLine = 0;
 	//This is executed when the client recieved a response from the server
 	xhttp.onreadystatechange = function(){
 	  if(xhttp.readyState == 4 && xhttp.status == 200){
-	  	//Place response in the output box
-	    document.getElementById("outputText").value = xhttp.responseText;
+	    //Place response in the output box
+	    response = xhttp.responseText;
+	    document.getElementById("outputText").value = response;
+            //if an error message is returned, we then will send the line number to the linter
+	    if(response.indexOf(error) > -1){
+	    }
 	  }
 	};
 	//New HTTP POST request
