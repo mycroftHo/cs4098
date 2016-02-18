@@ -97,6 +97,7 @@ function initDoc() {
 
 		//Set pml syntax highlighting
 		mode: "pml",
+		smartIndent: false,
 
 		//Match + Autoclose Brackets & Braces
 		matchBrackets: true,
