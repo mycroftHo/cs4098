@@ -97,6 +97,9 @@ function initDoc() {
 
 		//Set pml syntax highlighting
 		mode: "pml",
+
+		//The auto-indent feature screws the tabs due to a unnecessary whitespace char appearing
+		//Until I figure out what's causing it - turning it off fixes it for the time being.
 		smartIndent: false,
 
 		//Match + Autoclose Brackets & Braces
