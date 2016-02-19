@@ -111,7 +111,7 @@ function initDoc() {
 		foldGutter: {
 			rangeFinder: new CodeMirror.fold.combine(CodeMirror.fold.brace, CodeMirror.fold.comment)
 		},
-		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-gutters"],
+		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
 
 		extraKeys: {"Ctrl-Space": "autocomplete"}
 
@@ -120,7 +120,11 @@ function initDoc() {
 /**
  *	Function which is executed when "Compile" is pressed
  */
+var widgets = []
 function buttonPress(){
+	for(var i = 0; i < widgets.length; i++){
+	    editor.removeLineWidget(widgets[i]);
+	}
 	//Grab the content of the editor
 	var text = editor.getValue();
 	//type  = compilation
@@ -129,14 +133,32 @@ function buttonPress(){
 	var xhttp = new XMLHttpRequest();
 	var response;
 	var errorLine = 0;
+	var errorMessage;
 	//This is executed when the client recieved a response from the server
 	xhttp.onreadystatechange = function(){
 	  if(xhttp.readyState == 4 && xhttp.status == 200){
 	    //Place response in the output box
 	    response = xhttp.responseText;
 	    document.getElementById("outputText").value = response;
-            //if an error message is returned, we then will send the line number to the linter
-	    if(response.indexOf(error) > -1){
+        //if an error message is returned, we then will send the line number to the linter
+	    if(response.indexOf("error") > -1){
+	    	//split the error message on colons
+	    	//the error line is between the first colon and the second one
+	    	//remove the existing error lines
+	    	
+	    	var splitArray = response.split(":");
+	    	errorLine = parseInt(splitArray[1]);
+	    	errorMessage = splitArray[2];
+
+	    	//setting up the error div object
+      		var msg = document.createElement("div");
+      		var icon = msg.appendChild(document.createElement("span"));
+      		icon.innerHTML = "!!";
+      		icon.className = "lint-error-icon";
+      		msg.appendChild(document.createTextNode(errorMessage));
+      		msg.className = "lint-error";
+      		//minus 2 because 0 indexed lines and want to create error above line
+	    	widgets.push(editor.addLineWidget(errorLine - 2, msg, {coverGutter: false, noHScroll: true}));
 	    }
 	  }
 	};
