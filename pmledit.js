@@ -157,8 +157,9 @@ function buttonPress(){
       		icon.className = "lint-error-icon";
       		msg.appendChild(document.createTextNode(errorMessage));
       		msg.className = "lint-error";
+
       		//minus 2 because 0 indexed lines and want to create error above line
-	    	widgets.push(editor.addLineWidget(errorLine - 2, msg, {coverGutter: false, noHScroll: true}));
+	    	widgets.push(editor.addLineWidget(errorLine - 1, msg, {above: true, coverGutter: false, noHScroll: true}));
 	    }
 	  }
 	};
