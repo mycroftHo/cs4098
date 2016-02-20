@@ -75,7 +75,7 @@ CodeMirror.defineSimpleMode("pml", {
 	}
 });
 
-var orig = CodeMirror.hint.javascript;
+/*var orig = CodeMirror.hint.javascript;
 CodeMirror.hint.javascript = function(cm){
 	var inner = orig(cm) || {from: cm.getCursor(), to: cm.getCursor(), list:[]};
 	inner.list.push("process");
@@ -89,7 +89,7 @@ CodeMirror.hint.javascript = function(cm){
 	inner.list.push("script");
 
 	return inner;
-}
+}*/
 
 function initDoc() {
 	editor = CodeMirror.fromTextArea(document.getElementById("inputText"),{
