@@ -173,27 +173,6 @@ function buttonPress(){
 }
 
 
-//code used for uploading a file
-function readSingleFile(evt) {
-	//Retrieve the first (and only!) File from the FileList object
-	var f = evt.target.files[0]; 
-
-	if (f) {
-	  var r = new FileReader();
-	  r.onload = function(e) { 
-	      var contents = e.target.result;
-	    alert( "Got the file.n" 
-	          +"name: " + f.name + "n"
-	          +"type: " + f.type + "n"
-	          +"size: " + f.size + " bytesn"
-	    );  
-	  }
-	  r.readAsText(f);
-	} else { 
-	  alert("Failed to load file");
-	}
-}
-
 function saveButton(){
 	//Grab the content of the editor
 	var text = editor.getValue();
