@@ -54,14 +54,14 @@
 <style type="text/css">
 	.intLink { cursor: pointer; }
 	img.intLink { border: 0; }
-	
+
 	body{max-width: 700px;}
 	#outputText{
 	  width: 540px;
 	  height: 200px;
 	}
 	#editMode label { cursor: pointer; }
-	
+
     .lint-error {font-family: arial; font-size: 70%; background: #ffa; color: #a00; padding: 2px 5px 3px; }
     .lint-error-icon {color: white; background-color: red; font-weight: bold; border-radius: 50%; padding: 0 3px; margin-right: 7px;}
 </style>
@@ -76,7 +76,11 @@
 <p><input type="file" id="fileToLoad" />
 <button onclick = "loadFileAsText()">Load selected file</button></p>
 
-
+<p>
+	Key Bindings:
+<button onclick = "changeKeyMap()">Emacs</button>
+<button onclick = "changeKeyMap()">Vim</button>
+<button onclick = "changeKeyMap()">Sublime</button></p>
 <!-- Text Box for Code entry -->
 <!-- This textarea will be replaced by the code editor -->
 <textarea id = "inputText"></textarea>

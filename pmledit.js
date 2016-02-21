@@ -46,7 +46,7 @@ CodeMirror.defineSimpleMode("pml", {
 	      	regex: /[\/#]\*/,
       		token: "comment",
       		next: "comment"
-		}, { 
+		}, {
 			regex: /[-\+\/\*\=\<\>\!\:\~\?]+/,
 			token: "operator"
 		},
@@ -145,7 +145,7 @@ function buttonPress(){
 	    	//split the error message on colons
 	    	//the error line is between the first colon and the second one
 	    	//remove the existing error lines
-	    	
+
 	    	var splitArray = response.split(":");
 	    	errorLine = parseInt(splitArray[1]);
 	    	errorMessage = splitArray[2];
@@ -168,7 +168,7 @@ function buttonPress(){
 	//Set the content type so that the server knows the data is formatted w/ JSON
 	xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
-	//Format the text in the form {code : "<code>"} and send	
+	//Format the text in the form {code : "<code>"} and send
 	xhttp.send(JSON.stringify({index:type,code:text}));
 }
 
@@ -197,12 +197,15 @@ function saveButton(){
 		//Set the content type so that the server knows the data is formatted w/ JSON
 		xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
-		//Format the text in the form {code : "<code>"} and send	
+		//Format the text in the form {code : "<code>"} and send
 		xhttp.send(JSON.stringify({index:type,code:text,filename:name}));
 	}
 	else{
 		document.getElementById("outputText").value = "ERROR: No Filename Entered!";
 	}
+}
+function changeKeyMap(){
+	CodeMirror.addKeyMap("../addon/keymap/emacs.js");
 }
 
 function loadFileAsText(){
