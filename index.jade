@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  #page-content-wrapper
+    .page-content.inset
+      .row
+        a#menu-toggle.btn.btn-default(href='#')
+          i.fa.fa-bars
+        .col-md-12
+          h1 PML Editor
+          p.lead Think about the consequences of your actions.
+          a(href="/") Go home
+          br
+          a(href="/auth/facebook") Login via Facebook
+          br
+          a(href="/auth/google") Login via Google
+
+  script
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("active");
+    });

@@ -3,7 +3,7 @@ PROJECT = "PML Editor"
 all: 
 
 install: ; 
-	npm install express body-parser; \
+	npm install express body-parser passport passport-facebook passport-google-oauth2 jade; \
 	$(MAKE) -C pml;
 
 clean: ;

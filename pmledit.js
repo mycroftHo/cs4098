@@ -30,7 +30,10 @@ CodeMirror.defineSimpleMode("pml", {
 			token: [null, "variable-2"]
 		},
 
-		{
+		{	//Defining the keywords
+			regex: /(process|sequence|action|branch|iteration|requires|provides|agent|script)/,
+			token: "keyword"
+		}, {
 			//Pretty sure we don't need some of these
 			regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
 			token: "number"
