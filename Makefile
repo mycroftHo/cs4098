@@ -8,6 +8,7 @@ install: ;
 
 clean: ;
 	rm -rf node_modules; \
-	$(MAKE) -C pml clean;
+	$(MAKE) -C pml clean; \
+	rm test.pml;
 
 .PHONY: install clean

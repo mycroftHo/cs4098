@@ -94,7 +94,7 @@ CodeMirror.hint.javascript = function(cm){
 	return inner;
 }*/
 
-function initDoc() {
+function init() {
 	editor = CodeMirror.fromTextArea(document.getElementById("inputText"),{
 		lineNumbers: true,
 
@@ -119,6 +119,9 @@ function initDoc() {
 		extraKeys: {"Ctrl-Space": "autocomplete"}
 
 	})
+
+	jointInit();
+
 }
 /**
  *	Function which is executed when "Compile" is pressed
