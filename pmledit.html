@@ -63,21 +63,61 @@
 <!-- Some CSS style stuff -->
 <style type="text/css">
 
-    #paper{
+	/*JointJS Style Elements*/
+  	.element .element-tools {
+    	display: none;
+    	cursor: pointer
+    }
+
+    .element:hover .element-tools {
+    	display: inline;
+    }
+
+    #paper {
     	position: relative;
     	border: 1px solid gray;
     	display: inline-block;
 	   	background: transparent;
     	overflow: hidden;
     	float: right;
+    	margin-bottom: 20px;
     }
 
+    #ProcessAddButton {
+    	position: relative;
+    	float: right;
+    	top: -25px;
+    	left: 95px;
+    }
+
+    #ActionAddButton {
+    	position: relative;
+    	float: right;
+    	top: -25px;
+    	left: 275px;
+    }
+
+    #IterationLinkAddButton{
+    	position: relative;
+    	float: right;
+    	top: -25px;
+    	left: 485px;
+    }
+
+	#RequireLinkAddButton{
+		position: relative;
+    	float: right;
+    	top: -25px;
+    	left: 735px;
+    }
+
+    /* CodeMirror Style Elements */
     .CodeMirror {
     	border: 1px solid #eee;
     	width: 650px;
     }
 
-	#outputText{
+	#outputText {
 	  width: 540px;
 	  height: 200px;
 	}
@@ -99,7 +139,14 @@
 
 <div id="paper"></div>
 
-<p>
+<div>
+<input id = "ProcessAddButton" type="button" value="Add Process" onclick="addProcess()"/>
+<input id = "ActionAddButton" type="button" value="Add Action" onclick="addAction()"/>
+<input id = "IterationLinkAddButton" type="button" value="Add Iteration Link" onclick="addIterationLink()"/>
+<input id = "RequireLinkAddButton" type="button" value="Add Require Link" onclick="addRequireLink()"/>
+</div>
+
+
 	Key Bindings:
 <button onclick = "changeKeyMap()">Emacs</button>
 <button onclick = "changeKeyMap()">Vim</button>
