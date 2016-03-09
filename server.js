@@ -116,7 +116,7 @@ server.post('/', function(req, res, next){
 		//	if(err) throw err;
 		//	console.log("PML File Saved")
 		//})
-		fs.writeFile('accounts/' + email + '/' + filename, 'test');
+		fs.writeFile('accounts/' + email + '/' + filename, data);
 		res.send("File Saved as " + filename );
 	}
 });
