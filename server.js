@@ -28,6 +28,8 @@ var config = require('./passport-examples/oauth.js');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 
+var email = "";
+
 
 var app = express();
 
@@ -103,11 +105,18 @@ server.post('/', function(req, res, next){
 		});
 	}
 	else if(index == 2){
+		var dir = __dirname + '/accounts/' + email;
+
+		//create new account directory if doesn't already exist
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync('accounts/' + email);
+		}
 		filename = req.body.filename;
-		fs.writeFile(filename, data, function(err){
-			if(err) throw err;
-			console.log("PML File Saved")
-		})
+		//fs.writeFile(filename, data, function(err){
+		//	if(err) throw err;
+		//	console.log("PML File Saved")
+		//})
+		fs.writeFile('accounts/' + email + '/' + filename, 'test');
 		res.send("File Saved as " + filename );
 	}
 });
@@ -131,6 +140,7 @@ passport.use(new FacebookStrategy({
 	},
   	function(accessToken, refreshToken, profile, done) {
     	process.nextTick(function () {
+    	email = profile.id
       	return done(null, profile);
     });
   }
@@ -144,6 +154,8 @@ passport.use(new GoogleStrategy({
   },
   function(request, accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
+    	email = profile.email;
+    	console.log("HARRO " + email);
       return done(null, profile);
     });
   }
