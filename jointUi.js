@@ -19,6 +19,18 @@ function initShapes(){
 	joint.shapes.tm = {};
 
 	joint.shapes.tm.toolElement = joint.shapes.basic.Generic.extend({
+
+		/*
+			Add in button overlays
+			Buttons are placed manually, if you have to add one, it takes a bit of trail/error
+			to place both the button and the internal icon (at the moment, a white X)
+
+			To modify the position of the button itself - change the values cx and cy
+			To modify the position of the icon - change the value of translate(x,y)
+			To help with placement, you can change the colour of the icon by placing a fill="red" as an
+			attribute of <path> (it defaults to white so it's near impossible to place normally)
+		*/
+
 		toolMarkup:[
 		'<g class="element-tools">',
         '<g class="element-tool-remove"><circle fill="red" r="11"/>',
@@ -28,9 +40,16 @@ function initShapes(){
         '</g>',
 
         '<g class="element-tools">',
-        '<g class="element-tool-add"><circle fill="green" r="11" cx="160" cy="40" />',
+        '<g class="element-tool-add-act-right"><circle fill="green" r="11" cx="160" cy="40" />',
         '<path transform="scale(.8) translate(183, 33)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
-        '<title>Add an element</title>',
+        '<title>Add an action right</title>',
+        '</g>',
+        '</g>',
+
+        '<g class="element-tools">',
+        '<g class="element-tool-add-act-below"><circle fill="green" r="11" cx="80" cy="80" />',
+        '<path transform="scale(.8) translate(83, 83)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<title>Add an action below</title>',
         '</g>',
         '</g>',
 
@@ -63,9 +82,11 @@ function initShapes(){
 				rect: { rx: 20, ry: 20, fill: 'white', stroke: 'black', 'stroke-width': 1, 'follow-scale': true, width: 160, height: 80 },
             	text: { ref: 'rect'}
 			},
-			size: { width: 160, height: 80 }
+			size: { width: 160, height: 80 },
 
-			//,column: 0
+			//Custom attribute for "swim lanes"
+			//Line of thinking - to emulate the "lanes", increment this value for each "column" that we move into
+			column: 0
 
 		}, joint.shapes.tm.toolElement.prototype.defaults)
 	});
@@ -123,7 +144,35 @@ function initShapes(){
 					this.model.remove();
 					return;
 					break;
-				case 'element-tool-add':
+				case 'element-tool-add-act-right':
+					var ns = this.model.clone();
+					var nsx = ns.get('position').x;
+					var nsy = ns.get('position').y;
+
+					var act = new joint.shapes.tm.Action({
+						position: {x: 0, y: 0},
+						attrs: {
+							text: {text: 'Action'}
+						}
+					});
+
+					var link = new joint.dia.Link({
+						source: { id: this.model.id },
+				        target: { id: act.id },
+				        attrs: {}
+					});
+					act.translate(nsx + 300, nsy);
+
+					//Column depth increment
+					var depth = ns.get('column');
+					act.set('column', depth + 1);
+
+
+					graph.addCells([act, link]);
+					return;
+					break;
+
+				case 'element-tool-add-act-below':
 					var ns = this.model.clone();
 					var nsx = ns.get('position').x;
 					var nsy = ns.get('position').y;
@@ -141,11 +190,10 @@ function initShapes(){
 				        attrs: {}
 					});
 
-					act.translate(nsx + 230, nsy);
+					act.translate(nsx, nsy + 230);
 					graph.addCells([act, link]);
 					return;
 					break;
-
 				default:
 			}
 
