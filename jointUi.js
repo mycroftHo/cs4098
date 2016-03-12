@@ -2,17 +2,41 @@
 
 var graph, paper;
 
+var hideLink = {
+    '.connection': {display:"none"}, //the link
+    '.marker-target': {display:"none"}, 
+    'text': {display:"none"}, //because I have a label
+    'rect': {display:"none"}, //second element of label
+    '.connection-wrap': {display:"none"},//a bigger link highliting on hover
+    'g.marker-vertices': {display:"none"}, //vertice of the link
+    'g.link-tools': {display: 'none'}, // the button to delete the link
+    'g.marker-arrowheads': {display:"none"} //the arrow to change link targets
+};
+
+
 function initShapes(){
 
 	joint.shapes.tm = {};
 
 	joint.shapes.tm.toolElement = joint.shapes.basic.Generic.extend({
-		toolMarkup:['<g class="element-tools">',
+		toolMarkup:[
+		'<g class="element-tools">',
         '<g class="element-tool-remove"><circle fill="red" r="11"/>',
         '<path transform="scale(.8) translate(-16, -16)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
         '<title>Remove this element from the model</title>',
         '</g>',
-        '</g>'].join(''),
+        '</g>',
+
+        '<g class="element-tools">',
+        '<g class="element-tool-add"><circle fill="green" r="11" cx="160" cy="40" />',
+        '<path transform="scale(.8) translate(183, 33)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<title>Add an element</title>',
+        '</g>',
+        '</g>',
+
+        //Add new buttons here
+
+        ].join(''),
 
         defaults: joint.util.deepSupplement({
         	attrs: {
@@ -30,16 +54,19 @@ function initShapes(){
 	});
 
 
-	//Action (Rounded rectangle)
+	//Action (Rounded rectangle/oval-ey shape)
 	joint.shapes.tm.Action = joint.shapes.tm.toolElement.extend({
 		markup: '<g class="rotatable"><g class="scalable"><rect/><title class="tooltip"/></g><text/></g>',
 		defaults: joint.util.deepSupplement({
 			type: 'tm.Action',
 			attrs: {
-				rect: { rx: 5, ry: 5, fill: 'white', stroke: 'black', 'stroke-width': 1, 'follow-scale': true, width: 160, height: 80 },
+				rect: { rx: 20, ry: 20, fill: 'white', stroke: 'black', 'stroke-width': 1, 'follow-scale': true, width: 160, height: 80 },
             	text: { ref: 'rect'}
 			},
 			size: { width: 160, height: 80 }
+
+			//,column: 0
+
 		}, joint.shapes.tm.toolElement.prototype.defaults)
 	});
 
@@ -52,7 +79,13 @@ function initShapes(){
 				rect: { fill: 'white', stroke: 'black', 'stroke-width': 1, 'follow-scale': true, width: 160, height: 80 },
 	        	text: { ref: 'rect'}
 			},
-			size: { width: 160, height: 80 }
+			size: { width: 160, height: 80 },
+
+			//Custom attribute for "swim lanes"
+			//Processes default to 0;
+			//Line of thinking - to emulate the "lanes", increment this value for each "column" that we move into
+			column: 0
+
 		}, joint.shapes.tm.toolElement.prototype.defaults)
 	});
 
@@ -88,6 +121,28 @@ function initShapes(){
 			switch(className){
 				case 'element-tool-remove':
 					this.model.remove();
+					return;
+					break;
+				case 'element-tool-add':
+					var ns = this.model.clone();
+					var nsx = ns.get('position').x;
+					var nsy = ns.get('position').y;
+
+					var act = new joint.shapes.tm.Action({
+						position: {x: 0, y: 0},
+						attrs: {
+							text: {text: 'Action'}
+						}
+					});
+
+					var link = new joint.dia.Link({
+						source: { id: this.model.id },
+				        target: { id: act.id },
+				        attrs: {}
+					});
+
+					act.translate(nsx + 230, nsy);
+					graph.addCells([act, link]);
 					return;
 					break;
 
@@ -195,49 +250,39 @@ function jointInit(){
 	graph = new joint.dia.Graph;
 	paper = new joint.dia.Paper({
 			el: $('#paper'),
-			width: 500,
-			height: 500,
+			width: 1000,
+			height: 800,
 			gridSize: 1,
 			model: graph
 		}
 	);
 
-	
-	/*
-	//Create some shapes to display
-	var rect1 = new joint.shapes.basic.Rect({
-		position:{ x: 50, y: 50}, size: {width: 75, height: 75},
-		attrs: {
-			rect: {'stroke-width': '3', 'stroke-opacity': .7, stroke: 'black', rx: 3, ry: 3, fill: 'lightgray', 'fill-opacity': .5 },
-			text: { text: 'Square', 'font-size': 10, style: { 'text-shadow': '1px 1px 1px lightgray' } }
-		}
-	});
-
-	var rect2 = rect1.clone();
-	rect2.translate(200);
-	var rect3 = rect1.clone();
-	rect3.translate(100,200);
-	graph.addCells([rect1, rect2, rect3]);
-
-	var link1 = new joint.dia.Link({
-		source: {id: rect1.id},
-		target: {id: rect2.id}
-	});
-
-	var link2 = link1.clone();
-	var link3 = link1.clone();
-
-	graph.addCells([link1, link2, link3]);
-	*/
-
-	var action = new joint.shapes.tm.Action({
+	var startProcess = new joint.shapes.tm.Process({
 		position: {x: 100, y: 100},
 		attrs: {
-			text: {text: 'Action'}
+			text: {text: 'StartProcess'}
 		}
 	});
 
-	graph.addCell(action);
+	var endProcess = new joint.shapes.tm.Process({
+		position: {x: 100, y: 500},
+		attrs: {
+			text: {text: 'EndProcess'}
+		}
+	});
+
+	var processLink = new joint.dia.Link({
+		source: { id: startProcess.id },
+        target: { id: endProcess.id },
+        attrs: {}
+	});
+
+
+	//The link between processes is hidden
+	processLink.attr(hideLink);
+
+	graph.addCells([startProcess, endProcess, processLink]);
+
 
 	var myAdjustVerticies = _.partial(adjustVeritices, graph);
 	//adjust vertices when a cell is removed or its source/target was changed
@@ -297,4 +342,22 @@ function addRequireLink(){
     });
 
     graph.addCell(link)
+}
+
+function graphToFile(){
+	var output = graph.toJSON();
+	var type = 3;
+
+	var xhttp = new XMLHttpRequest();
+
+		//xhttp.onreadystatechange = function(){
+		//  if(xhttp.readyState == 4 && xhttp.status == 200){}
+		//};
+
+		//New HTTP POST request
+		xhttp.open("POST", "http://127.0.0.1:6500", true);
+		//Set the content type so that the server knows the data is formatted w/ JSON
+		xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+		xhttp.send(JSON.stringify({index:type, graph: output}));
 }
