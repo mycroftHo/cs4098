@@ -184,6 +184,10 @@ function initShapes(){
 					var depth = ns.get('column');
 					act.set('column', depth + 1);
 
+					//Resize paper if element goes off screen
+					if(act.get('position').x > paper.options.width){
+						resizePaperX(act.get('position').x, 0);
+					}
 
 					graph.addCells([act, link]);
 					return;
@@ -232,6 +236,10 @@ function initShapes(){
 					startIteration.set('column', depth + 1);
 					endIteration.set('column', depth + 1);
 
+					//Resize paper if element goes off screen
+					if(startIteration.get('position').x > paper.options.width){
+						resizePaperX(act.get('position').x, 0);
+					}
 
 					graph.addCells([startIteration, link, endIteration, iterationLink]);
 					return;
@@ -298,9 +306,38 @@ function initShapes(){
 					//The link between processes is hidden
 					processLink.attr(hideLink);
 
+					//Resize paper if element goes off screen
+					if(endProcess.get('position').y > paper.options.height){
+						resizePaperY(0, endProcess.get('position').y);
+					}
+
 					graph.addCells([startProcess, link, endProcess, processLink]);
 					return;
 					break;
+
+				case 'element-tool-add-act-left':
+					var ns = this.model.clone();
+					var nsx = ns.get('position').x;
+					var nsy = ns.get('position').y;
+
+					var act = new joint.shapes.tm.Action({
+						position: {x: 0, y: 0},
+						attrs: {
+							text: {text: 'Action'}
+						}
+					});
+
+					var link = new joint.dia.Link({
+						source: { id: this.model.id },
+				        target: { id: act.id },
+				        attrs: {}
+					});
+
+					act.translate(nsx - 230, nsy);
+					graph.addCells([act, link]);
+					return;
+					break;
+
 
 				default:
 			}
@@ -449,7 +486,7 @@ function jointInit(){
 	//console.log(JSON.stringify(graph.toJSON(), null, '\t'));
 }
 
-function addAction(){
+/*function addAction(){
 	var action = new joint.shapes.tm.Action({
 		position: {x: 100, y: 100},
 		attrs: {
@@ -498,7 +535,7 @@ function addRequireLink(){
     });
 
     graph.addCell(link)
-}
+}*/
 
 function graphToFile(){
 	var output = graph.toJSON();
@@ -516,4 +553,12 @@ function graphToFile(){
 		xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
 
 		xhttp.send(JSON.stringify({index:type, graph: output}));
+}
+
+function resizePaperX(x, y){
+	paper.setDimensions(x + 100, y);
+}
+
+function resizePaperY(x, y){
+	paper.setDimensions(x, y + 100);
 }
