@@ -54,6 +54,7 @@
 
 
 <!--JointJS-->
+<!--
 <link rel = "stylesheet" href = "joint/joint.min.css">
 
 <script src="joint/jquery.min.js"></script>
@@ -62,7 +63,9 @@
 <script src="joint/joint.min.js"></script>
 
 
-<script type="text/javascript" src="jointUi.js"></script>
+<script type="text/javascript" src="jointUi.js"></script>-->
+
+
 <script type="text/javascript" src="pmledit.js"></script>
 
 <!-- Some CSS style stuff -->
@@ -78,44 +81,6 @@
     	display: inline;
     }
 
-    #paper {
-    	position: relative;
-    	border: 1px solid gray;
-    	display: inline-block;
-	   	background: transparent;
-    	overflow: hidden;
-    	float: right;
-    	margin-bottom: 20px;
-    }
-
-    #ProcessAddButton {
-    	position: relative;
-    	float: right;
-    	top: -25px;
-    	left: 95px;
-    }
-
-    #ActionAddButton {
-    	position: relative;
-    	float: right;
-    	top: -25px;
-    	left: 275px;
-    }
-
-    #IterationLinkAddButton{
-    	position: relative;
-    	float: right;
-    	top: -25px;
-    	left: 485px;
-    }
-
-	#RequireLinkAddButton{
-		position: relative;
-    	float: right;
-    	top: -25px;
-    	left: 735px;
-    }
-
     /* CodeMirror Style Elements */
     .CodeMirror {
     	border: 1px solid #eee;
@@ -126,6 +91,34 @@
 	  width: 540px;
 	  height: 200px;
 	}
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    a:hover:not(.active) {
+        background-color: #111;
+    }
+
+    .active {
+        background-color:#4CAF50;
+    }
 
     .lint-error {font-family: arial; font-size: 70%; background: #ffa; color: #a00; padding: 2px 5px 3px; }
     .lint-error-icon {color: white; background-color: red; font-weight: bold; border-radius: 50%; padding: 0 3px; margin-right: 7px;}
@@ -138,19 +131,16 @@
 <body onload="init();">
 <input type="hidden" name="myDoc">
 
+<ul>
+    <li><a class="active" href="pmledit.html">Text Editor</a></li>
+    <li><a href="pmlguiedit.html">GUI Editor</a></li>
+</ul>
+
 <!--file input-->
 <p><input type="file" id="fileToLoad" />
 <button onclick = "loadFileAsText()">Load selected file</button></p>
 
 <div id="paper"></div>
-
-<!--<div>
-<input id = "ProcessAddButton" type="button" value="Add Process" onclick="addProcess()"/>
-<input id = "ActionAddButton" type="button" value="Add Action" onclick="addAction()"/>
-<input id = "IterationLinkAddButton" type="button" value="Add Iteration Link" onclick="addIterationLink()"/>
-<input id = "RequireLinkAddButton" type="button" value="Add Require Link" onclick="addRequireLink()"/>
-</div>-->
-
 
 	Key Bindings:
 <button onclick = "changeKeyMap()">Emacs</button>

@@ -97,9 +97,10 @@ CodeMirror.hint.javascript = function(cm){
 function init() {
 	editor = CodeMirror.fromTextArea(document.getElementById("inputText"),{
 		lineNumbers: true,
+
 		//Set pml syntax highlighting
 		mode: "pml",
-		keyMap: "vim",
+
 		//The auto-indent feature screws the tabs due to a unnecessary whitespace char appearing
 		//Until I figure out what's causing it - turning it off fixes it for the time being.
 		smartIndent: false,
@@ -119,7 +120,7 @@ function init() {
 
 	})
 
-	jointInit();
+	//jointInit();
 
 }
 /**
@@ -210,7 +211,7 @@ function saveButton(){
 	}
 }
 function changeKeyMap(){
-
+	CodeMirror.addKeyMap("../addon/keymap/emacs.js");
 }
 
 function loadFileAsText(){

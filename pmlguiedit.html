@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<title>PML GUI Editor</title>
+
+<!--JointJS-->
+<link rel = "stylesheet" href = "joint/joint.min.css">
+
+<script src="joint/jquery.min.js"></script>
+<script src="joint/lodash.min.js"></script>
+<script src="joint/backbone-min.js"></script>
+<script src="joint/joint.min.js"></script>
+
+
+<script type="text/javascript" src="jointUi.js"></script>
+
+<!-- Some CSS style stuff -->
+<style type="text/css">
+
+	/*JointJS Style Elements*/
+  	.element .element-tools {
+    	display: none;
+    	cursor: pointer
+    }
+
+    .element:hover .element-tools {
+    	display: inline;
+    }
+
+    #paper {
+    	position: relative;
+    	border: 1px solid gray;
+    	display: inline-block;
+	   	background: transparent;
+    	overflow: hidden;
+    	margin-bottom: 20px;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        margin-bottom: 10px;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    a:hover:not(.active) {
+        background-color: #111;
+    }
+
+    .active {
+        background-color:#4CAF50;
+    }
+
+</style>
+
+
+</head>
+
+<body onload="jointInit();">
+
+<ul>
+    <li><a href="pmledit.html">Text Editor</a></li>
+    <li><a class="active" href="pmlguiedit.html">GUI Editor</a></li>
+</ul>
+
+<div id="paper"></div>
+
+<button onclick="graphToFile()">Save Graph to File</button>
+</html>
