@@ -32,6 +32,7 @@ function initShapes(){
 		*/
 
 		toolMarkup:[
+
 		'<g class="element-tools">',
         '<g class="element-tool-remove"><circle fill="red" r="11"/>',
         '<path transform="scale(.8) translate(-16, -16)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
@@ -40,16 +41,30 @@ function initShapes(){
         '</g>',
 
         '<g class="element-tools">',
-        '<g class="element-tool-add-act-right"><circle fill="green" r="11" cx="160" cy="40" />',
-        '<path transform="scale(.8) translate(183, 33)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<g class="element-tool-add-act-right"><circle fill="green" r="11" cx="160" cy="50" />',
+        '<path transform="scale(.8) translate(183, 47)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
         '<title>Add an action right</title>',
         '</g>',
         '</g>',
 
         '<g class="element-tools">',
-        '<g class="element-tool-add-act-below"><circle fill="green" r="11" cx="80" cy="80" />',
-        '<path transform="scale(.8) translate(83, 83)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<g class="element-tool-add-iter-right"><circle fill="lightblue" r="11" cx="160" cy="25" />',
+        '<path fill="black" transform="scale(.8) translate(183, 15)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<title>Add an iteration block right</title>',
+        '</g>',
+        '</g>',
+
+        '<g class="element-tools">',
+        '<g class="element-tool-add-act-below"><circle fill="green" r="11" cx="95" cy="80" />',
+        '<path transform="scale(.8) translate(103, 83)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
         '<title>Add an action below</title>',
+        '</g>',
+        '</g>',
+
+        '<g class="element-tools">',
+        '<g class="element-tool-add-iter-below"><circle fill="lightblue" r="11" cx="65" cy="80" />',
+        '<path fill="black" transform="scale(.8) translate(65, 83)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<title>Add an iteration block below</title>',
         '</g>',
         '</g>',
 
@@ -140,10 +155,12 @@ function initShapes(){
 
 			var className = evt.target.parentNode.getAttribute('class');
 			switch(className){
+
 				case 'element-tool-remove':
 					this.model.remove();
 					return;
 					break;
+
 				case 'element-tool-add-act-right':
 					var ns = this.model.clone();
 					var nsx = ns.get('position').x;
@@ -172,6 +189,54 @@ function initShapes(){
 					return;
 					break;
 
+				case 'element-tool-add-iter-right':
+					var ns = this.model.clone();
+					var nsx = ns.get('position').x;
+					var nsy = ns.get('position').y;
+
+					var startIteration = new joint.shapes.tm.Process({
+						position: {x: 0, y: 0},
+						attrs: {
+							text: {text: 'StartIteration'}
+						}
+					});
+
+					startIteration.translate(nsx + 300, nsy);
+
+					var link = new joint.dia.Link({
+						source: { id: this.model.id },
+				        target: { id: startIteration.id },
+				        attrs: {}
+					});
+
+					var endIteration = new joint.shapes.tm.Process({
+						position: {x: 0, y: 0},
+						attrs: {
+							text: {text: 'EndIteration'}
+						}
+					});
+
+					endIteration.translate(nsx + 300, nsy + 400);
+
+					var iterationLink = new joint.dia.Link({
+						source: { id: startIteration.id },
+				        target: { id: endIteration.id },
+				        attrs: {}
+					});
+
+					//The link between processes is hidden
+					iterationLink.attr(hideLink);
+
+					//Column depth increment
+					var depth = ns.get('column');
+					startIteration.set('column', depth + 1);
+					endIteration.set('column', depth + 1);
+
+
+					graph.addCells([startIteration, link, endIteration, iterationLink]);
+					return;
+					break;
+
 				case 'element-tool-add-act-below':
 					var ns = this.model.clone();
 					var nsx = ns.get('position').x;
@@ -194,6 +259,49 @@ function initShapes(){
 					graph.addCells([act, link]);
 					return;
 					break;
+
+				case 'element-tool-add-iter-below':
+					var ns = this.model.clone();
+					var nsx = ns.get('position').x;
+					var nsy = ns.get('position').y;
+
+					var startProcess = new joint.shapes.tm.Process({
+						position: {x: 0, y: 0},
+						attrs: {
+							text: {text: 'StartIteration'}
+						}
+					});
+
+					startProcess.translate(nsx, nsy + 130);
+
+					var link = new joint.dia.Link({
+						source: { id: this.model.id },
+				        target: { id: startProcess.id },
+				        attrs: {}
+					});
+
+					var endProcess = new joint.shapes.tm.Process({
+						position: {x: 0, y: 0},
+						attrs: {
+							text: {text: 'EndIteration'}
+						}
+					});
+
+					endProcess.translate(nsx, nsy + 430);
+
+					var processLink = new joint.dia.Link({
+						source: { id: startProcess.id },
+				        target: { id: endProcess.id },
+				        attrs: {}
+					});
+
+					//The link between processes is hidden
+					processLink.attr(hideLink);
+
+					graph.addCells([startProcess, link, endProcess, processLink]);
+					return;
+					break;
+
 				default:
 			}
 
@@ -298,8 +406,8 @@ function jointInit(){
 	graph = new joint.dia.Graph;
 	paper = new joint.dia.Paper({
 			el: $('#paper'),
-			width: 1000,
-			height: 800,
+			width: 1900,
+			height: 900,
 			gridSize: 1,
 			model: graph
 		}
@@ -308,14 +416,14 @@ function jointInit(){
 	var startProcess = new joint.shapes.tm.Process({
 		position: {x: 100, y: 100},
 		attrs: {
-			text: {text: 'StartProcess'}
+			text: {text: 'StartIteration'}
 		}
 	});
 
 	var endProcess = new joint.shapes.tm.Process({
 		position: {x: 100, y: 500},
 		attrs: {
-			text: {text: 'EndProcess'}
+			text: {text: 'EndIteration'}
 		}
 	});
 

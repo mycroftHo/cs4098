@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<title>PML GUI Editor</title>
+
+<!--JointJS-->
+<link rel = "stylesheet" href = "joint/joint.min.css">
+
+<script src="joint/jquery.min.js"></script>
+<script src="joint/lodash.min.js"></script>
+<script src="joint/backbone-min.js"></script>
+<script src="joint/joint.min.js"></script>
+
+
+<script type="text/javascript" src="jointUi.js"></script>
+
+<!-- Some CSS style stuff -->
+<style type="text/css">
+
+	/*JointJS Style Elements*/
+  	.element .element-tools {
+    	display: none;
+    	cursor: pointer
+    }
+
+    .element:hover .element-tools {
+    	display: inline;
+    }
+
+    #paper {
+    	position: relative;
+    	border: 1px solid gray;
+    	display: inline-block;
+	   	background: transparent;
+    	overflow: hidden;
+    	margin-bottom: 20px;
+    }
+</style>
+
+
+</head>
+
+<body onload="jointInit();">
+
+<div id="paper"></div>
+
+</html>
