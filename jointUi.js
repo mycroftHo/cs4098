@@ -4,7 +4,7 @@ var graph, paper;
 
 var hideLink = {
     '.connection': {display:"none"}, //the link
-    '.marker-target': {display:"none"}, 
+    '.marker-target': {display:"none"},
     'text': {display:"none"}, //because I have a label
     'rect': {display:"none"}, //second element of label
     '.connection-wrap': {display:"none"},//a bigger link highliting on hover
@@ -70,18 +70,34 @@ function initShapes(){
 
         //Add new buttons here
 
+        '<g class="element-tools">',
+        '<g class="element-tool-add-act-left"><circle fill="green" r="11" cx="0" cy="50" />',
+        '<path transform="scale(.8) translate(-16, 47)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<title>Add an action left</title>',
+        '</g>',
+        '</g>',
+
+        '<g class="element-tools">',
+        '<g class="element-tool-add-iter-left"><circle fill="lightblue" r="11" cx="0" cy="25" />',
+        '<path fill="black" transform="scale(.8) translate(-16, 15)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        '<title>Exit Iteration</title>',
+        '</g>',
+        '</g>',
+
+
+
         ].join(''),
 
         defaults: joint.util.deepSupplement({
         	attrs: {
     			text: {
-	    			'font-weight': 400, 
-	    			'font-size': 'small', 
-	        		fill: 'black', 
-	        		'text-anchor': 'middle', 
-	        		'ref-x': .5, 
-	        		'ref-y': .5, 
-	        		'y-alignment': 'middle' 
+	    			'font-weight': 400,
+	    			'font-size': 'small',
+	        		fill: 'black',
+	        		'text-anchor': 'middle',
+	        		'ref-x': .5,
+	        		'ref-y': .5,
+	        		'y-alignment': 'middle'
     			},
         	},
         }, joint.shapes.basic.Generic.prototype.defaults)
@@ -333,11 +349,12 @@ function initShapes(){
 				        attrs: {}
 					});
 
-					act.translate(nsx - 230, nsy);
+					act.translate(nsx - 300, nsy);
 					graph.addCells([act, link]);
 					return;
 					break;
 
+      
 
 				default:
 			}
@@ -419,7 +436,7 @@ function adjustVeritices(graph, cell){
             // from the first link and forms a perpendicular angle to it. And as index goes up
             // alternate left and right.
             //
-            //  ^  odd indexes 
+            //  ^  odd indexes
             //  |
             //  |---->  index 0 line (straight line between a source center and a target center.
             //  |
