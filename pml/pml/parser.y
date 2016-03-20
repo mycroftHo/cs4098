@@ -1,27 +1,32 @@
 %{
 /************************************************************************
- * File:	parser.y						*
- *									*
- * Description:	This file contains the yacc specification for the	*
- *		parser.							*
+ * File:    parser.y                        *
+ *                                  *
+ * Description: This file contains the yacc specification for the   *
+ *      parser.                         *
  ************************************************************************/
 
 # include <stdio.h>
 # include <pml/parser.h>
 # include <pml/scanner.h>
-
+# include <string.h>
 
 /* Public variable definitions */
 
 Graph program;
 
+//integer to keep track of actions seen
+//will be used when drawing swimlanes
+int actionsSeen; 
+FILE *fp;
+int cameFromAgent;
 
 /* Private function declarations */
 
 static void and_trees (
 # ifdef ANSI_PROTOTYPES
-    Tree *		/* ptr  */,
-    Tree		/* tree */
+    Tree *      /* ptr  */,
+    Tree        /* tree */
 # endif
 );
 %}
@@ -76,54 +81,57 @@ static void and_trees (
 
 process
     : process_header '{' sequential_primitive_list '}'
-	{
-	    if ($3 != NULL)
-		GraphInsert ($1, $3);
-	    else
-		NodeLink ($1 -> source, $1 -> sink);
+    {
+        actionsSeen = 0;
+        cameFromAgent = 0;
 
-	    program = $1;
-	}
+        if ($3 != NULL)
+        GraphInsert ($1, $3);
+        else
+        NodeLink ($1 -> source, $1 -> sink);
+
+        program = $1;
+    }
     ;
 
 
 process_header
     : PROCESS ID
-	{
-	    Node source = NodeCreate ($2, PROCESS, lineno);
-	    Node sink = NodeCreate ($2, PROCESS, lineno);
-	    $$ = GraphCreate (source, sink);
-	}
+    {
+        Node source = NodeCreate ($2, PROCESS, lineno);
+        Node sink = NodeCreate ($2, PROCESS, lineno);
+        $$ = GraphCreate (source, sink);
+    }
     ;
 
 
 concurrent_primitive_list
     : concurrent_primitive_list primitive
-	{
-	    if ($2 != NULL)
-		GraphInsert ($1, $2);
-	}
+    {
+        if ($2 != NULL)
+        GraphInsert ($1, $2);
+    }
 
     | /* empty */
-	{
-	    $$ = $<graph>-1;
-	}
+    {
+        $$ = $<graph>-1;
+    }
     ;
 
 
 sequential_primitive_list
     : sequential_primitive_list primitive
-	{
-	    if ($1 == NULL)
-		$$ = $2;
-	    else if ($2 != NULL)
-		GraphLink ($1, $2);
-	}
+    {
+        if ($1 == NULL)
+        $$ = $2;
+        else if ($2 != NULL)
+        GraphLink ($1, $2);
+    }
 
     | /* empty */
-	{
-	    $$ = NULL;
-	}
+    {
+        $$ = NULL;
+    }
     ;
 
 
@@ -138,67 +146,67 @@ primitive
 
 branch_primitive
     : branch_header '{' concurrent_primitive_list '}'
-	{
-	    if ($3 == NULL)
-		NodeLink ($1 -> source, $1 -> sink);
-	}
+    {
+        if ($3 == NULL)
+        NodeLink ($1 -> source, $1 -> sink);
+    }
     ;
 
 
 branch_header
     : BRANCH optional_name
-	{
-	    Node source = NodeCreate ($2, BRANCH, lineno);
-	    Node sink = NodeCreate ($2, RENDEZVOUS, lineno);
-	    $$ = GraphCreate (source, sink);
-	}
+    {
+        Node source = NodeCreate ($2, BRANCH, lineno);
+        Node sink = NodeCreate ($2, RENDEZVOUS, lineno);
+        $$ = GraphCreate (source, sink);
+    }
     ;
 
 
 selection_primitive
     : selection_header '{' concurrent_primitive_list '}'
-	{
-	    if ($3 == NULL)
-		NodeLink ($1 -> source, $1 -> sink);
-	}
+    {
+        if ($3 == NULL)
+        NodeLink ($1 -> source, $1 -> sink);
+    }
     ;
 
 
 selection_header
     : SELECTION optional_name
-	{
-	    Node source = NodeCreate ($2, SELECTION, lineno);
-	    Node sink = NodeCreate ($2, JOIN, lineno);
-	    $$ = GraphCreate (source, sink);
-	}
+    {
+        Node source = NodeCreate ($2, SELECTION, lineno);
+        Node sink = NodeCreate ($2, JOIN, lineno);
+        $$ = GraphCreate (source, sink);
+    }
     ;
 
 
 iteration_primitive
     : ITERATION optional_name '{' sequential_primitive_list '}'
-	{
-	    if ($4 != NULL)
-		NodeLink ($4 -> sink, $4 -> source);
+    {
+        if ($4 != NULL)
+        NodeLink ($4 -> sink, $4 -> source);
 
-	    $$ = $4;
-	}
+        $$ = $4;
+    }
     ;
 
 
 sequence_primitive
     : SEQUENCE optional_name '{' sequential_primitive_list '}'
-	{
-	    $$ = $4;
-	}
+    {
+        $$ = $4;
+    }
     ;
 
 
 optional_name
     : ID
     | /* empty */
-	{
-	    $$ = "(anonymous)";
-	}
+    {
+        $$ = "(anonymous)";
+    }
     ;
 
 
@@ -209,29 +217,40 @@ action_primitive
 
 action_header
     : ACTION ID optional_type
-	{
-	    Node node = NodeCreate ($2, ACTION, lineno);
-	    $$ = GraphCreate (node, node);
-	    node -> action_type = $3;
-	}
+    {
+        if(fp==NULL){
+            //open the swimData file if it hasn't
+            //been already
+            fp = fopen("swimData.csv", "w");
+        }
+
+        //write out a line to the swim data file
+        //and update how many actions we've seen
+        fprintf(fp, "action,%s,%d\n",$2, actionsSeen);
+        actionsSeen++;
+
+        Node node = NodeCreate ($2, ACTION, lineno);
+        $$ = GraphCreate (node, node);
+        node -> action_type = $3;
+    }
     ;
 
 
 optional_type
     : MANUAL
-	{
-	    $$ = MANUAL;
-	}
+    {
+        $$ = MANUAL;
+    }
 
     | EXECUTABLE
-	{
-	    $$ = EXECUTABLE;
-	}
+    {
+        $$ = EXECUTABLE;
+    }
 
     | /* empty */
-	{
-	    $$ = 0;
-	}
+    {
+        $$ = 0;
+    }
     ;
 
 
@@ -243,29 +262,45 @@ specification_list
 
 specification
     : PROVIDES '{' expression '}'
-	{
-	    and_trees (&($<graph>-2 -> source -> provides), $3);
-	}
+    {
+        //since these productions produce expressions
+        //we need to set the cameFromAgent variable
+        //to ensure they do not get printed later
+        //in the production
+
+        cameFromAgent = 0;
+        and_trees (&($<graph>-2 -> source -> provides), $3);
+    }
 
     | REQUIRES '{' expression '}'
-	{
-	    and_trees (&($<graph>-2 -> source -> requires), $3);
-	}
+    {
+        //see comment for PROVIDES above
+
+        cameFromAgent = 0;
+        and_trees (&($<graph>-2 -> source -> requires), $3);
+    }
 
     | AGENT '{' expression '}'
-	{
-	    and_trees (&($<graph>-2 -> source -> agent), $3);
-	}
+    {
+        //set the cameFromAgent variable
+        //to make sure the Agents involved 
+        //get noted further on in the productions
+
+        cameFromAgent = 1;
+        and_trees (&($<graph>-2 -> source -> agent), $3);
+    }
 
     | SCRIPT '{' STRING '}'
-	{
-	    $<graph>-2 -> source -> script = $3;
-	}
+    {
+        
+        $<graph>-2 -> source -> script = $3;
+    }
 
     | TOOL '{' STRING '}'
-	{
-	    $<graph>-2 -> source -> tool = $3;
-	}
+    {
+        
+        $<graph>-2 -> source -> tool = $3;
+    }
     ;
 
 
@@ -277,18 +312,18 @@ expression
 disjunction_expression
     : conjunction_expression
     | disjunction_expression OR conjunction_expression
-	{
-	    $$ = TreeCreate ($1, $3, "||", OR);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "||", OR);
+    }
     ;
 
 
 conjunction_expression
     : relation_expression
     | conjunction_expression AND relation_expression
-	{
-	    $$ = TreeCreate ($1, $3, "&&", AND);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "&&", AND);
+    }
     ;
 
 
@@ -296,44 +331,44 @@ relation_expression
     : string_expression
     | primary_expression
     | value_expression EQ value_expression
-	{
-	    $$ = TreeCreate ($1, $3, "==", EQ);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "==", EQ);
+    }
 
     | value_expression NE value_expression
-	{
-	    $$ = TreeCreate ($1, $3, "!=", NE);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "!=", NE);
+    }
 
     | value_expression LT value_expression
-	{
-	    $$ = TreeCreate ($1, $3, "<", LT);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "<", LT);
+    }
 
     | value_expression GT value_expression
-	{
-	    $$ = TreeCreate ($1, $3, ">", GT);
-	}
+    {
+        $$ = TreeCreate ($1, $3, ">", GT);
+    }
 
     | value_expression LE value_expression
-	{
-	    $$ = TreeCreate ($1, $3, "<=", LE);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "<=", LE);
+    }
 
     | value_expression GE value_expression
-	{
-	    $$ = TreeCreate ($1, $3, ">=", GE);
-	}
+    {
+        $$ = TreeCreate ($1, $3, ">=", GE);
+    }
 
     | variable_expression EQ variable_expression
-	{
-	    $$ = TreeCreate ($1, $3, "==", EQ);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "==", EQ);
+    }
 
     | variable_expression NE variable_expression
-	{
-	    $$ = TreeCreate ($1, $3, "!=", NE);
-	}
+    {
+        $$ = TreeCreate ($1, $3, "!=", NE);
+    }
     ;
 
 
@@ -341,36 +376,36 @@ primary_expression
     : variable_expression
     | attribute_expression
     | NOT primary_expression
-	{
-	    $$ = TreeCreate (NULL, $2, "!", NOT);
-	}
+    {
+        $$ = TreeCreate (NULL, $2, "!", NOT);
+    }
 
     | '(' expression ')'
-	{
-	    $$ = $2;
-	}
+    {
+        $$ = $2;
+    }
     ;
 
 
 variable_expression
     : identifier
     | '(' identifier ')'
-	{
-	    $$ = $2;
-	}
+    {
+        $$ = $2;
+    }
 
     | '(' identifier ')' variable_expression
-	{
-	    $$ = TreeCreate ($2, $4, "(qualifier)", QUALIFIER);
-	}
+    {
+        $$ = TreeCreate ($2, $4, "(qualifier)", QUALIFIER);
+    }
     ;
 
 
 attribute_expression
     : variable_expression DOT identifier
-	{
-	    $$ = TreeCreate ($1, $3, ".", DOT);
-	}
+    {
+        $$ = TreeCreate ($1, $3, ".", DOT);
+    }
     ;
 
 
@@ -378,33 +413,33 @@ value_expression
     : attribute_expression
     | string_expression
     | NUMBER
-	{
-	    $$ = TreeCreate (NULL, NULL, $1, lineno);
-	}
+    {
+        $$ = TreeCreate (NULL, NULL, $1, lineno);
+    }
     ;
 
 
 string_expression
     : STRING
-	{
-	    $$ = TreeCreate (NULL, NULL, $1, lineno);
-	}
+    {
+        $$ = TreeCreate (NULL, NULL, $1, lineno);
+    }
     ;
 
 
 identifier
     : ID
-	{
-	    $$ = TreeCreate (NULL, NULL, $1, lineno);
-	}
+    {
+        $$ = TreeCreate (NULL, NULL, $1, lineno);
+    }
     ;
 %%
 
 
 /************************************************************************
- * Function:	and_trees						*
- *									*
- * Description:	Links two trees as if specified in an AND expression.	*
+ * Function:    and_trees                       *
+ *                                  *
+ * Description: Links two trees as if specified in an AND expression.   *
  ************************************************************************/
 
 static void and_trees (ptr, tree)
