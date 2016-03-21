@@ -210,8 +210,9 @@ function saveButton(){
 		document.getElementById("outputText").value = "ERROR: No Filename Entered!";
 	}
 }
-function changeKeyMap(){
-
+function changeKeyMap(element){
+	var x = element.value;
+	editor.setOption("keyMap", x);
 }
 
 function loadFileAsText(){

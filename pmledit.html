@@ -148,6 +148,12 @@
   <input type="radio" id="emacs" value="emacs"> Emacs
   <input type="radio" id="sublime" value="sublime"> Sublime
 </form>-->
+<p>Key Bindings:<br>
+<form>
+    <input type="radio" name="map" value="vim" onclick="changeKeyMap(this);" checked> Vim
+    <input type="radio" name="map" value="emacs" onclick="changeKeyMap(this);"> Emacs
+    <input type="radio" name="map" value="emacs" onclick="changeKeyMap(this);"> Sublime
+</form></p>
 
 <!-- Text Box for Code entry -->
 <!-- This textarea will be replaced by the code editor -->
