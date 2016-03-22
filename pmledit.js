@@ -225,3 +225,20 @@ function loadFileAsText(){
 	};
 	fileReader.readAsText(fileToLoad,"UTF-8");
 }
+
+function DownloadLocally()
+{
+	var textToWrite = editor.getValue();
+	var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+	var fileName = document.getElementById("FileName").value;
+
+	var downloadLink = document.createElement("a");
+	downloadLink.download = fileName;
+	downloadLink.innerHTML = "Download File";
+	
+	downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+	downloadLink.style.display = "none";
+	document.body.appendChild(downloadLink);
+
+	downloadLink.click();
+}
