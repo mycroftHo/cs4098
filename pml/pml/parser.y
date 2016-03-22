@@ -17,9 +17,31 @@ Graph program;
 
 //integer to keep track of actions seen
 //will be used when drawing swimlanes
+//I had considered leaving this for the 
+//program that will produce the diagrams
+//but I think it makes more sense to do it here
+
 int actionsSeen; 
 FILE *fp;
-int cameFromAgent;
+
+/*
+A note about expressions:
+In my opinion, if an agent is in any way connected to an action
+That action should appear in their swimlane (regardless of way
+in which agent field is made up with &s |s etc.
+
+I need to confirm that all expressions boil down to primary expressions
+The different types I think constitue different operations and that
+won't affect me recording that an agent is involved with a particular
+action.
+
+
+My current list of jobs:
+	**DONE** Record the agents for each action
+	Write a program to produce an image for swimlanes
+	serve that image back to the user
+--JMB--
+*/
 
 /* Private function declarations */
 
@@ -83,7 +105,6 @@ process
     : process_header '{' sequential_primitive_list '}'
     {
         actionsSeen = 0;
-        cameFromAgent = 0;
 
         if ($3 != NULL)
         GraphInsert ($1, $3);
@@ -226,8 +247,8 @@ action_header
 
         //write out a line to the swim data file
         //and update how many actions we've seen
-        fprintf(fp, "action,%s,%d\n",$2, actionsSeen);
-        actionsSeen++;
+
+        fprintf(fp, "action,%s,%d\n",$2, ++actionsSeen);
 
         Node node = NodeCreate ($2, ACTION, lineno);
         $$ = GraphCreate (node, node);
@@ -263,30 +284,18 @@ specification_list
 specification
     : PROVIDES '{' expression '}'
     {
-        //since these productions produce expressions
-        //we need to set the cameFromAgent variable
-        //to ensure they do not get printed later
-        //in the production
-
-        cameFromAgent = 0;
         and_trees (&($<graph>-2 -> source -> provides), $3);
     }
 
     | REQUIRES '{' expression '}'
     {
         //see comment for PROVIDES above
-
-        cameFromAgent = 0;
         and_trees (&($<graph>-2 -> source -> requires), $3);
     }
 
     | AGENT '{' expression '}'
     {
-        //set the cameFromAgent variable
-        //to make sure the Agents involved 
-        //get noted further on in the productions
-
-        cameFromAgent = 1;
+        printAgentTree($3);
         and_trees (&($<graph>-2 -> source -> agent), $3);
     }
 
@@ -325,7 +334,6 @@ conjunction_expression
         $$ = TreeCreate ($1, $3, "&&", AND);
     }
     ;
-
 
 relation_expression
     : string_expression
@@ -447,4 +455,26 @@ static void and_trees (ptr, tree)
     Tree  tree;
 {
     *ptr = (*ptr == NULL ? tree : TreeCreate (*ptr, tree, "&&", AND));
+}
+
+//a function to print out the agents to the csv file
+static void printAgentTree(tree)
+    Tree tree;
+{
+    if(tree != NULL){
+        if(strcmp("&&", tree->sval) != 0 &&
+            strcmp("||", tree->sval) != 0 )
+        {
+            if(fp==NULL){
+            //open the swimData file if it hasn't
+            //been already
+                fp = fopen("swimData.csv", "w");
+            }
+            //write out a line to the swim data file
+            //and update how many actions we've seen
+            fprintf(fp, "agent,%s,%d\n",tree->sval, actionsSeen);
+        }
+        printAgentTree(tree->left);
+        printAgentTree(tree->right);
+    }
 }
