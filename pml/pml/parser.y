@@ -51,6 +51,11 @@ static void and_trees (
     Tree        /* tree */
 # endif
 );
+static void printAgentTree(
+# ifdef ANSI_PROTOTYPES
+    Tree /*tree*/
+# endif 
+);
 %}
 
 
