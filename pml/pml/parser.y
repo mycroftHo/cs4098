@@ -253,7 +253,7 @@ action_header
         //write out a line to the swim data file
         //and update how many actions we've seen
 
-        fprintf(fp, "action,%s,%d\n",$2, ++actionsSeen);
+        fprintf(fp, "action,%s,%d\n",$2, actionsSeen++);
 
         Node node = NodeCreate ($2, ACTION, lineno);
         $$ = GraphCreate (node, node);
