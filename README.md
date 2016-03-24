@@ -7,13 +7,14 @@ Implements features from CodeMirror (https://codemirror.net/)
 
 ### Build Instructions
 
-This project requires node.js (https://nodejs.org/) to function; to install node.js, run the following commands:
+This project requires node.js (https://nodejs.org/) and Java to function; to install node.js and Java, run the following commands:
 
 ```
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo apt-get install -y build-essential
 sudo npm install -g npm
+sudo apt-get install default-jdk
 ```
 
 To install dependencies for the PML Checker, run `sudo apt-get install -y byacc flex`
