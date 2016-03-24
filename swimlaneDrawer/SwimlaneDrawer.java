@@ -41,13 +41,18 @@ public class SwimlaneDrawer{
 
 
 
-    private static void printAppropriateBoxes(List<String> csvLine){
+    private static void printAppropriateBoxes(List<String> csvLine, boolean lastLine){
         if(csvLine.get(ENTRY_TYPE).equals("action") && 
             firstAction && 
             agentsSinceLastAction == 0){
             firstAction = false;
             actionName = csvLine.get(ENTRY_NAME);
             actionNumber = 0;
+            if(lastLine){
+                currentAgent = agentMap.get("NONE");
+                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
+                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
+            }
         }
         //no agents in previous action
         else if(csvLine.get(ENTRY_TYPE).equals("action") && 
@@ -62,11 +67,24 @@ public class SwimlaneDrawer{
             agentsSinceLastAction = 0;
             actionName = csvLine.get(ENTRY_NAME);
             actionNumber ++;
+            //the reason it won't print this out is cos
+            //this never gets called again once we hit the end of the file.
+            //if the last line is 
+            if(lastLine){
+                currentAgent = agentMap.get("NONE");
+                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
+                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
+            }
         }
         else if(csvLine.get(ENTRY_TYPE).equals("action")){
             agentsSinceLastAction = 0;
             actionName = csvLine.get(ENTRY_NAME);
             actionNumber++;
+            if(lastLine){
+                currentAgent = agentMap.get("NONE");
+                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
+                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
+            }
         }
         //agent seen
         else if(csvLine.get(ENTRY_TYPE).equals("agent")){
@@ -104,7 +122,7 @@ public class SwimlaneDrawer{
 
                 for(int i = 0; i < actionsAndAgentsCSV.getSize(); i++){
                     List<String> csvLine= actionsAndAgentsCSV.getNextLine();
-                    printAppropriateBoxes(csvLine);
+                    printAppropriateBoxes(csvLine, (i == actionsAndAgentsCSV.getSize() - 1));
                 }
                 canvas.FinishUp();
             }
