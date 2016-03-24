@@ -59,4 +59,7 @@ public class CSVReader{
             return null;
     }
 
+    public int getSize(){
+        return csvData.size();
+    }
 }

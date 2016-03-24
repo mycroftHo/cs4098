@@ -1,0 +1,34 @@
+Canvas.java:33: error: ';' expected
+        fileBody += "ctx.strokeText("+ name +"," + xPos + "," + textYPos + ");"
+                                                                               ^
+Canvas.java:38: error: unclosed string literal
+        fileBody +=  "</script>\n
+                     ^
+Canvas.java:39: error: illegal start of type
+                        </body>\n
+                         ^
+Canvas.java:39: error: illegal start of expression
+                        </body>\n
+                          ^
+Canvas.java:39: error: illegal character: \92
+                        </body>\n
+                               ^
+Canvas.java:39: error: not a statement
+                        </body>\n
+                              ^
+Canvas.java:40: error: illegal start of type
+                        </html>\n";
+                         ^
+Canvas.java:40: error: ';' expected
+                        </html>\n";
+                              ^
+Canvas.java:40: error: illegal character: \92
+                        </html>\n";
+                               ^
+Canvas.java:40: error: unclosed string literal
+                        </html>\n";
+                                 ^
+Canvas.java:40: error: not a statement
+                        </html>\n";
+                                ^
+11 errors
