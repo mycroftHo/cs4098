@@ -1,2 +1,10 @@
-include pmledit.html
+extends layout
+
+block sidebar
+  #sidebar-wrapper
+    ul.sidebar-nav
+      li.sidebar-brand
+        a(href='/') #{file}
+block content
+  include pmledit.html
 

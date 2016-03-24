@@ -95,6 +95,7 @@ CodeMirror.hint.javascript = function(cm){
 }*/
 
 function init() {
+	getFiles();
 	editor = CodeMirror.fromTextArea(document.getElementById("inputText"),{
 		lineNumbers: true,
 
@@ -255,4 +256,29 @@ function DownloadLocally()
 	document.body.appendChild(downloadLink);
 
 	downloadLink.click();
+}
+
+function getFiles(){
+	var type = 4;
+	var files;
+	//Create new HTTP Request
+	var xhttp = new XMLHttpRequest();
+
+	xhttp.onreadystatechange = function(){
+	  if(xhttp.readyState == 4 && xhttp.status == 200){
+	  	//Place response in the output box
+	    files = xhttp.responseText;
+	    //res.render('account', {file:files});
+	    document.getElementById("outputText").value = files;
+	  }
+	};
+
+	//New HTTP POST request
+	xhttp.open("POST", "http://127.0.0.1:6500", true);
+	//Set the content type so that the server knows the data is formatted w/ JSON
+	xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+	//Format the text in the form {code : "<code>"} and send
+	xhttp.send(JSON.stringify({index:type}));
+
 }

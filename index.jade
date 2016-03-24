@@ -1,5 +1,8 @@
 extends layout
 
+block sidebar
+  #sidebar-wrapper
+
 block content
   #page-content-wrapper
     .page-content.inset
@@ -9,8 +12,6 @@ block content
         .col-md-12
           h1 PML Editor
           p.lead Think about the consequences of your actions.
-          a(href="/") Go home
-          br
           a(href="/auth/facebook") Login via Facebook
           br
           a(href="/auth/google") Login via Google

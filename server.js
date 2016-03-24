@@ -70,11 +70,11 @@ server.post('/', function(req, res, next){
 	//body = {data : code}
 	//code = the code we have to execute
 
-	data = req.body.code;
+	//data = req.body.code;
 
 	index = req.body.index;
 	if(index == 1){
-		
+		data = req.body.code;
 		//Write the code to a pml file
 		fs.writeFile("test.pml", data, function(err){
 				  if(err) throw err;
@@ -106,12 +106,12 @@ server.post('/', function(req, res, next){
 		});
 	}
 	else if(index == 2){
-		var dir = __dirname + '/accounts/' + email;
-
+		//var dir = __dirname + '/accounts/' + email;
+		data = req.body.code;
 		//create new account directory if doesn't already exist
-		if (!fs.existsSync(dir)) {
-			fs.mkdirSync('accounts/' + email);
-		}
+		//if (!fs.existsSync(dir)) {
+		//	fs.mkdirSync('accounts/' + email);
+		//}
 		filename = req.body.filename;
 		//fs.writeFile(filename, data, function(err){
 		//	if(err) throw err;
@@ -128,12 +128,34 @@ server.post('/', function(req, res, next){
 		})		
 	}
 
+<<<<<<< Updated upstream
     else if(index == 4){
         child = exec("java -cp ~/bin SwimlaneDrawer swimData.csv")
         child.on('close', function(){
             res.send("swimLaneMade");
         });
     }
+=======
+	else if(index ==5){
+		var dir = __dirname + '/accounts/' + email;
+		//create new account directory if doesn't already exist
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync('accounts/' + email);
+		}
+
+	//	var Folder = fs.GetFolder(__dirname +'/accounts/');
+	//	var FileCollection = Folder.Files;
+	//	var Files = new Array();
+
+	//	for(var objEnum = new Enumerator(FileCollection); !objEnum.atEnd(); objEnum.moveNext())
+	//	{
+	//	   strFileName = objEnum.item();
+	//	   Files.push(strFileName);
+	//	}
+
+		res.send("hello");
+	}
+>>>>>>> Stashed changes
 });
 
 
