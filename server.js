@@ -127,6 +127,13 @@ server.post('/', function(req, res, next){
 			console.error(err);
 		})		
 	}
+
+    else if(index == 4){
+        child = exec("java -cp ~/bin SwimlaneDrawer swimData.csv")
+        child.on('close', function(){
+            res.send("swimLaneMade");
+        });
+    }
 });
 
 
