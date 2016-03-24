@@ -61,6 +61,12 @@ public class SwimlaneDrawer{
             //Then update deets
             agentsSinceLastAction = 0;
             actionName = csvLine.get(ENTRY_NAME);
+            actionNumber ++;
+        }
+        else if(csvLine.get(ENTRY_TYPE).equals("action")){
+            agentsSinceLastAction = 0;
+            actionName = csvLine.get(ENTRY_NAME);
+            actionNumber++;
         }
         //agent seen
         else if(csvLine.get(ENTRY_TYPE).equals("agent")){
