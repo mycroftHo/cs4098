@@ -106,12 +106,7 @@ server.post('/', function(req, res, next){
 		});
 	}
 	else if(index == 2){
-		//var dir = __dirname + '/accounts/' + email;
 		data = req.body.code;
-		//create new account directory if doesn't already exist
-		//if (!fs.existsSync(dir)) {
-		//	fs.mkdirSync('accounts/' + email);
-		//}
 		filename = req.body.filename;
 		//fs.writeFile(filename, data, function(err){
 		//	if(err) throw err;
@@ -128,14 +123,12 @@ server.post('/', function(req, res, next){
 		})		
 	}
 
-<<<<<<< Updated upstream
     else if(index == 4){
         child = exec("java -cp ~/bin SwimlaneDrawer swimData.csv")
         child.on('close', function(){
             res.send("swimLaneMade");
         });
     }
-=======
 	else if(index ==5){
 		var dir = __dirname + '/accounts/' + email;
 		//create new account directory if doesn't already exist
@@ -155,7 +148,6 @@ server.post('/', function(req, res, next){
 
 		res.send("hello");
 	}
->>>>>>> Stashed changes
 });
 
 
