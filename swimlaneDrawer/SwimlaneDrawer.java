@@ -31,6 +31,7 @@ public class SwimlaneDrawer{
     final static int ENTRY_NAME = 1;
     final static int ACTION_NUMBER = 2;
 
+    static List<Action> actionList;
     static HashMap <String, Agent> agentMap;
     static String actionName ;
     static int actionNumber;
@@ -38,6 +39,8 @@ public class SwimlaneDrawer{
     static boolean firstAction;
     static Agent currentAgent;
     static Canvas canvas;
+//    static SocialCanvas networkCanvas;
+    static Action currentAction;
 
 
 
@@ -48,6 +51,8 @@ public class SwimlaneDrawer{
             firstAction = false;
             actionName = csvLine.get(ENTRY_NAME);
             actionNumber = 0;
+            currentAction = new Action(actionName);
+            actionList.add(currentAction);
             if(lastLine){
                 currentAgent = agentMap.get("NONE");
                 canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
@@ -67,6 +72,8 @@ public class SwimlaneDrawer{
             agentsSinceLastAction = 0;
             actionName = csvLine.get(ENTRY_NAME);
             actionNumber ++;
+            currentAction = new Action(actionName);
+            actionList.add(currentAction);
             //the reason it won't print this out is cos
             //this never gets called again once we hit the end of the file.
             //if the last line is 
@@ -80,6 +87,8 @@ public class SwimlaneDrawer{
             agentsSinceLastAction = 0;
             actionName = csvLine.get(ENTRY_NAME);
             actionNumber++;
+            currentAction = new Action(actionName);
+            actionList.add(currentAction);
             if(lastLine){
                 currentAgent = agentMap.get("NONE");
                 canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
@@ -97,6 +106,7 @@ public class SwimlaneDrawer{
             else{
                 currentAgent = agentMap.get(csvLine.get(ENTRY_NAME));
             }
+            currentAction.addAgent(currentAgent);
             canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
             System.out.println("" + currentAgent.getName() + " number : "+
                 currentAgent.getAgentNumber() + " carries out " + actionName);
@@ -105,6 +115,7 @@ public class SwimlaneDrawer{
 
     public static void main(String args[]){
         CSVReader actionsAndAgentsCSV;
+        actionList = new ArrayList<Action>();
 
         if(args.length != 1){
             System.out.println("Please include file name\nUsage: SwimlaneDrawer inputFileName");
@@ -121,10 +132,18 @@ public class SwimlaneDrawer{
                 agentMap.put(currentAgent.getName(), currentAgent);
 
                 for(int i = 0; i < actionsAndAgentsCSV.getSize(); i++){
-                    List<String> csvLine= actionsAndAgentsCSV.getNextLine();
+                    List<String> csvLine = actionsAndAgentsCSV.getNextLine();
                     printAppropriateBoxes(csvLine, (i == actionsAndAgentsCSV.getSize() - 1));
                 }
                 canvas.FinishUp();
+
+                Agent[] agentArray = agentMap.values().toArray(new Agent[0]);
+                for(int i = 0; i < agentArray.length; i++){
+                    System.out.println("" + agentArray[i].getName());
+                }
+                for(int i = 0; i < actionList.size(); i ++){
+                    System.out.println("" + actionList.get(i).getActionName());
+                }
             }
             catch (Exception e){
                 e.printStackTrace();
