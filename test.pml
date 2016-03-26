@@ -1,4 +1,6 @@
 process p{
-	action a{
+	action poo{
+    	agent{a && b}
+        agent{b && c}
     }
 }

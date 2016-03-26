@@ -192,6 +192,19 @@ function swimlane(){
 	xhttp.send(JSON.stringify({index:type}));
 }
 
+function social(){
+	buttonPress();
+	var type = 4;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function(){
+		if(xhttp.readyState == 4 && xhttp.status == 200){
+			window.open("http://localhost:1337/SocialNetwork.html");
+		}
+	}
+	xhttp.open("POST", "http://127.0.0.1:6500", true);
+	xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+	xhttp.send(JSON.stringify({index:type}));
+}
 
 function saveButton(){
 	//Grab the content of the editor
