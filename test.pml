@@ -1,6 +1,9 @@
-process p{
-	action poo{
-    	agent{a && b}
-        agent{b && c}
+process a{
+	action yup{
+    	agent{ yeBoi && ya}
+        agent{ adams && mcguinness}
+    }
+    action upTheRah{
+    	agent{ooh && ah}
     }
 }

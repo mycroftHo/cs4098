@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Social Network</title> <style type="text/css">
+#mynetwork {
+width: 600px;
+height: 400px;
+border: 1px solid lightgray;}
+</style></head>
+<body>
+<div id="myNetwork">
+</div>
+<script>
+var net = document.getElementById("myNetwork");
+var nodes = new vis.DataSet([
+{id: 3, label: ANDREW},
+{id: 1, label: JON},
+{id: 0, label: NONE},
+{id: 2, label: RACHEL}
+]);
+var edges = new vis.DataSet([
+{ from: 1, to: 2, label: b},
+{ from: 1, to: 3, label: b},
+{ from: 2, to: 3, label: b}
+]);
+var data = {
+nodes : nodes,
+edges: edges
+};
+var options = {}
+var socialNet = new vis.Network(container, data, options);
+</script>
+</body>
+</html>
+

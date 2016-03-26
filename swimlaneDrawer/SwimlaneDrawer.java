@@ -39,7 +39,7 @@ public class SwimlaneDrawer{
     static boolean firstAction;
     static Agent currentAgent;
     static Canvas canvas;
-//    static SocialCanvas networkCanvas;
+    static SocialCanvas networkCanvas;
     static Action currentAction;
 
 
@@ -123,6 +123,7 @@ public class SwimlaneDrawer{
         else{
             try{
                 canvas = new Canvas();
+                networkCanvas = new SocialCanvas();
                 actionsAndAgentsCSV = new CSVReader(args[0]);
                 actionName = "";
                 agentsSinceLastAction = 0;
@@ -139,11 +140,19 @@ public class SwimlaneDrawer{
 
                 Agent[] agentArray = agentMap.values().toArray(new Agent[0]);
                 for(int i = 0; i < agentArray.length; i++){
-                    System.out.println("" + agentArray[i].getName());
+                    networkCanvas.addNode(agentArray[i].getAgentNumber(), agentArray[i].getName());
                 }
                 for(int i = 0; i < actionList.size(); i ++){
-                    System.out.println("" + actionList.get(i).getActionName());
+                    ArrayList<Agent> actionsAgents = actionList.get(i).getAgentList();
+                    for(int j = 0; j < actionsAgents.size(); j++){
+                        for(int k = j + 1; k < actionsAgents.size(); k++){
+                            networkCanvas.addEdge(actionsAgents.get(j).getAgentNumber(),
+                                actionsAgents.get(k).getAgentNumber(),
+                                actionList.get(i).getActionName());
+                        }
+                    }
                 }
+                networkCanvas.FinishUp();
             }
             catch (Exception e){
                 e.printStackTrace();

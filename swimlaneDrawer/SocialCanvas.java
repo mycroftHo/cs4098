@@ -6,7 +6,7 @@ public class SocialCanvas{
     String nodeBody = "";
     String edgeBody = "";
     Boolean nodeAdded = false;
-    BOolean edgeAdded = false;
+    Boolean edgeAdded = false;
 
 
     //I\"m going to call the context ctx
@@ -16,11 +16,15 @@ public class SocialCanvas{
         fileBody += "<html>\n";
         fileBody += "<head>\n";
         fileBody += "<title>Social Network</title>";
+        fileBody += "<script type=\"text/javascript\" src=\"node_modules/vis/dist/vis.js\"></script>\n";
+        fileBody += "<link href=\"node_modules/vis/dist/vis.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
         fileBody += " <style type=\"text/css\">\n";
         fileBody += "#mynetwork {\n";
+        /*
         fileBody += "width: 600px;\n";
         fileBody += "height: 400px;\n";
-        fileBody += "border: 1px solid lightgray;}\n"
+        */
+        fileBody += "border: 1px solid lightgray;}\n";
         fileBody += "</style>";
         fileBody += "</head>\n";
         fileBody += "<body>\n";
@@ -38,23 +42,23 @@ public class SocialCanvas{
         }
     }
 
-    public void addNode(int from, int to, String label){
-      if(!nodeAdded){
-        nodeBody += "{ from: " + from + ", to: " + to + ", label: " + label + "}";
-        nodeAdded = true;
-      }
-      else{
-        nodeBody += ",\n{ from: " + from + ", to: " + to + ", label: " + label + "}";
-      }
-    }
-
-    public void addEdge(int agentId, String agentLabel){
+    public void addEdge(int from, int to, String label){
       if(!edgeAdded){
-        edgeBody += "{id: " + agentId + ", label: " + label + "}";
+        edgeBody += "{ from: " + from + ", to: " + to + ", label: \"" + label + "\"}";
         edgeAdded = true;
       }
       else{
-        edgeBody += ",\n{id: " + agentId + ", label: " + label + "}";
+        edgeBody += ",\n{ from: " + from + ", to: " + to + ", label: \"" + label + "\"}";
+      }
+    }
+
+    public void addNode(int agentId, String label){
+      if(!nodeAdded){
+        nodeBody += "{id: " + agentId + ", label: \"" + label + "\"}";
+        nodeAdded = true;
+      }
+      else{
+        nodeBody += ",\n{id: " + agentId + ", label: \"" + label + "\"}";
       }
     }
 
@@ -68,7 +72,7 @@ public class SocialCanvas{
         fileBody += "edges: edges\n";
         fileBody += "};\n";
         fileBody += "var options = {}\n";
-        fileBody += "var socialNet = new vis.Network(container, data, options);\n"
+        fileBody += "var socialNet = new vis.Network(net, data, options);\n";
         fileBody +=  "</script>\n";
         fileBody += "</body>\n";
         fileBody += "</html>\n";

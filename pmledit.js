@@ -198,7 +198,7 @@ function social(){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function(){
 		if(xhttp.readyState == 4 && xhttp.status == 200){
-			window.open("http://localhost:1337/SocialNetwork.html");
+			window.open("http://localhost:1337/SocialCanvas.html");
 		}
 	}
 	xhttp.open("POST", "http://127.0.0.1:6500", true);

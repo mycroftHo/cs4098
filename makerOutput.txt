@@ -1,0 +1,84 @@
+npm install express body-parser passport passport-facebook passport-google-oauth2 jade jsonfile; \
+	make -C pml;
+jsonfile@2.2.3 node_modules/jsonfile
+
+passport@0.3.2 node_modules/passport
+├── pause@0.0.1
+└── passport-strategy@1.0.0
+
+body-parser@1.15.0 node_modules/body-parser
+├── content-type@1.0.1
+├── bytes@2.2.0
+├── depd@1.1.0
+├── qs@6.1.0
+├── on-finished@2.3.0 (ee-first@1.1.1)
+├── raw-body@2.1.6 (unpipe@1.0.0, bytes@2.3.0)
+├── http-errors@1.4.0 (statuses@1.2.1, inherits@2.0.1)
+├── debug@2.2.0 (ms@0.7.1)
+├── iconv-lite@0.4.13
+└── type-is@1.6.12 (media-typer@0.3.0, mime-types@2.1.10)
+
+passport-google-oauth2@0.1.6 node_modules/passport-google-oauth2
+└── passport-oauth2@1.2.0 (uid2@0.0.3, passport-strategy@1.0.0, oauth@0.9.14)
+
+passport-facebook@2.1.0 node_modules/passport-facebook
+└── passport-oauth2@1.2.0 (uid2@0.0.3, passport-strategy@1.0.0, oauth@0.9.14)
+
+express@3.3.8 node_modules/express
+├── methods@0.0.1
+├── cookie-signature@1.0.1
+├── range-parser@0.0.4
+├── fresh@0.2.0
+├── buffer-crc32@0.2.1
+├── cookie@0.1.0
+├── mkdirp@0.3.5
+├── commander@1.2.0 (keypress@0.1.0)
+├── debug@2.2.0 (ms@0.7.1)
+├── send@0.1.4 (mime@1.2.11)
+└── connect@2.8.8 (uid2@0.0.2, qs@0.6.5, pause@0.0.1, bytes@0.2.0, formidable@1.0.14)
+
+jade@0.34.1 node_modules/jade
+├── character-parser@1.0.2
+├── commander@1.3.2 (keypress@0.1.0)
+├── mkdirp@0.3.5
+├── with@1.1.1 (uglify-js@2.4.0)
+├── constantinople@1.0.2 (uglify-js@2.4.24)
+├── transformers@2.1.0 (promise@2.0.0, css@1.0.8, uglify-js@2.2.5)
+└── monocle@0.1.50 (readdirp@0.2.5)
+make[1]: Entering directory `/home/jack/cs4098/pml'
+set -e; for i in pml expr check graph; do make -C $i; done
+make[2]: Entering directory `/home/jack/cs4098/pml/pml'
+gcc  -I.. -g -Wall   -c -o graph.o graph.c
+gcc  -I.. -g -Wall   -c -o list.o list.c
+gcc  -I.. -g -Wall   -c -o parser.o parser.c
+gcc  -I.. -g -Wall   -c -o tree.o tree.c
+gcc  -I.. -g -Wall   -c -o scanner.o scanner.c
+rm -f libpml.a
+ar cru libpml.a graph.o list.o parser.o tree.o scanner.o
+ranlib libpml.a || true
+make[2]: Leaving directory `/home/jack/cs4098/pml/pml'
+make[2]: Entering directory `/home/jack/cs4098/pml/expr'
+gcc -I.. -g -Wall   -c -o expr.o expr.c
+rm -f libexpr.a
+ar cru libexpr.a expr.o
+ranlib libexpr.a || true
+make[2]: Leaving directory `/home/jack/cs4098/pml/expr'
+make[2]: Entering directory `/home/jack/cs4098/pml/check'
+gcc -I.. -g -Wall   -c -o common.o common.c
+gcc -I.. -g -Wall   -c -o local.o local.c
+gcc -I.. -g -Wall   -c -o global.o global.c
+gcc -I.. -g -Wall   -c -o qualifier.o qualifier.c
+gcc -I.. -g -Wall   -c -o main.o main.c
+cd link; make;
+make[3]: Entering directory `/home/jack/cs4098/pml/check/link'
+gcc -I../.. -g -Wall   -c -o link_parser.o link_parser.c
+gcc -I../.. -g -Wall   -c -o lexer.o lexer.c
+gcc -I../.. -g -Wall   -c -o link.o link.c
+make[3]: Leaving directory `/home/jack/cs4098/pml/check/link'
+gcc -o pmlcheck  common.o local.o global.o qualifier.o main.o link/link.o link/lexer.o link/link_parser.o ../pml/libpml.a  ../expr/libexpr.a 
+make[2]: Leaving directory `/home/jack/cs4098/pml/check'
+make[2]: Entering directory `/home/jack/cs4098/pml/graph'
+gcc -I..  -g -Wall   -c -o traverse.o traverse.c
+gcc -o traverse traverse.o ../pml/libpml.a
+make[2]: Leaving directory `/home/jack/cs4098/pml/graph'
+make[1]: Leaving directory `/home/jack/cs4098/pml'
