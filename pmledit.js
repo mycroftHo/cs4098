@@ -100,7 +100,7 @@ function init() {
 
 		//Set pml syntax highlighting
 		mode: "pml",
-		keyMap: "vim",
+		keyMap: "default",
 		//The auto-indent feature screws the tabs due to a unnecessary whitespace char appearing
 		//Until I figure out what's causing it - turning it off fixes it for the time being.
 		smartIndent: false,
@@ -249,7 +249,7 @@ function DownloadLocally()
 	var downloadLink = document.createElement("a");
 	downloadLink.download = fileName;
 	downloadLink.innerHTML = "Download File";
-	
+
 	downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
 	downloadLink.style.display = "none";
 	document.body.appendChild(downloadLink);
