@@ -1,5 +1,8 @@
 var editor
+//var files =[];
 
+var app = express();
+var files =[];
 /*
  * Simple Mode for PML Syntax Highlighting
  * Courtesy of http://codepen.io/Ephellon/pen/zvvGaz
@@ -95,13 +98,13 @@ CodeMirror.hint.javascript = function(cm){
 }*/
 
 function init() {
-	getFiles();
+	setFiles();
 	editor = CodeMirror.fromTextArea(document.getElementById("inputText"),{
 		lineNumbers: true,
 
 		//Set pml syntax highlighting
 		mode: "pml",
-		keyMap: "vim",
+		keyMap: "default",
 		//The auto-indent feature screws the tabs due to a unnecessary whitespace char appearing
 		//Until I figure out what's causing it - turning it off fixes it for the time being.
 		smartIndent: false,
@@ -193,6 +196,19 @@ function swimlane(){
 	xhttp.send(JSON.stringify({index:type}));
 }
 
+function social(){
+	buttonPress();
+	var type = 4;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function(){
+		if(xhttp.readyState == 4 && xhttp.status == 200){
+			window.open("http://localhost:1337/SocialCanvas.html");
+		}
+	}
+	xhttp.open("POST", "http://127.0.0.1:6500", true);
+	xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+	xhttp.send(JSON.stringify({index:type}));
+}
 
 function saveButton(){
 	//Grab the content of the editor
@@ -224,6 +240,8 @@ function saveButton(){
 	else{
 		document.getElementById("outputText").value = "ERROR: No Filename Entered!";
 	}
+
+	setFiles();
 }
 function changeKeyMap(element){
 	var x = element.value;
@@ -258,20 +276,20 @@ function DownloadLocally()
 	downloadLink.click();
 }
 
-function getFiles(){
-	var type = 4;
-	var files;
+function setFiles(){
+	var type = 5;
 	//Create new HTTP Request
 	var xhttp = new XMLHttpRequest();
 
 	xhttp.onreadystatechange = function(){
 	  if(xhttp.readyState == 4 && xhttp.status == 200){
 	  	//Place response in the output box
-	    files = xhttp.responseText;
-	    //res.render('account', {file:files});
-	    document.getElementById("outputText").value = files;
+	    files = JSON.parse(xhttp.responseText);
+	    document.getElementById("outputText").value = files.length;
+	    getFiles();
 	  }
 	};
+	
 
 	//New HTTP POST request
 	xhttp.open("POST", "http://127.0.0.1:6500", true);
@@ -281,4 +299,24 @@ function getFiles(){
 	//Format the text in the form {code : "<code>"} and send
 	xhttp.send(JSON.stringify({index:type}));
 
+}
+
+
+function getFiles(){
+    var myTable = "";
+    document.getElementById('title').innerHTML = "<h1 style='color:white;font-size:200%;''>Username: " + files[0] +"</h1>";
+
+	for(var i = 1; i < files.length; i++){
+		var name = files[i]
+		myTable += "<br><button onclick = 'loadSelected("+i+")''>" + files[i] + "</button>";
+	}
+	myTable += "</li>";
+	document.getElementById('tablePrint').innerHTML = myTable;
+}
+
+function loadSelected(id){
+	var fname = files[id];
+	var fileReader = new FileReader();
+
+	//Need to load contents of file selected, given we know the file name
 }

@@ -70,11 +70,11 @@ server.post('/', function(req, res, next){
 	//body = {data : code}
 	//code = the code we have to execute
 
-	//data = req.body.code;
+	data = req.body.code;
 
 	index = req.body.index;
 	if(index == 1){
-		data = req.body.code;
+
 		//Write the code to a pml file
 		fs.writeFile("test.pml", data, function(err){
 				  if(err) throw err;
@@ -106,12 +106,13 @@ server.post('/', function(req, res, next){
 		});
 	}
 	else if(index == 2){
-		data = req.body.code;
+		var dir = __dirname + '/accounts/' + email;
+
+		//create new account directory if doesn't already exist
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync('accounts/' + email);
+		}
 		filename = req.body.filename;
-		//fs.writeFile(filename, data, function(err){
-		//	if(err) throw err;
-		//	console.log("PML File Saved")
-		//})
 		fs.writeFile('accounts/' + email + '/' + filename, data);
 		res.send("File Saved as " + filename );
 	}
@@ -136,17 +137,19 @@ server.post('/', function(req, res, next){
 			fs.mkdirSync('accounts/' + email);
 		}
 
-	//	var Folder = fs.GetFolder(__dirname +'/accounts/');
-	//	var FileCollection = Folder.Files;
-	//	var Files = new Array();
+		fileList = [];
+ 
+	    var files = fs.readdirSync(dir);
+	    fileList.push(email)
 
-	//	for(var objEnum = new Enumerator(FileCollection); !objEnum.atEnd(); objEnum.moveNext())
-	//	{
-	//	   strFileName = objEnum.item();
-	//	   Files.push(strFileName);
-	//	}
-
-		res.send("hello");
+	    for(var i in files){
+	        if (!files.hasOwnProperty(i)) continue;
+	        var name = dir+'/'+files[i];
+	        if (!fs.statSync(name).isDirectory()){
+	            fileList.push(files[i]);
+	        }
+    	}
+		res.send(fileList);
 	}
 });
 
