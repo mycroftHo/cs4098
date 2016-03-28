@@ -1,8 +1,7 @@
-var editor
-//var files =[];
 
-var app = express();
 var files =[];
+var editor
+
 /*
  * Simple Mode for PML Syntax Highlighting
  * Courtesy of http://codepen.io/Ephellon/pen/zvvGaz
@@ -98,7 +97,6 @@ CodeMirror.hint.javascript = function(cm){
 }*/
 
 function init() {
-	setFiles();
 	editor = CodeMirror.fromTextArea(document.getElementById("inputText"),{
 		lineNumbers: true,
 
@@ -122,7 +120,8 @@ function init() {
 
 		extraKeys: {"Ctrl-Space": "autocomplete"}
 
-	})
+	});
+	setFiles();
 
 	//jointInit();
 
@@ -285,7 +284,6 @@ function setFiles(){
 	  if(xhttp.readyState == 4 && xhttp.status == 200){
 	  	//Place response in the output box
 	    files = JSON.parse(xhttp.responseText);
-	    document.getElementById("outputText").value = files.length;
 	    getFiles();
 	  }
 	};
@@ -304,7 +302,7 @@ function setFiles(){
 
 function getFiles(){
     var myTable = "";
-    document.getElementById('title').innerHTML = "<h1 style='color:white;font-size:200%;''>Username: " + files[0] +"</h1>";
+    document.getElementById('title').innerHTML = "<h1 style='color:white;font-size:200%;''>Username: " + files[0] +"</h1><h1 style='color:white;font-size:100%;''>Files to Load:</h1>";
 
 	for(var i = 1; i < files.length; i++){
 		var name = files[i]
@@ -316,7 +314,7 @@ function getFiles(){
 
 function loadSelected(id){
 	var fname = files[id];
-	var fileReader = new FileReader();
 
-	//Need to load contents of file selected, given we know the file name
+	//fname holds the name of the text file to be fetched
+	//post request to server with type 6 returns path of users directory if needed when fetching file
 }

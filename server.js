@@ -130,7 +130,7 @@ server.post('/', function(req, res, next){
             res.send("swimLaneMade");
         });
     }
-	else if(index ==5){
+	else if(index == 5){
 		var dir = __dirname + '/accounts/' + email;
 		//create new account directory if doesn't already exist
 		if (!fs.existsSync(dir)) {
@@ -150,6 +150,10 @@ server.post('/', function(req, res, next){
 	        }
     	}
 		res.send(fileList);
+	}
+	else if(index == 6){
+		var dir = __dirname + '/accounts/' + email;
+		res.send(dir);
 	}
 });
 
