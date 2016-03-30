@@ -152,8 +152,10 @@ server.post('/', function(req, res, next){
 		res.send(fileList);
 	}
 	else if(index == 6){
-		var dir = __dirname + '/accounts/' + email;
-		res.send(dir);
+		var fname = req.body.path;
+		var dir = __dirname + '/accounts/' + email + '/' + fname;
+		var data = fs.readFileSync(dir).toString();
+		res.send(data);
 	}
 });
 

@@ -209,13 +209,13 @@ function social(){
 	xhttp.send(JSON.stringify({index:type}));
 }
 
-function saveButton(){
+function saveButton(message){
 	//Grab the content of the editor
 	var text = editor.getValue();
 	//type  = save File
 	var type = 2;
 
-	var name = window.prompt("Enter Filename:", "e.g test.pml");
+	var name = window.prompt(message, "e.g test.pml");
 
 	if(name.valueOf() != new String('').valueOf() && name.valueOf() != new String("e.g test.pml").valueOf() ){
 		//Create new HTTP Request
@@ -314,6 +314,30 @@ function getFiles(){
 
 function loadSelected(id){
 	var fname = files[id];
+	saveButton("Would you like to save current work?");
+	var data ='';
+
+	var type = 6;
+	//Create new HTTP Request
+	var xhttp = new XMLHttpRequest();
+
+	xhttp.onreadystatechange = function(){
+	  if(xhttp.readyState == 4 && xhttp.status == 200){
+	  	//Place response in the output box
+	    //var path = xhttp.responseText + "/" + fname;
+	   editor.setValue(xhttp.responseText);
+
+	  }
+	};
+	
+
+	//New HTTP POST request
+	xhttp.open("POST", "http://127.0.0.1:6500", true);
+	//Set the content type so that the server knows the data is formatted w/ JSON
+	xhttp.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+	//Format the text in the form {code : "<code>"} and send
+	xhttp.send(JSON.stringify({index:type, path:fname}));
 
 	//fname holds the name of the text file to be fetched
 	//post request to server with type 6 returns path of users directory if needed when fetching file
