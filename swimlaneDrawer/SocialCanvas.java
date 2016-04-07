@@ -19,11 +19,9 @@ public class SocialCanvas{
         fileBody += "<script type=\"text/javascript\" src=\"node_modules/vis/dist/vis.js\"></script>\n";
         fileBody += "<link href=\"node_modules/vis/dist/vis.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
         fileBody += " <style type=\"text/css\">\n";
-        fileBody += "#mynetwork {\n";
-        /*
-        fileBody += "width: 600px;\n";
-        fileBody += "height: 400px;\n";
-        */
+        fileBody += "#myNetwork {\n";
+        fileBody += "width: 100%;\n";
+        fileBody += "height: 100%;\n";
         fileBody += "border: 1px solid lightgray;}\n";
         fileBody += "</style>";
         fileBody += "</head>\n";
@@ -71,7 +69,7 @@ public class SocialCanvas{
         fileBody += "nodes : nodes,\n";
         fileBody += "edges: edges\n";
         fileBody += "};\n";
-        fileBody += "var options = {}\n";
+        fileBody += "var options = {zoomView:true, width:'100%', height:'100%'}\n";
         fileBody += "var socialNet = new vis.Network(net, data, options);\n";
         fileBody +=  "</script>\n";
         fileBody += "</body>\n";
