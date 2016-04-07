@@ -1,7 +1,7 @@
 !!! 5
 html
   head
-    title= title
+    title= "PML Editor"
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='description', content='')
@@ -14,10 +14,5 @@ html
     script(src='js/main.js')
   body
     #wrapper
-      #sidebar-wrapper
-        ul.sidebar-nav
-          li.sidebar-brand
-            a(href='/') Home
-          li
-            a(href='/ping')
+      block sidebar
       block content

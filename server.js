@@ -1,11 +1,11 @@
 /**
  *  Simple node.js server to handle/compile PML code and relay the output back
- *	to the front-end
+ *	to the front-end 
  */
 
 /**
  *  Setting up dependencies
- *
+ *	
  *	express 		- http server middleware for node.js
  *	body-parse 		- allows for parsing of contents handled by express server
  *	fs 				- internal node module for handling file system stuff
@@ -43,7 +43,7 @@ app.use('/', express.static(__dirname));
 
 /*
  *	Set the headers
- *	This is important as we can't communicate through localhost w/o
+ *	This is important as we can't communicate through localhost w/o 
  *	taking Cross-Origin Resource Sharing (CORS) into account
  */
 server.all('/', function(req, res, next){
@@ -97,7 +97,7 @@ server.post('/', function(req, res, next){
 		//here pass the error messages to a function to parse errors
 		//the function should return a line number as an int where the error occurs
 		//then work on highlighting that line
-
+		
 		console.log(output);
 
 		//Once the child finishes, send the data from either stdout or stderr streams back to frontend
@@ -113,10 +113,6 @@ server.post('/', function(req, res, next){
 			fs.mkdirSync('accounts/' + email);
 		}
 		filename = req.body.filename;
-		//fs.writeFile(filename, data, function(err){
-		//	if(err) throw err;
-		//	console.log("PML File Saved")
-		//})
 		fs.writeFile('accounts/' + email + '/' + filename, data);
 		res.send("File Saved as " + filename );
 	}
@@ -125,7 +121,7 @@ server.post('/', function(req, res, next){
 		jsonOut = req.body.graph
 		jsonfile.writeFile('graph.json', jsonOut, function(err){
 			console.error(err);
-		})
+		})		
 	}
 
     else if(index == 4){
@@ -134,6 +130,33 @@ server.post('/', function(req, res, next){
             res.send("swimLaneMade");
         });
     }
+	else if(index == 5){
+		var dir = __dirname + '/accounts/' + email;
+		//create new account directory if doesn't already exist
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync('accounts/' + email);
+		}
+
+		fileList = [];
+ 
+	    var files = fs.readdirSync(dir);
+	    fileList.push(email)
+
+	    for(var i in files){
+	        if (!files.hasOwnProperty(i)) continue;
+	        var name = dir+'/'+files[i];
+	        if (!fs.statSync(name).isDirectory()){
+	            fileList.push(files[i]);
+	        }
+    	}
+		res.send(fileList);
+	}
+	else if(index == 6){
+		var fname = req.body.path;
+		var dir = __dirname + '/accounts/' + email + '/' + fname;
+		var data = fs.readFileSync(dir).toString();
+		res.send(data);
+	}
 });
 
 

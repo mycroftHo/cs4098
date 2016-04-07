@@ -1,2 +1,12 @@
-include pmledit.html
+extends layout
+
+<script type="text/javascript" src="pmledit.js"></script>
+
+block sidebar
+  #sidebar-wrapper
+    ul.sidebar-nav
+      #title
+      #tablePrint
+block content
+  include pmledit.html
 
