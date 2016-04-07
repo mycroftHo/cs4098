@@ -7,6 +7,9 @@ install: ;
 	javac -cp .:swimlaneDrawer swimlaneDrawer/SwimlaneDrawer.java; \
 	mkdir ~/bin; \
 	mv swimlaneDrawer/*.class ~/bin; \
+	rm swimlaneCanvas.html \
+	rm swimData.csv \
+	rm swimlaneCanvas.html \ 
 	$(MAKE) -C pml;
 
 clean: ;
