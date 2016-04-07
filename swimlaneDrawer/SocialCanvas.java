@@ -19,10 +19,15 @@ public class SocialCanvas{
         fileBody += "<script type=\"text/javascript\" src=\"node_modules/vis/dist/vis.js\"></script>\n";
         fileBody += "<link href=\"node_modules/vis/dist/vis.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
         fileBody += " <style type=\"text/css\">\n";
+	fileBody += "html,\n";
+	fileBody += "body{\n";
+	fileBody += "height:100%;\n";
+	fileBody += "margin:0;\n";
+	fileBody += "}\n";
         fileBody += "#myNetwork {\n";
-        fileBody += "width: 100%;\n";
         fileBody += "height: 100%;\n";
-        fileBody += "border: 1px solid lightgray;}\n";
+        fileBody += "min-height: 100%;\n";
+        fileBody += "}\n";
         fileBody += "</style>";
         fileBody += "</head>\n";
         fileBody += "<body>\n";
@@ -42,11 +47,11 @@ public class SocialCanvas{
 
     public void addEdge(int from, int to, String label){
       if(!edgeAdded){
-        edgeBody += "{ from: " + from + ", to: " + to + ", label: \"" + label + "\"}";
+        edgeBody += "{ from: " + from + ", to: " + to + ", title: \"" + label + "\"}";
         edgeAdded = true;
       }
       else{
-        edgeBody += ",\n{ from: " + from + ", to: " + to + ", label: \"" + label + "\"}";
+        edgeBody += ",\n{ from: " + from + ", to: " + to + ", title: \"" + label + "\"}";
       }
     }
 
