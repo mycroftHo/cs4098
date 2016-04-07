@@ -15,9 +15,9 @@ clean: ;
 	rm ~/bin/Canvas.class; \
 	rm ~/bin/CSVReader.class; \
 	rm ~/bin/SwimlaneDrawer.class; \
-	rm swimlaneCanvas.html \
-	rm swimData.csv \
-	rm swimlaneCanvas.html \ 
+	rm swimlaneCanvas.html; \
+	rm swimData.csv; \
+	rm swimlaneCanvas.html; \ 
 	$(MAKE) -C pml clean;
 
 .PHONY: install clean
