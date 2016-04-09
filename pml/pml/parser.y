@@ -54,9 +54,10 @@ static void and_trees (
     Tree        /* tree */
 # endif
 );
-static void printAgentTree(
+static void printKeyWordTree(
 # ifdef ANSI_PROTOTYPES
-    Tree /*tree*/
+    Tree /*tree*/,
+    char *
 # endif 
 );
 %}
@@ -338,18 +339,20 @@ specification_list
 specification
     : PROVIDES '{' expression '}'
     {
+        printKeyWordTree($3,"provides");
         and_trees (&($<graph>-2 -> source -> provides), $3);
     }
 
     | REQUIRES '{' expression '}'
     {
         //see comment for PROVIDES above
+        printKeyWordTree($3,"requires");
         and_trees (&($<graph>-2 -> source -> requires), $3);
     }
 
     | AGENT '{' expression '}'
     {
-        printAgentTree($3);
+        printKeyWordTree($3,"agent");
         and_trees (&($<graph>-2 -> source -> agent), $3);
     }
 
@@ -512,8 +515,9 @@ static void and_trees (ptr, tree)
 }
 
 //a function to print out the agents to the csv file
-static void printAgentTree(tree)
+static void printKeyWordTree(tree, descriptor)
     Tree tree;
+    char * descriptor;
 {
     if(tree != NULL){
         if(strcmp("&&", tree->sval) != 0 &&
@@ -529,10 +533,12 @@ static void printAgentTree(tree)
 	    }
             //write out a line to the swim data file
             //and update how many actions we've seen
-            fprintf(fp, "agent,%s,%d\n",tree->sval, actionsSeen);
-            fprintf(flowFile, "agent,%s,%d\n",tree->sval, actionsSeen);
+            if(strcmp("agent", descriptor) == 0){
+                fprintf(fp, "%s,%s,%d\n",descriptor,tree->sval, actionsSeen);
+            }
+            fprintf(flowFile, "%s,%s,%d\n",descriptor,tree->sval, actionsSeen);
         }
-        printAgentTree(tree->left);
-        printAgentTree(tree->right);
+        printKeyWordTree(tree->left, descriptor);
+        printKeyWordTree(tree->right, descriptor);
     }
 }
