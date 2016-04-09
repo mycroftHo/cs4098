@@ -17,7 +17,8 @@ clean: ;
 	rm ~/bin/SwimlaneDrawer.class; \
 	rm swimlaneCanvas.html; \
 	rm swimData.csv; \
-	rm swimlaneCanvas.html; \ 
+	rm swimlaneCanvas.html; \
+	rm *.png \ 
 	$(MAKE) -C pml clean;
 
 .PHONY: install clean

@@ -1,7 +1,7 @@
 console.log('Testing file choosing, upload and compiling');
-  var page     = require('webpage').create();
-  var filename = '/home/conor/Desktop/cs4098-master/test.pml';
-  var system = require('system');
+var page     = require('webpage').create();
+var filename = '../test.pml';
+var system = require('system');
 
 page.onConsoleMessage = function(msg) {
     system.stderr.writeLine('console: ' + msg);
@@ -15,7 +15,7 @@ console.log('Choosing File');
 console.log('Loading Webpage');
 page.open('http://127.0.0.1:1337/pmledit.html', function(status) {
   console.log(status);
-  page.uploadFile('input[id=fileToLoad]', '/home/conor/Desktop/cs4098-master/test.pml');
+  page.uploadFile('input[id=fileToLoad]', '../test.pml');
 console.log('Reading text from file');
     page.evaluateJavaScript(function(status) {
       //$("button").click();

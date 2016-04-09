@@ -19,6 +19,8 @@ Java is also needed, to install `sudo apt-get install default-jdk`
 
 To install dependencies for the PML Checker, run `sudo apt-get install -y byacc flex`
 
+For testing, you Phantom.js is required. To install `sudo npm install -g phantomjs`
+
 To build the project, run `make install` in the project's root directory; this will build the required pml dependences, which can be found under the `/pml` directory along with the external dependencies required by the node server; these will be stored in the `/node_modules` directory.
 
 To uninstall, run `make clean`
