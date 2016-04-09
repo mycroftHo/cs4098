@@ -242,9 +242,28 @@ function saveButton(message){
 
 	setFiles();
 }
-function changeKeyMap(element){
-	var x = element.value;
-	editor.setOption("keyMap", x);
+
+function changeKeyMap(type){
+	//var x = element.value;
+	editor.setOption("keyMap", type);
+}
+
+function checkKeyMap(){
+	var val = editor.getOption("keyMap");
+	switch(val){
+		case('vim'):
+			document.getElementById('KeyMapCheck').innerHTML = 'Vim';
+			break;
+		case('emacs'):
+			document.getElementById('KeyMapCheck').innerHTML = 'Emacs';
+			break;
+		case('sublime'):
+			document.getElementById('KeyMapCheck').innerHTML = 'Sublime';
+			break;
+		default:
+			document.getElementById('KeyMapCheck').innerHTML = 'None';
+			break;
+	}
 }
 
 function loadFileAsText(){

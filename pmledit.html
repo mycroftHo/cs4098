@@ -279,22 +279,22 @@
 </div>
 
 <div class="dropdown">
-    <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+    <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" onclick="checkKeyMap();">
                 Tools <span class="caret"></span>
     </a>
     <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-        <li><a href="#">[Current Binding Here?]</a></li>
+        <li><a id="KeyMapCheck"></a></li>
         <li class="divider"></li>
         <li class="dropdown-submenu">
-        <a tabindex="-1" href="#">Change Key Bindings</a>
-        <ul class="dropdown-menu">
-          <li><a href="#">None</a></li>
-          <li><a href="#">Vim</a></li>
-          <li><a href="#">Emacs</a></li>
-          <li><a href="#">Sublime</a></li>
-        </ul>
+            <a tabindex="-1" href="#">Change Key Bindings</a>
+            <ul class="dropdown-menu">
+                <li><a onclick="changeKeyMap('default');">None</a></li>
+                <li><a onclick="changeKeyMap('vim');">Vim</a></li>
+                <li><a onclick="changeKeyMap('emacs');">Emacs</a></li>
+                <li><a onclick="changeKeyMap('sublime');">Sublime</a></li>
+            </ul>
         </li>
-        </ul>
+    </ul>
 </div>
 
 
@@ -312,14 +312,14 @@
   <input type="radio" id="vim" value="vim"> Vim
   <input type="radio" id="emacs" value="emacs"> Emacs
   <input type="radio" id="sublime" value="sublime"> Sublime
-</form>-->
+</form>
 <p>Key Bindings:<br>
 <form>
     <input type="radio" name="map" value="vim" onclick="changeKeyMap(this);"> Vim
     <input type="radio" name="map" value="emacs" onclick="changeKeyMap(this);"> Emacs
     <input type="radio" name="map" value="sublime" onclick="changeKeyMap(this);"> Sublime
     <input type="radio" name="map" value="default" onclick="changeKeyMap(this);" checked> None
-</form></p>
+</form></p>-->
 
 <!-- Text Box for Code entry -->
 <!-- This textarea will be replaced by the code editor -->
