@@ -8,5 +8,9 @@ process p{
         action d{}
         }
         }
+        branch{
+        action e{}
+        action f{}
+        }
     }
 }

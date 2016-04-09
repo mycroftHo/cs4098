@@ -22,7 +22,8 @@ Graph program;
 //but I think it makes more sense to do it here
 
 int actionsSeen;
-int flowControlsSeen; 
+int flowControlsSeen;
+int endsSeen; 
 FILE *fp;
 FILE *flowFile;
 
@@ -177,13 +178,12 @@ branch_primitive
     {
         if ($3 == NULL)
         NodeLink ($1 -> source, $1 -> sink);
-	printf("branchEnd\n");
 	if(flowFile==NULL){
 	    flowFile = fopen("flowData.csv", "w");
 	}
         //write out a line to the swim data file
         //and update how many actions we've seen
-        fprintf(flowFile, "branchEnd,end,%d\n", flowControlsSeen);
+        fprintf(flowFile, "branchEnd,end,%d\n", --flowControlsSeen);
     }
     ;
 
@@ -194,7 +194,6 @@ branch_header
         Node source = NodeCreate ($2, BRANCH, lineno);
         Node sink = NodeCreate ($2, RENDEZVOUS, lineno);
         $$ = GraphCreate (source, sink);
-	printf("branchBegin\n");
 	if(flowFile==NULL){
 	    flowFile = fopen("flowData.csv", "w");
 	}
@@ -210,13 +209,12 @@ selection_primitive
     {
         if ($3 == NULL)
         NodeLink ($1 -> source, $1 -> sink);
-	printf("selectionEnd\n");
 	if(flowFile==NULL){
 	    flowFile = fopen("flowData.csv", "w");
 	}
         //write out a line to the swim data file
         //and update how many actions we've seen
-        fprintf(flowFile, "selectionEnd,end,%d\n",flowControlsSeen);
+        fprintf(flowFile, "selectionEnd,end,%d\n",--flowControlsSeen);
     }
     ;
 
@@ -227,7 +225,6 @@ selection_header
         Node source = NodeCreate ($2, SELECTION, lineno);
         Node sink = NodeCreate ($2, JOIN, lineno);
         $$ = GraphCreate (source, sink);
-	printf("selectionBegin\n");
 	if(flowFile==NULL){
 	    flowFile = fopen("flowData.csv", "w");
 	}
@@ -239,14 +236,30 @@ selection_header
 
 
 iteration_primitive
-    : ITERATION optional_name '{' sequential_primitive_list '}'
+    : iteration_header '{' sequential_primitive_list '}'
     {
-	printf("Iteration Begin\n");	
-        if ($4 != NULL)
-        NodeLink ($4 -> sink, $4 -> source);
+        if ($3 != NULL)
+        NodeLink ($3 -> sink, $3 -> source);
 
-        $$ = $4;
-	printf("Iteration End\n");
+        $$ = $3;
+	if(flowFile==NULL){
+	    flowFile = fopen("flowData.csv", "w");
+	}
+        //write out a line to the swim data file
+        //and update how many actions we've seen
+        fprintf(flowFile, "iterationEnd,end,%d\n", --flowControlsSeen);
+    }
+    ;
+
+iteration_header
+    : ITERATION optional_name
+    {
+	if(flowFile==NULL){
+	    flowFile = fopen("flowData.csv", "w");
+	}
+        //write out a line to the swim data file
+        //and update how many actions we've seen
+        fprintf(flowFile, "iterationBegin,begin,%d\n", flowControlsSeen++);
     }
     ;
 
@@ -290,8 +303,6 @@ action_header
 
         fprintf(fp, "action,%s,%d\n",$2, actionsSeen++);
         fprintf(flowFile, "action,%s,%d\n",$2, actionsSeen);
-
-	printf("Action : %s\n",$2);
 
         Node node = NodeCreate ($2, ACTION, lineno);
         $$ = GraphCreate (node, node);
