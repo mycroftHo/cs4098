@@ -70,6 +70,15 @@
 <script type="text/javascript" src="jointUi.js"></script>-->
 
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" src="pmledit.js"></script>
 <style type="text/css">
     #mynetwork {
@@ -102,7 +111,7 @@
 	  height: 200px;
 	}
 
-    ul {
+    /*ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
@@ -128,10 +137,103 @@
 
     .active {
         background-color:#4CAF50;
-    }
+    }*/
 
     .lint-error {font-family: arial; font-size: 70%; background: #ffa; color: #a00; padding: 2px 5px 3px; }
     .lint-error-icon {color: white; background-color: red; font-weight: bold; border-radius: 50%; padding: 0 3px; margin-right: 7px;}
+
+
+    /* Dropdown Button */
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Dropdown button on hover & focus */
+    .dropbtn:hover, .dropbtn:focus {
+        background-color: red;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+    .show {display:block;}
+
+    .dropdown-submenu {
+        position: relative;
+    }
+
+    .dropdown-submenu>.dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -6px;
+        margin-left: -1px;
+        -webkit-border-radius: 0 6px 6px 6px;
+        -moz-border-radius: 0 6px 6px;
+        border-radius: 0 6px 6px 6px;
+    }
+
+    .dropdown-submenu:hover>.dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-submenu>a:after {
+        display: block;
+        content: " ";
+        float: right;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+        border-left-color: #ccc;
+        margin-top: 5px;
+        margin-right: -10px;
+    }
+
+    .dropdown-submenu:hover>a:after {
+        border-left-color: #fff;
+    }
+
+    .dropdown-submenu.pull-left {
+        float: none;
+    }
+
+    .dropdown-submenu.pull-left>.dropdown-menu {
+        left: -100%;
+        margin-left: 10px;
+        -webkit-border-radius: 6px 0 6px 6px;
+        -moz-border-radius: 6px 0 6px 6px;
+        border-radius: 6px 0 6px 6px;
+    }
 
 </style>
 
@@ -141,10 +243,63 @@
 <body onload="init();">
 <input type="hidden" name="myDoc">
 
-<ul>
+<!--<ul>
     <li><a class="active" href="pmledit.html">Text Editor</a></li>
-    <!--<li><a href="pmlguiedit.html">GUI Editor</a></li>-->
-</ul>
+    <li><a href="pmlguiedit.html">GUI Editor</a></li>
+</ul>-->
+<div class="container">
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">Text Editor</a></li>
+      <li><a href="#">Other Pages Here</a></li>
+    </ul>
+
+</div>
+
+<br>
+
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">File
+    <span class="caret"></span></button>    
+    <ul class="dropdown-menu">
+        <li><a href="#">Open</a></li>
+        <li><a href="#">Save</a></li>
+        <li><a href="#">No idea how this part will work</a></li>
+    </ul>
+</div>
+
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Run
+    <span class="caret"></span></button>    
+    <ul class="dropdown-menu">
+        <li><a onclick="buttonPress()">Compile</a></li>
+        <li><a onclick="swimlane()">Draw Swimlane</a></li>
+        <li><a onclick="social()">Draw Social Network</a></li>
+    </ul>
+</div>
+
+<div class="dropdown">
+    <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+                Tools <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+        <li><a href="#">[Current Binding Here?]</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-submenu">
+        <a tabindex="-1" href="#">Change Key Bindings</a>
+        <ul class="dropdown-menu">
+          <li><a href="#">None</a></li>
+          <li><a href="#">Vim</a></li>
+          <li><a href="#">Emacs</a></li>
+          <li><a href="#">Sublime</a></li>
+        </ul>
+        </li>
+        </ul>
+</div>
+
+
+<br>
+<br> 
 
 <!--file input-->
 <p><input type="file" id="fileToLoad" />
@@ -170,10 +325,13 @@
 <!-- This textarea will be replaced by the code editor -->
 <textarea id = "inputText"></textarea>
 
+<br>
+
 <!-- Compile Button -->
-<p><input id = "compileButton" type="button" value="Compile" onclick="buttonPress()"/></p>
+<!--<p><input id = "compileButton" type="button" value="Compile" onclick="buttonPress()"/></p>
 <p><input id = "swimlaneButton" type="button" value = "Draw Swim Lane" onclick="swimlane()"/></p>
-<p><button onclick="social()">Draw Social Network</button></p>
+<p><button onclick="social()">Draw Social Network</button></p>-->
+
 <!--Download locally-->
     <tr>
         <td>Filename:</td>
