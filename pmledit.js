@@ -148,7 +148,21 @@ function buttonPress(){
 	  if(xhttp.readyState == 4 && xhttp.status == 200){
 	    //Place response in the output box
 	    response = xhttp.responseText;
-	    document.getElementById("outputText").value = response;
+	    //document.getElementById("outputText").value = response;
+	    //document.getElementById("outputPopup").innerHTML = response;
+
+	    //Popup Modal for displaying compilation results
+	    var modalPopup = document.getElementById("outputPopup");
+	    var outputText = document.createElement('out');
+	    outputText.innerHTML = response;
+	    while(outputText.firstChild){
+	    	modalPopup.appendChild(outputText.firstChild);
+	    }
+
+	    setTimeout(function() {
+      		$('#slide-bottom-popup').modal('show');
+    	}, 1000); // milliseconds
+
         //if an error message is returned, we then will send the line number to the linter
 	    if(response.indexOf("error") > -1){
 	    	//split the error message on colons
