@@ -154,6 +154,8 @@ function buttonPress(){
 	    //Popup Modal for displaying compilation results
 	    var modalPopup = document.getElementById("outputPopup");
 	    var outputText = document.createElement('out');
+	    //Replace \n in string with <br /> tags for display in HTML
+	    response = response.replace(/(?:\r\n|\r|\n)/g, '<br />');
 	    outputText.innerHTML = response;
 	    while(outputText.firstChild){
 	    	modalPopup.appendChild(outputText.firstChild);
@@ -262,6 +264,7 @@ function changeKeyMap(type){
 	editor.setOption("keyMap", type);
 }
 
+
 function checkKeyMap(){
 	var val = editor.getOption("keyMap");
 	switch(val){
@@ -291,11 +294,29 @@ function loadFileAsText(){
 	fileReader.readAsText(fileToLoad,"UTF-8");
 }
 
+function browse(){
+	//$("#browseBtn").click();
+	document.getElementById("browseBtn").click();
+}
+
+$(document).on('change', '.btn-file :file', function() {
+	var input = $(this);
+	var file = input.get(0).files[0];
+	var fileReader = new FileReader();
+	fileReader.onload = function(fileLoadedEvent){
+		var textFromFileLoaded = fileLoadedEvent.target.result;
+		document.getElementById("inputText").value = textFromFileLoaded;
+		editor.setValue(fileLoadedEvent.target.result);
+	};
+	fileReader.readAsText(file,"UTF-8");
+});
+
 function DownloadLocally()
 {
 	var textToWrite = editor.getValue();
 	var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
-	var fileName = document.getElementById("FileName").value;
+	//var fileName = document.getElementById("FileName").value;
+	var fileName = window.prompt("Please enter a file name", "e.g test.pml");
 
 	var downloadLink = document.createElement("a");
 	downloadLink.download = fileName;

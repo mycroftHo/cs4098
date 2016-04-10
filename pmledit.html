@@ -90,6 +90,8 @@
 <!-- Some CSS style stuff -->
 <style type="text/css">
 
+    /* Please kill me now */
+
 	/*JointJS Style Elements*/
   	.element .element-tools {
     	display: none;
@@ -253,6 +255,7 @@
         padding: 30px 15px 15px;*/
         width: 100%;
         height: 350px;
+        html:true;
         overflow-y: auto;
         background-color: #e5e5e5;
         border-radius: 6px 6px 0 0;
@@ -271,6 +274,33 @@
         margin-left: 140px;
         margin-top: 77px;
         font-weight: bold;
+    }
+
+    .btn-file {
+      position: relative;
+      overflow: hidden;
+      left: 15px;
+    }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+    span.label{
+        float:right;
+        position:relative;
+        top:5px;    
     }
 
 </style>
@@ -296,16 +326,15 @@
 
 </div>
 
-<br>
-
 <!--Dropdown buttons-->
 <div class="dropdown">
     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">File
     <span class="caret"></span></button>    
     <ul class="dropdown-menu">
-        <li><a href="#">Open</a></li>
-        <li><a href="#">Save</a></li>
-        <li><a href="#">No idea how this part will work</a></li>
+        <!--<li><a onclick="browse()">Open File</a></li></li>-->
+        <li><button id="browseBtn" class="btn btn-default btn-file">Browse<input type="file"></button></li>     
+        <li><a onclick="DownloadLocally()">Save Locally</a></li>
+        <li><a onclick="saveButton('Enter Filename:')">Save Remotely</a></li>
     </ul>
 </div>
 
@@ -345,8 +374,8 @@
 <br> 
 
 <!--file input-->
-<p><input type="file" id="fileToLoad" />
-<button onclick = "loadFileAsText()">Load selected file</button></p>
+<!--<p><input type="file" id="fileToLoad" />
+<button onclick = "loadFileAsText()">Load selected file</button></p>-->
 
 <div id="paper"></div>
 
@@ -376,14 +405,16 @@
 <p><button onclick="social()">Draw Social Network</button></p>-->
 
 <!--Download locally-->
+<!--
     <tr>
         <td>Filename:</td>
         <td><input id="FileName"></input></td>
         <td><button onclick="DownloadLocally()">Save File Locally</button></td>
     </tr>
+-->
 
 <!-- Export Button -->
-<p><input id = "saveButton" type="button" value="Save" onclick="saveButton('Enter Filename:')"/></p>
+<!--<p><input id = "saveButton" type="button" value="Save" onclick="saveButton('Enter Filename:')"/></p>-->
 
 <!-- Area for output text -->
 <!--<p><textarea id="outputText" cols="500" rows="200"></textarea></p>-->
