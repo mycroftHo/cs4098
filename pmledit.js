@@ -278,21 +278,31 @@ function changeKeyMap(type){
 	editor.setOption("keyMap", type);
 }
 
+var currentKeybind = 'default';
 
 function checkKeyMap(){
 	var val = editor.getOption("keyMap");
+
+	if(val != currentKeybind){
+		document.getElementById(currentKeybind).className = document.getElementById(val).className.replace( /(?:^|\s)active(?!\S)/g , '' )	
+  	}
+
 	switch(val){
 		case('vim'):
-			document.getElementById('KeyMapCheck').innerHTML = 'Vim';
+			document.getElementById(val).className = 'active'
+			currentKeybind = val;
 			break;
 		case('emacs'):
-			document.getElementById('KeyMapCheck').innerHTML = 'Emacs';
+			document.getElementById(val).className = 'active'
+			currentKeybind = val;
 			break;
 		case('sublime'):
-			document.getElementById('KeyMapCheck').innerHTML = 'Sublime';
+			document.getElementById(val).className = 'active'
+			currentKeybind = val;
 			break;
 		default:
-			document.getElementById('KeyMapCheck').innerHTML = 'None';
+			document.getElementById(val).className = 'active'
+			currentKeybind = val;
 			break;
 	}
 }

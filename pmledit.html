@@ -224,6 +224,10 @@
         margin-right: -10px;
     }
 
+    .dropdown-submenu .active{
+        background-color: #ff4444;
+    }
+
     .dropdown-submenu:hover>a:after {
         border-left-color: #fff;
     }
@@ -372,15 +376,13 @@
                 Tools <span class="caret"></span>
     </a>
     <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-        <li><a id="KeyMapCheck"></a></li>
-        <li class="divider"></li>
         <li class="dropdown-submenu">
             <a tabindex="-1" href="#">Change Key Bindings</a>
             <ul class="dropdown-menu">
-                <li><a onclick="changeKeyMap('default');">None</a></li>
-                <li><a onclick="changeKeyMap('vim');">Vim</a></li>
-                <li><a onclick="changeKeyMap('emacs');">Emacs</a></li>
-                <li><a onclick="changeKeyMap('sublime');">Sublime</a></li>
+                <li id ="default"><a onclick="changeKeyMap('default');">None</a></li>
+                <li id="vim"><a onclick="changeKeyMap('vim');">Vim</a></li>
+                <li id="emacs"><a onclick="changeKeyMap('emacs');">Emacs</a></li>
+                <li id="sublime"><a onclick="changeKeyMap('sublime');">Sublime</a></li>
             </ul>
         </li>
     </ul>
