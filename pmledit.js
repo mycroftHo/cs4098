@@ -151,20 +151,6 @@ function buttonPress(){
 	    //document.getElementById("outputText").value = response;
 	    //document.getElementById("outputPopup").innerHTML = response;
 
-	    //Popup Modal for displaying compilation results
-	    var modalPopup = document.getElementById("outputPopup");
-	    var outputText = document.createElement('out');
-	    //Replace \n in string with <br /> tags for display in HTML
-	    response = response.replace(/(?:\r\n|\r|\n)/g, '<br />');
-	    outputText.innerHTML = response;
-	    while(outputText.firstChild){
-	    	modalPopup.appendChild(outputText.firstChild);
-	    }
-
-	    setTimeout(function() {
-      		$('#slide-bottom-popup').modal('show');
-    	}, 300); // milliseconds
-
         //if an error message is returned, we then will send the line number to the linter
 	    if(response.indexOf("error") > -1){
 	    	//split the error message on colons
@@ -186,6 +172,28 @@ function buttonPress(){
       		//minus 2 because 0 indexed lines and want to create error above line
 	    	widgets.push(editor.addLineWidget(errorLine - 1, msg, {above: true, coverGutter: false, noHScroll: true}));
 	    }
+
+	   	//Popup Modal for displaying compilation results
+	    var modalPopup = document.getElementById("outputPopup");
+	    var outputText = document.createElement('out');
+	    //Replace \n in string with <br /> tags for display in HTML
+	    response = response.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+	    //console.log(modalPopup.length);
+
+	    while(modalPopup.childNodes.length > 5){
+	    	modalPopup.removeChild(modalPopup.lastChild);
+	    }
+
+	    //modalPopup.appendChild(outputText.firstChild);
+	    outputText.innerHTML = response;
+	    while(outputText.firstChild){
+	    	modalPopup.appendChild(outputText.firstChild);
+	    }
+
+	    setTimeout(function() {
+      		$('#slide-bottom-popup').modal('show');
+    	}, 300); // milliseconds
 	  }
 	};
 	//New HTTP POST request
