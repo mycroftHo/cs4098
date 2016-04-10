@@ -39,7 +39,7 @@ To run the editor; open Chrome/Chromium or Firefox and navigate to *localhost:13
 
 To upload a file to the text editor; click on `File` and select `Browse`
 
-![Select File](/Readme Pics/fileSelect.png)
+![Select File](/Readme Pics/fileSelect1.png)
 
 After the file has been selected, it will be loaded directly into the editor.
 
@@ -49,11 +49,11 @@ After the file has been selected, it will be loaded directly into the editor.
 
 Once we have pml code which we wish to evaluate, click on `Run` and select `Compile`:
 
-![Compile Code](/Readme Pics/compile.png)
+![Compile Code](/Readme Pics/compile1.png)
 
 As a result we can that our code has been compiled and a syntax analysis has been done; This is shown in the console window below.
 
-![Compilation Output](/Readme Pics/compiled.png)
+![Compilation Output](/Readme Pics/compiled1.png)
 
 ##### Saving File Locally
 
