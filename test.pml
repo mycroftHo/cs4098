@@ -1,5 +1,5 @@
-process p{
-	action a{
-    	agent{Jack && Boyle}
+process a{
+	action b{
+    	agent{ c && f && d && e}
     }
 }
