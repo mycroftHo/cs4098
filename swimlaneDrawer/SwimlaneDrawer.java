@@ -139,7 +139,7 @@ public class SwimlaneDrawer{
                 canvas.FinishUp();
 
                 Agent[] agentArray = agentMap.values().toArray(new Agent[0]);
-                for(int i = 0; i < agentArray.length; i++){
+                for(int i = 1; i < agentArray.length; i++){
                     networkCanvas.addNode(agentArray[i].getAgentNumber(), agentArray[i].getName());
                 }
                 for(int i = 0; i < actionList.size(); i ++){
