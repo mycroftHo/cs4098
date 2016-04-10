@@ -163,7 +163,7 @@ function buttonPress(){
 
 	    setTimeout(function() {
       		$('#slide-bottom-popup').modal('show');
-    	}, 1000); // milliseconds
+    	}, 300); // milliseconds
 
         //if an error message is returned, we then will send the line number to the linter
 	    if(response.indexOf("error") > -1){
@@ -195,6 +195,12 @@ function buttonPress(){
 
 	//Format the text in the form {code : "<code>"} and send
 	xhttp.send(JSON.stringify({index:type,code:text}));
+}
+
+function showConsole(){
+	setTimeout(function() {
+  		$('#slide-bottom-popup').modal('show');
+	}, 300); // milliseconds
 }
 
 function swimlane(){
@@ -294,11 +300,7 @@ function loadFileAsText(){
 	fileReader.readAsText(fileToLoad,"UTF-8");
 }
 
-function browse(){
-	//$("#browseBtn").click();
-	document.getElementById("browseBtn").click();
-}
-
+//New loadFileAsText() function
 $(document).on('change', '.btn-file :file', function() {
 	var input = $(this);
 	var file = input.get(0).files[0];
