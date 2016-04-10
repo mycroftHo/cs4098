@@ -26,7 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class SwimlaneDrawer{
+public class SocialDrawer{
     final static int ENTRY_TYPE = 0;
     final static int ENTRY_NAME = 1;
     final static int ACTION_NUMBER = 2;
@@ -38,13 +38,12 @@ public class SwimlaneDrawer{
     static int agentsSinceLastAction;
     static boolean firstAction;
     static Agent currentAgent;
-    static Canvas canvas;
     static SocialCanvas networkCanvas;
     static Action currentAction;
 
 
 
-    private static void printAppropriateBoxes(List<String> csvLine, boolean lastLine){
+    private static void mapAgents(List<String> csvLine, boolean lastLine){
         if(csvLine.get(ENTRY_TYPE).equals("action") && 
             firstAction && 
             agentsSinceLastAction == 0){
@@ -55,8 +54,6 @@ public class SwimlaneDrawer{
             actionList.add(currentAction);
             if(lastLine){
                 currentAgent = agentMap.get("NONE");
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
             }
         }
         //no agents in previous action
@@ -66,8 +63,6 @@ public class SwimlaneDrawer{
             currentAgent = agentMap.get("NONE");
             System.out.println("" + currentAgent.getName() + " number : "+  
                 currentAgent.getAgentNumber() + " carries out " + actionName);
-            canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-            canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
             //Then update deets
             agentsSinceLastAction = 0;
             actionName = csvLine.get(ENTRY_NAME);
@@ -79,8 +74,6 @@ public class SwimlaneDrawer{
             //if the last line is 
             if(lastLine){
                 currentAgent = agentMap.get("NONE");
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
             }
         }
         else if(csvLine.get(ENTRY_TYPE).equals("action")){
@@ -91,8 +84,6 @@ public class SwimlaneDrawer{
             actionList.add(currentAction);
             if(lastLine){
                 currentAgent = agentMap.get("NONE");
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
             }
         }
         //agent seen
@@ -101,13 +92,11 @@ public class SwimlaneDrawer{
             if(!agentMap.containsKey(csvLine.get(ENTRY_NAME))){
                 currentAgent = new Agent(csvLine.get(ENTRY_NAME));
                 agentMap.put(currentAgent.getName(), currentAgent);
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
             }
             else{
                 currentAgent = agentMap.get(csvLine.get(ENTRY_NAME));
             }
             currentAction.addAgent(currentAgent);
-            canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
             System.out.println("" + currentAgent.getName() + " number : "+
                 currentAgent.getAgentNumber() + " carries out " + actionName);
         }
@@ -122,7 +111,6 @@ public class SwimlaneDrawer{
         }
         else{
             try{
-                canvas = new Canvas();
                 networkCanvas = new SocialCanvas();
                 actionsAndAgentsCSV = new CSVReader(args[0]);
                 actionName = "";
@@ -131,13 +119,10 @@ public class SwimlaneDrawer{
                 agentMap = new HashMap<String, Agent>();
                 currentAgent = new Agent("NONE");
                 agentMap.put(currentAgent.getName(), currentAgent);
-
                 for(int i = 0; i < actionsAndAgentsCSV.getSize(); i++){
                     List<String> csvLine = actionsAndAgentsCSV.getNextLine();
-                    printAppropriateBoxes(csvLine, (i == actionsAndAgentsCSV.getSize() - 1));
+                    mapAgents(csvLine, (i == actionsAndAgentsCSV.getSize() - 1));
                 }
-                canvas.FinishUp();
-
                 Agent[] agentArray = agentMap.values().toArray(new Agent[0]);
                 for(int i = 1; i < agentArray.length; i++){
                     networkCanvas.addNode(agentArray[i].getAgentNumber(), agentArray[i].getName());

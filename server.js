@@ -125,7 +125,7 @@ server.post('/', function(req, res, next){
 	}
 
     else if(index == 4){
-        child = exec("java -cp ~/bin SwimlaneDrawer swimData.csv")
+        child = exec("java -cp ~/bin SocialDrawer swimData.csv")
         child.on('close', function(){
             res.send("swimLaneMade");
         });
