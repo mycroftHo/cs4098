@@ -36,7 +36,7 @@ public class SwimlaneDrawer{
     final static int BRANCH = 2;
 
     static List<Action> actionList;
-    static List<Object> elements;
+    static ArrayList<Object> elements;
 
     static HashMap <String, Agent> agentMap;
     static String actionName;
@@ -72,19 +72,23 @@ public class SwimlaneDrawer{
             currentTime = handleNest(theFlowNest, currentTime);
           }
         }
-        canvas.addSelection(selStartTime, currentTime);
         currentTime++;
+        canvas.addSelection(selStartTime, currentTime);
       }
       if( type == ITERATION){
         Object thisObject;
         int iterStartTime = currentTime;
+        //System.out.println(element.get(0).size());
+
         for(int i = 0; i < element.size(); i++){
           thisObject = element.get(i);
           if(thisObject instanceof Action){
             Action theAction = (Action)thisObject;
+            System.out.println(theAction.getActionName());
             List<Agent> thisObjectAgentList = theAction.getAgentList();
             for(int j = 0; j < thisObjectAgentList.size(); j++){
-              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), time);
+              System.out.println(theAction.getActionName());
+              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), currentTime);
             }
           }
           else{
@@ -98,8 +102,8 @@ public class SwimlaneDrawer{
       }
       return currentTime;
     }
-    public static List<Object> mapElement(List<List<String>> lines){
-      List<Object> returnedElements = new ArrayList<Object>();
+    public static ArrayList<Object> mapElement(List<List<String>> lines){
+      ArrayList<Object> returnedElements = new ArrayList<Object>();
       List<String> currentLine;
       for(int i=0; i<lines.size(); i++){
           currentLine = lines.get(i);
@@ -120,69 +124,66 @@ public class SwimlaneDrawer{
                 }
                 theAction.addAgent(theAgent);
               }
-              //this is madness
-              //else if((nestLine.get(ENTRY_TYPE).equals("selectionBegin"))||(nestLine.get(ENTRY_TYPE).equals("selectionEnd"))||(nestLine.get(ENTRY_TYPE).equals("requires"))||(nestLine.get(ENTRY_TYPE).equals("provides"))||(nestLine.get(ENTRY_TYPE).equals("iterationBegin"))||(nestLine.get(ENTRY_TYPE).equals("iterationEnd"))||(nestLine.get(ENTRY_TYPE).equals("branchBegin"))||(nestLine.get(ENTRY_TYPE).equals("branchEnd"))(nestLine.get(ENTRY_TYPE).equals("action"))){
               else{
                 newElementFound = true;
-                j--;
                 i = j - 1;
               }
             }
-          }
           returnedElements.add(theAction);
         }
         if(currentLine.get(ENTRY_TYPE).equals("selectionBegin")){
           String selectIndex = currentLine.get(ACTION_NUMBER);
-          int selectEnd = lines.size() -1;
+          int selectEnd = lines.size() - 1;
           Boolean endFound = false;
           List<String> nestLine;
           for(int j = i+1; j < lines.size() && !endFound; j ++){
             nestLine = lines.get(j);
             if((nestLine.get(ENTRY_TYPE).equals("selectionEnd")) && (nestLine.get(ACTION_NUMBER).equals(selectIndex))){
               endFound = true;
-              selectEnd = j;
+              selectEnd = j + 1;
             }
           }
           FlowControl select = new FlowControl(SELECTION);
-          select.addElement(mapElement(lines.subList(i+1, selectEnd)));
+          select.setList(mapElement(lines.subList(i+1, selectEnd)));
           returnedElements.add(select);
-          i = selectEnd + 1;
+          i = selectEnd;
         }
         if(currentLine.get(ENTRY_TYPE).equals("iterationBegin")){
-          String selectIndex = currentLine.get(ACTION_NUMBER);
-          int selectEnd = lines.size() -1;
+          String iterIndex = currentLine.get(ACTION_NUMBER);
+          int iterEnd = lines.size() - 1;
           Boolean endFound = false;
           List<String> nestLine;
           for(int j = i+1; j < lines.size() && !endFound; j ++){
             nestLine = lines.get(j);
-            if((nestLine.get(ENTRY_TYPE).equals("iterationEnd")) && (nestLine.get(ACTION_NUMBER).equals(selectIndex))){
+            if((nestLine.get(ENTRY_TYPE).equals("iterationEnd")) && (nestLine.get(ACTION_NUMBER).equals(iterIndex))){
               endFound = true;
-              selectEnd = j;
+              iterEnd = j + 1;
             }
           }
           FlowControl iter = new FlowControl(ITERATION);
-          iter.addElement(mapElement(lines.subList(i+1, selectEnd)));
+          iter.setList(mapElement(lines.subList(i+1, iterEnd)));
           returnedElements.add(iter);
-          i = selectEnd + 1;
+          i = iterEnd;
         }
         if(currentLine.get(ENTRY_TYPE).equals("branchBegin")){
-          String selectIndex = currentLine.get(ACTION_NUMBER);
-          int selectEnd = lines.size() -1;
+          String branchIndex = currentLine.get(ACTION_NUMBER);
+          int branchEnd = lines.size() -1;
           Boolean endFound = false;
           List<String> nestLine;
           for(int j = i+1; j < lines.size() && !endFound; j ++){
             nestLine = lines.get(j);
-            if((nestLine.get(ENTRY_TYPE).equals("branchEnd")) && (nestLine.get(ACTION_NUMBER).equals(selectIndex))){
+            if((nestLine.get(ENTRY_TYPE).equals("branchEnd")) && (nestLine.get(ACTION_NUMBER).equals(branchIndex))){
               endFound = true;
-              selectEnd = j;
+              branchEnd = j + 1;
             }
           }
           FlowControl branch = new FlowControl(BRANCH);
-          branch.addElement(mapElement(lines.subList(i+1, selectEnd)));
+          branch.setList(mapElement(lines.subList(i+1, branchEnd + 1)));
           returnedElements.add(branch);
-          i = selectEnd + 1;
+          i = branchEnd + 1;
         }
       }
+      System.out.println(returnedElements.size());
       return returnedElements;
     }
 
@@ -206,37 +207,6 @@ public class SwimlaneDrawer{
                   csvList.add(actionsAndAgentsCSV.getNextLine());
                 }
                 elements = mapElement(csvList);
-                for(int i = 0; i < elements.size(); i++){
-                }
-                /*for(int i = 0; i < actionsAndAgentsCSV.getSize(); i++){
-                    List<String> csvLine = actionsAndAgentsCSV.get(i);
-                    if(csvLine.get(ENTRY_TYPE).equals("action")){
-                      currentAction = new Action(actionName);
-                    }
-                    if(csvLine.get(ENTRY_TYPE).equals("agent")){
-                      currentAgent = new Agent(csvLine.get(ENTRY_NAME));
-                      if(!agentMap.containsKey(csvLine.get(ENTRY_NAME))){
-                          currentAgent = new Agent(csvLine.get(ENTRY_NAME));
-                          agentMap.put(currentAgent.getName(), currentAgent);
-                      }
-                      else{
-                          currentAgent = agentMap.get(csvLine.get(ENTRY_NAME));
-                      }
-                      currentAction.addAgent(currentAgent);
-                      agentMap.put(currentAgent.getName(), currentAgent);
-                    }
-                    if(csvLine.get(ENTRY_TYPE).equals("selection")){
-                      String id = csvLine.get(ACTION_NUMBER);
-                      int index;
-                      boolean foundEnd = false;
-                      for(int j = i + 1; (j < actionsAndAgentsCSV.getSize() && !foundEnd); j++){
-                        List<String> currentLine = actionsAndAgentsCSV.get(j);
-                        if(currentLine.get(ENTRY_TYPE).equals("selectionEnd") && currentLine.get(ACTION_NUMBER).equals(id)){
-                          foundEnd = true;
-                        }
-                      }
-                    }
-                }*/
 
                 Agent[] agentArray = agentMap.values().toArray(new Agent[0]);
                 for(int i = 0; i < agentArray.length; i++){

@@ -9,7 +9,7 @@ public class CSVReader{
     BufferedReader fileReader = null;
     int linesGiven;
 
-    //constructor takes a file name and 
+    //constructor takes a file name and
     //creates a List<List<String>> object
     //So first list is lines
     //second list is each word in line delimited by ",""
@@ -32,7 +32,7 @@ public class CSVReader{
             //in here we do the processing of the csv
             while ((line = fileReader.readLine()) != null) {
                 List<String> currentLine = new ArrayList<String>();
-                String[] tokens = line.split(",");
+                String[] tokens = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 for(int i = 0; i < tokens.length; i++){
                     currentLine.add(tokens[i]);
                 }

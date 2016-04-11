@@ -34,21 +34,21 @@ public class Canvas{
 
     public void addAction(int agentNumber, String name, int actionTime){
         if(!itemAdded){
-          itemBody += "{id: " + idNum++ + ", content: '" + name + "', start: " + actionTime + ", end: " + (actionTime + 1) + ", group: " + agentNumber + "}";
+          itemBody += "{id: " + idNum++ + ", content: '" + cleanUp(name) + "', start: " + actionTime + ", end: " + (actionTime + 1) + ", group: " + agentNumber + "}";
           itemAdded = true;
         }
         else{
-          itemBody += ",\n{id: " + idNum++ + ", content: '" + name + "', start: " + actionTime + ", end: " + (actionTime + 1) + ", group: " + agentNumber + "}";
+          itemBody += ",\n{id: " + idNum++ + ", content: '" + cleanUp(name) + "', start: " + actionTime + ", end: " + (actionTime + 1) + ", group: " + agentNumber + "}";
         }
     }
 
     public void addSelection(int startTime, int endTime){
         if(!itemAdded){
-          itemBody += "{id: " + idNum++ + ", content: \'Sequence\', start: " + startTime + ", end: " + endTime + ", type: \'background\'}";
+          itemBody += "{id: " + idNum++ + ", content: \'Selection\', start: " + startTime + ", end: " + endTime + ", type: \'background\', style: \"background-color: pink;\"}";
           itemAdded = true;
         }
         else{
-          itemBody += ",\n{id: " + idNum++ + ", content: \'Sequence\', start: " + startTime + ", end: " + endTime + " type: \'background\'}";
+          itemBody += ",\n{id: " + idNum++ + ", content: \'Selection\', start: " + startTime + ", end: " + endTime + ", type: \'background\', style: \"background-color: pink;\"}";
         }
     }
 
@@ -58,18 +58,22 @@ public class Canvas{
           itemAdded = true;
         }
         else{
-          itemBody += ",\n{id: " + idNum++ + ", content: \'Iteration\', start: " + startTime + ", end: " + endTime + " type: \'background\'}";
+          itemBody += ",\n{id: " + idNum++ + ", content: \'Iteration\', start: " + startTime + ", end: " + endTime + ", type: \'background\'}";
         }
     }
 
     public void addAgent(int agentNumber, String name){
+
       if(!groupAdded){
-        groupBody += "{id: " + agentNumber + ", content: '" + name + "'}";
+        groupBody += "{id: " + agentNumber + ", content: '" + cleanUp(name) + "'}";
         groupAdded = true;
       }
       else{
-        groupBody += ",\n{id: " + agentNumber + ", content: '" + name + "'}";
+        groupBody += ",\n{id: " + agentNumber + ", content: '" + cleanUp(name) + "'}";
       }
+    }
+    public String cleanUp(String name){
+      return name.replaceAll("[^a-zA-Z, ]", "").toLowerCase();
     }
 
     public void FinishUp(){
