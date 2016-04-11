@@ -20,13 +20,42 @@ min-height: 100%;
 <script>
 var net = document.getElementById("myNetwork");
 var nodes = new vis.DataSet([
-{id: 0, label: "NONE"},
-{id: 2, label: "y"},
-{id: 1, label: "x"}
+{id: 6, label: "SrDeveloper"},
+{id: 5, label: "Architect"},
+{id: 2, label: "QA"},
+{id: 4, label: "ScrumMaster"},
+{id: 7, label: "SupportTech"},
+{id: 8, label: "ExternalQA"},
+{id: 1, label: "Developer"},
+{id: 3, label: "ProductOwner"}
 ]);
 var edges = new vis.DataSet([
-{ from: 1, to: 2, title: "a"},
-{ from: 2, to: 3, title: "b"}
+{ from: 1, to: 2, title: "agree_sprint_goal"},
+{ from: 1, to: 3, title: "agree_sprint_goal"},
+{ from: 1, to: 4, title: "agree_sprint_goal"},
+{ from: 2, to: 3, title: "agree_sprint_goal"},
+{ from: 2, to: 4, title: "agree_sprint_goal"},
+{ from: 3, to: 4, title: "agree_sprint_goal"},
+{ from: 4, to: 1, title: "agree_effort_target"},
+{ from: 4, to: 2, title: "agree_effort_target"},
+{ from: 1, to: 2, title: "agree_effort_target"},
+{ from: 1, to: 2, title: "eval_issue"},
+{ from: 1, to: 4, title: "eval_issue"},
+{ from: 2, to: 4, title: "eval_issue"},
+{ from: 1, to: 3, title: "understand_issue"},
+{ from: 1, to: 2, title: "understand_issue"},
+{ from: 1, to: 5, title: "understand_issue"},
+{ from: 1, to: 6, title: "understand_issue"},
+{ from: 3, to: 2, title: "understand_issue"},
+{ from: 3, to: 5, title: "understand_issue"},
+{ from: 3, to: 6, title: "understand_issue"},
+{ from: 2, to: 5, title: "understand_issue"},
+{ from: 2, to: 6, title: "understand_issue"},
+{ from: 5, to: 6, title: "understand_issue"},
+{ from: 1, to: 5, title: "identify_unit"},
+{ from: 1, to: 6, title: "identify_unit"},
+{ from: 5, to: 6, title: "identify_unit"},
+{ from: 6, to: 1, title: "create_build"}
 ]);
 var data = {
 nodes : nodes,

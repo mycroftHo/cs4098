@@ -105,12 +105,13 @@
     /* CodeMirror Style Elements */
     .CodeMirror {
     	border: 1px solid #eee;
-    	width: 650px;
+        height: 550px;
+    	width: 950px;
     }
 
 	#outputText {
-	  width: 540px;
-	  height: 200px;
+	  width: 640px;
+	  height: 300px;
 	}
 
     /*ul {
@@ -252,9 +253,9 @@
         position: relative;
     }
     #slide-bottom-popup{
-        position: absolute;
+        position: relative;
         bottom: 0;
-        height: 530px;
+        height: 360px;
         overflow: visible;
     }
 
@@ -348,8 +349,8 @@
     <ul class="dropdown-menu">
         <!--<li><a onclick="browse()">Open File</a></li></li>-->
         <li><button id="browseBtn" class="btn btn-default btn-file">Browse<input type="file"></button></li>     
-        <li><a onclick="DownloadLocally()">Save Locally</a></li>
-        <li><a onclick="saveButton('Enter Filename:')">Save Remotely</a></li>
+        <li><a id="localSaveButton" onclick="DownloadLocally()">Save Locally</a></li>
+        <li><a id="remoteSaveButton" onclick="saveButton('Enter Filename:')">Save Remotely</a></li>
     </ul>
 </div>
 
@@ -365,9 +366,9 @@
     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Run
     <span class="caret"></span></button>    
     <ul class="dropdown-menu">
-        <li><a onclick="buttonPress()">Compile</a></li>
-        <li><a onclick="swimlane()">Draw Swimlane</a></li>
-        <li><a onclick="social()">Draw Social Network</a></li>
+        <li><a id="compileButton" onclick="buttonPress()">Compile</a></li>
+        <li><a id="swimButton" onclick="swimlane()">Draw Swimlane</a></li>
+        <li><a id="socialButton" onclick="social()">Draw Social Network</a></li>
     </ul>
 </div>
 
@@ -444,7 +445,6 @@
     <div class="modal fade" id="slide-bottom-popup" data-backdrop="false">
         <div class="modal-body" id="outputPopup">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <!--<a class="btn-primary btn-plain btn popup-button" data-dismiss="modal">Close</a>-->
         </div><!-- /.modal-body -->
     </div><!-- /.modal -->
 </div>

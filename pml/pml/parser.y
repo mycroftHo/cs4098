@@ -339,14 +339,14 @@ specification_list
 specification
     : PROVIDES '{' expression '}'
     {
-        printKeyWordTree($3,"provides");
+//        printKeyWordTree($3,"provides");
         and_trees (&($<graph>-2 -> source -> provides), $3);
     }
 
     | REQUIRES '{' expression '}'
     {
         //see comment for PROVIDES above
-        printKeyWordTree($3,"requires");
+//        printKeyWordTree($3,"requires");
         and_trees (&($<graph>-2 -> source -> requires), $3);
     }
 
