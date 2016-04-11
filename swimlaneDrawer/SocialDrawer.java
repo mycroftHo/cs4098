@@ -43,9 +43,9 @@ public class SocialDrawer{
 
 
 
-    private static void mapAgents(List<String> csvLine, boolean lastLine){
-        if(csvLine.get(ENTRY_TYPE).equals("action") && 
-            firstAction && 
+    private static void printAppropriateBoxes(List<String> csvLine, boolean lastLine){
+        if(csvLine.get(ENTRY_TYPE).equals("action") &&
+            firstAction &&
             agentsSinceLastAction == 0){
             firstAction = false;
             actionName = csvLine.get(ENTRY_NAME);
@@ -57,11 +57,11 @@ public class SocialDrawer{
             }
         }
         //no agents in previous action
-        else if(csvLine.get(ENTRY_TYPE).equals("action") && 
+        else if(csvLine.get(ENTRY_TYPE).equals("action") &&
             !firstAction &&
             agentsSinceLastAction == 0){
             currentAgent = agentMap.get("NONE");
-            System.out.println("" + currentAgent.getName() + " number : "+  
+            System.out.println("" + currentAgent.getName() + " number : "+
                 currentAgent.getAgentNumber() + " carries out " + actionName);
             //Then update deets
             agentsSinceLastAction = 0;
@@ -71,7 +71,7 @@ public class SocialDrawer{
             actionList.add(currentAction);
             //the reason it won't print this out is cos
             //this never gets called again once we hit the end of the file.
-            //if the last line is 
+            //if the last line is
             if(lastLine){
                 currentAgent = agentMap.get("NONE");
             }
@@ -119,13 +119,19 @@ public class SocialDrawer{
                 agentMap = new HashMap<String, Agent>();
                 currentAgent = new Agent("NONE");
                 agentMap.put(currentAgent.getName(), currentAgent);
+
                 for(int i = 0; i < actionsAndAgentsCSV.getSize(); i++){
                     List<String> csvLine = actionsAndAgentsCSV.getNextLine();
-                    mapAgents(csvLine, (i == actionsAndAgentsCSV.getSize() - 1));
+                    printAppropriateBoxes(csvLine, (i == actionsAndAgentsCSV.getSize() - 1));
                 }
+
                 Agent[] agentArray = agentMap.values().toArray(new Agent[0]);
-                for(int i = 1; i < agentArray.length; i++){
-                    networkCanvas.addNode(agentArray[i].getAgentNumber(), agentArray[i].getName());
+                for(int i = 0; i < agentArray.length; i++){
+		    if(agentArray[i].getName().equals("NONE")){
+		    }
+		    else{
+                    	networkCanvas.addNode(agentArray[i].getAgentNumber(), agentArray[i].getName());
+		    }
                 }
                 for(int i = 0; i < actionList.size(); i ++){
                     ArrayList<Agent> actionsAgents = actionList.get(i).getAgentList();
@@ -143,6 +149,6 @@ public class SocialDrawer{
                 e.printStackTrace();
             }
         }
-        
+
     }
 }

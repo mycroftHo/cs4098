@@ -1,11 +1,11 @@
 /**
  *  Simple node.js server to handle/compile PML code and relay the output back
- *	to the front-end 
+ *	to the front-end
  */
 
 /**
  *  Setting up dependencies
- *	
+ *
  *	express 		- http server middleware for node.js
  *	body-parse 		- allows for parsing of contents handled by express server
  *	fs 				- internal node module for handling file system stuff
@@ -43,7 +43,7 @@ app.use('/', express.static(__dirname));
 
 /*
  *	Set the headers
- *	This is important as we can't communicate through localhost w/o 
+ *	This is important as we can't communicate through localhost w/o
  *	taking Cross-Origin Resource Sharing (CORS) into account
  */
 server.all('/', function(req, res, next){
@@ -97,7 +97,7 @@ server.post('/', function(req, res, next){
 		//here pass the error messages to a function to parse errors
 		//the function should return a line number as an int where the error occurs
 		//then work on highlighting that line
-		
+
 		console.log(output);
 
 		//Once the child finishes, send the data from either stdout or stderr streams back to frontend
@@ -121,11 +121,11 @@ server.post('/', function(req, res, next){
 		jsonOut = req.body.graph
 		jsonfile.writeFile('graph.json', jsonOut, function(err){
 			console.error(err);
-		})		
+		})
 	}
 
     else if(index == 4){
-        child = exec("java -cp ~/bin SocialDrawer swimData.csv")
+        child = exec("java -cp ~/bin SwimlaneDrawer flowData.csv")
         child.on('close', function(){
             res.send("swimLaneMade");
         });
@@ -145,7 +145,7 @@ server.post('/', function(req, res, next){
 
 
 		fileList = [];
- 
+
 	    var files = fs.readdirSync(dir);
 	    fileList.push(email)
 

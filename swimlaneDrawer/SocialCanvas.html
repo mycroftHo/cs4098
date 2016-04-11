@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Social Network</title> <style type="text/css">
-#mynetwork {
-width: 600px;
-height: 400px;
-border: 1px solid lightgray;}
+<title>Social Network</title><script type="text/javascript" src="node_modules/vis/dist/vis.js"></script>
+<link href="node_modules/vis/dist/vis.css" rel="stylesheet" type="text/css" />
+ <style type="text/css">
+html,
+body{
+height:100%;
+margin:0;
+}
+#myNetwork {
+height: 100%;
+min-height: 100%;
+}
 </style></head>
 <body>
 <div id="myNetwork">
@@ -13,22 +20,26 @@ border: 1px solid lightgray;}
 <script>
 var net = document.getElementById("myNetwork");
 var nodes = new vis.DataSet([
-{id: 3, label: ANDREW},
-{id: 1, label: JON},
-{id: 0, label: NONE},
-{id: 2, label: RACHEL}
+{id: 2, label: "f"},
+{id: 3, label: "d"},
+{id: 4, label: "e"},
+{id: 1, label: "c"},
+{id: 0, label: "NONE"}
 ]);
 var edges = new vis.DataSet([
-{ from: 1, to: 2, label: b},
-{ from: 1, to: 3, label: b},
-{ from: 2, to: 3, label: b}
+{ from: 1, to: 2, title: "b"},
+{ from: 1, to: 3, title: "b"},
+{ from: 1, to: 4, title: "b"},
+{ from: 2, to: 3, title: "b"},
+{ from: 2, to: 4, title: "b"},
+{ from: 3, to: 4, title: "b"}
 ]);
 var data = {
 nodes : nodes,
 edges: edges
 };
-var options = {}
-var socialNet = new vis.Network(container, data, options);
+var options = {zoomView:true, width:'100%', height:'100%'}
+var socialNet = new vis.Network(net, data, options);
 </script>
 </body>
 </html>

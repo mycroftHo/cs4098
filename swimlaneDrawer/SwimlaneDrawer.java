@@ -31,12 +31,19 @@ public class SwimlaneDrawer{
     final static int ENTRY_NAME = 1;
     final static int ACTION_NUMBER = 2;
 
+    final static int SELECTION = 0;
+    final static int ITERATION = 1;
+    final static int BRANCH = 2;
+
     static List<Action> actionList;
+    static List<Object> elements;
+
     static HashMap <String, Agent> agentMap;
-    static String actionName ;
+    static String actionName;
     static int actionNumber;
     static int agentsSinceLastAction;
     static boolean firstAction;
+    static int timeCount;
     static Agent currentAgent;
     static Canvas canvas;
     static SocialCanvas networkCanvas;
@@ -44,120 +51,219 @@ public class SwimlaneDrawer{
 
 
 
-    private static void printAppropriateBoxes(List<String> csvLine, boolean lastLine){
-        if(csvLine.get(ENTRY_TYPE).equals("action") && 
-            firstAction && 
-            agentsSinceLastAction == 0){
-            firstAction = false;
-            actionName = csvLine.get(ENTRY_NAME);
-            actionNumber = 0;
-            currentAction = new Action(actionName);
-            actionList.add(currentAction);
-            if(lastLine){
-                currentAgent = agentMap.get("NONE");
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
+    public static int handleNest(FlowControl theFlow, int time){
+      int currentTime = time;
+      int type = theFlow.getType();
+      List<Object> element = theFlow.getElementList();
+      if( type == SELECTION || type == BRANCH){
+        int selStartTime = currentTime;
+        Object thisObject;
+        for(int i = 0; i < element.size(); i++){
+          thisObject = element.get(i);
+          if(thisObject instanceof Action){
+            Action theAction = (Action)thisObject;
+            List<Agent> thisObjectAgentList = theAction.getAgentList();
+            for(int j = 0; j < thisObjectAgentList.size(); j++){
+              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), time);
             }
+          }
+          else{
+            FlowControl theFlowNest = (FlowControl) thisObject;
+            currentTime = handleNest(theFlowNest, currentTime);
+          }
         }
-        //no agents in previous action
-        else if(csvLine.get(ENTRY_TYPE).equals("action") && 
-            !firstAction &&
-            agentsSinceLastAction == 0){
-            currentAgent = agentMap.get("NONE");
-            System.out.println("" + currentAgent.getName() + " number : "+  
-                currentAgent.getAgentNumber() + " carries out " + actionName);
-            canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-            canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
-            //Then update deets
-            agentsSinceLastAction = 0;
-            actionName = csvLine.get(ENTRY_NAME);
-            actionNumber ++;
-            currentAction = new Action(actionName);
-            actionList.add(currentAction);
-            //the reason it won't print this out is cos
-            //this never gets called again once we hit the end of the file.
-            //if the last line is 
-            if(lastLine){
-                currentAgent = agentMap.get("NONE");
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
+        canvas.addSelection(selStartTime, currentTime);
+        currentTime++;
+      }
+      if( type == ITERATION){
+        Object thisObject;
+        int iterStartTime = currentTime;
+        for(int i = 0; i < element.size(); i++){
+          thisObject = element.get(i);
+          if(thisObject instanceof Action){
+            Action theAction = (Action)thisObject;
+            List<Agent> thisObjectAgentList = theAction.getAgentList();
+            for(int j = 0; j < thisObjectAgentList.size(); j++){
+              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), time);
             }
+          }
+          else{
+            FlowControl theFlowNest = (FlowControl) thisObject;
+            currentTime = handleNest(theFlowNest, currentTime);
+          }
+          currentTime++;
         }
-        else if(csvLine.get(ENTRY_TYPE).equals("action")){
-            agentsSinceLastAction = 0;
-            actionName = csvLine.get(ENTRY_NAME);
-            actionNumber++;
-            currentAction = new Action(actionName);
-            actionList.add(currentAction);
-            if(lastLine){
-                currentAgent = agentMap.get("NONE");
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
-                canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
+        canvas.addIteration(iterStartTime, currentTime);
+        currentTime++;
+      }
+      return currentTime;
+    }
+    public static List<Object> mapElement(List<List<String>> lines){
+      List<Object> returnedElements = new ArrayList<Object>();
+      List<String> currentLine;
+      for(int i=0; i<lines.size(); i++){
+          currentLine = lines.get(i);
+          if(currentLine.get(ENTRY_TYPE).equals("action")){
+            Action theAction = new Action(currentLine.get(ENTRY_NAME));
+            List<String> nestLine;
+            Boolean newElementFound = false;
+            for(int j = i+1; j < lines.size() && !newElementFound; j++){
+              nestLine = lines.get(j);
+              if(nestLine.get(ENTRY_TYPE).equals("agent")){
+                Agent theAgent;
+                if(!agentMap.containsKey(nestLine.get(ENTRY_NAME))){
+                    theAgent = new Agent(nestLine.get(ENTRY_NAME));
+                    agentMap.put(theAgent.getName(), theAgent);
+                }
+                else{
+                    theAgent = agentMap.get(nestLine.get(ENTRY_NAME));
+                }
+                theAction.addAgent(theAgent);
+              }
+              //this is madness
+              //else if((nestLine.get(ENTRY_TYPE).equals("selectionBegin"))||(nestLine.get(ENTRY_TYPE).equals("selectionEnd"))||(nestLine.get(ENTRY_TYPE).equals("requires"))||(nestLine.get(ENTRY_TYPE).equals("provides"))||(nestLine.get(ENTRY_TYPE).equals("iterationBegin"))||(nestLine.get(ENTRY_TYPE).equals("iterationEnd"))||(nestLine.get(ENTRY_TYPE).equals("branchBegin"))||(nestLine.get(ENTRY_TYPE).equals("branchEnd"))(nestLine.get(ENTRY_TYPE).equals("action"))){
+              else{
+                newElementFound = true;
+                j--;
+                i = j - 1;
+              }
             }
+          }
+          returnedElements.add(theAction);
         }
-        //agent seen
-        else if(csvLine.get(ENTRY_TYPE).equals("agent")){
-            agentsSinceLastAction++;
-            if(!agentMap.containsKey(csvLine.get(ENTRY_NAME))){
-                currentAgent = new Agent(csvLine.get(ENTRY_NAME));
-                agentMap.put(currentAgent.getName(), currentAgent);
-                canvas.addAgent(currentAgent.getAgentNumber(), currentAgent.getName());
+        if(currentLine.get(ENTRY_TYPE).equals("selectionBegin")){
+          String selectIndex = currentLine.get(ACTION_NUMBER);
+          int selectEnd = lines.size() -1;
+          Boolean endFound = false;
+          List<String> nestLine;
+          for(int j = i+1; j < lines.size() && !endFound; j ++){
+            nestLine = lines.get(j);
+            if((nestLine.get(ENTRY_TYPE).equals("selectionEnd")) && (nestLine.get(ACTION_NUMBER).equals(selectIndex))){
+              endFound = true;
+              selectEnd = j;
             }
-            else{
-                currentAgent = agentMap.get(csvLine.get(ENTRY_NAME));
-            }
-            currentAction.addAgent(currentAgent);
-            canvas.addAction(currentAgent.getAgentNumber(), actionNumber, actionName);
-            System.out.println("" + currentAgent.getName() + " number : "+
-                currentAgent.getAgentNumber() + " carries out " + actionName);
+          }
+          FlowControl select = new FlowControl(SELECTION);
+          select.addElement(mapElement(lines.subList(i+1, selectEnd)));
+          returnedElements.add(select);
+          i = selectEnd + 1;
         }
+        if(currentLine.get(ENTRY_TYPE).equals("iterationBegin")){
+          String selectIndex = currentLine.get(ACTION_NUMBER);
+          int selectEnd = lines.size() -1;
+          Boolean endFound = false;
+          List<String> nestLine;
+          for(int j = i+1; j < lines.size() && !endFound; j ++){
+            nestLine = lines.get(j);
+            if((nestLine.get(ENTRY_TYPE).equals("iterationEnd")) && (nestLine.get(ACTION_NUMBER).equals(selectIndex))){
+              endFound = true;
+              selectEnd = j;
+            }
+          }
+          FlowControl iter = new FlowControl(ITERATION);
+          iter.addElement(mapElement(lines.subList(i+1, selectEnd)));
+          returnedElements.add(iter);
+          i = selectEnd + 1;
+        }
+        if(currentLine.get(ENTRY_TYPE).equals("branchBegin")){
+          String selectIndex = currentLine.get(ACTION_NUMBER);
+          int selectEnd = lines.size() -1;
+          Boolean endFound = false;
+          List<String> nestLine;
+          for(int j = i+1; j < lines.size() && !endFound; j ++){
+            nestLine = lines.get(j);
+            if((nestLine.get(ENTRY_TYPE).equals("branchEnd")) && (nestLine.get(ACTION_NUMBER).equals(selectIndex))){
+              endFound = true;
+              selectEnd = j;
+            }
+          }
+          FlowControl branch = new FlowControl(BRANCH);
+          branch.addElement(mapElement(lines.subList(i+1, selectEnd)));
+          returnedElements.add(branch);
+          i = selectEnd + 1;
+        }
+      }
+      return returnedElements;
     }
 
     public static void main(String args[]){
         CSVReader actionsAndAgentsCSV;
-        actionList = new ArrayList<Action>();
-
+        elements = new ArrayList<Object>();
+        timeCount = 0;
         if(args.length != 1){
             System.out.println("Please include file name\nUsage: SwimlaneDrawer inputFileName");
         }
         else{
             try{
                 canvas = new Canvas();
-                networkCanvas = new SocialCanvas();
                 actionsAndAgentsCSV = new CSVReader(args[0]);
                 actionName = "";
                 agentsSinceLastAction = 0;
                 firstAction = true;
                 agentMap = new HashMap<String, Agent>();
-                currentAgent = new Agent("NONE");
-                agentMap.put(currentAgent.getName(), currentAgent);
-
+                List<List<String>> csvList = new ArrayList<List<String>>();
                 for(int i = 0; i < actionsAndAgentsCSV.getSize(); i++){
-                    List<String> csvLine = actionsAndAgentsCSV.getNextLine();
-                    printAppropriateBoxes(csvLine, (i == actionsAndAgentsCSV.getSize() - 1));
+                  csvList.add(actionsAndAgentsCSV.getNextLine());
                 }
-                canvas.FinishUp();
+                elements = mapElement(csvList);
+                for(int i = 0; i < elements.size(); i++){
+                }
+                /*for(int i = 0; i < actionsAndAgentsCSV.getSize(); i++){
+                    List<String> csvLine = actionsAndAgentsCSV.get(i);
+                    if(csvLine.get(ENTRY_TYPE).equals("action")){
+                      currentAction = new Action(actionName);
+                    }
+                    if(csvLine.get(ENTRY_TYPE).equals("agent")){
+                      currentAgent = new Agent(csvLine.get(ENTRY_NAME));
+                      if(!agentMap.containsKey(csvLine.get(ENTRY_NAME))){
+                          currentAgent = new Agent(csvLine.get(ENTRY_NAME));
+                          agentMap.put(currentAgent.getName(), currentAgent);
+                      }
+                      else{
+                          currentAgent = agentMap.get(csvLine.get(ENTRY_NAME));
+                      }
+                      currentAction.addAgent(currentAgent);
+                      agentMap.put(currentAgent.getName(), currentAgent);
+                    }
+                    if(csvLine.get(ENTRY_TYPE).equals("selection")){
+                      String id = csvLine.get(ACTION_NUMBER);
+                      int index;
+                      boolean foundEnd = false;
+                      for(int j = i + 1; (j < actionsAndAgentsCSV.getSize() && !foundEnd); j++){
+                        List<String> currentLine = actionsAndAgentsCSV.get(j);
+                        if(currentLine.get(ENTRY_TYPE).equals("selectionEnd") && currentLine.get(ACTION_NUMBER).equals(id)){
+                          foundEnd = true;
+                        }
+                      }
+                    }
+                }*/
 
                 Agent[] agentArray = agentMap.values().toArray(new Agent[0]);
-                for(int i = 1; i < agentArray.length; i++){
-                    networkCanvas.addNode(agentArray[i].getAgentNumber(), agentArray[i].getName());
+                for(int i = 0; i < agentArray.length; i++){
+                    canvas.addAgent(agentArray[i].getAgentNumber(), agentArray[i].getName());
                 }
-                for(int i = 0; i < actionList.size(); i ++){
-                    ArrayList<Agent> actionsAgents = actionList.get(i).getAgentList();
-                    for(int j = 0; j < actionsAgents.size(); j++){
-                        for(int k = j + 1; k < actionsAgents.size(); k++){
-                            networkCanvas.addEdge(actionsAgents.get(j).getAgentNumber(),
-                                actionsAgents.get(k).getAgentNumber(),
-                                actionList.get(i).getActionName());
-                        }
+                int time = 0;
+                for(int i = 0; i < elements.size(); i++){
+                    Object currentObject = elements.get(i);
+                    if(currentObject instanceof Action){
+                      Action theAction = (Action)currentObject;
+                      ArrayList<Agent> currentAgents = theAction.getAgentList();
+                      for(int j = 0; j < currentAgents.size(); j++){
+                          canvas.addAction(currentAgents.get(j).getAgentNumber(), theAction.getActionName(), time);
+                      }
+                      time++;
+                    }
+                    else if(currentObject instanceof FlowControl){
+                      FlowControl theFlowNest = (FlowControl) currentObject;
+                      time = handleNest(theFlowNest, time);
                     }
                 }
-                networkCanvas.FinishUp();
+                canvas.FinishUp();
             }
             catch (Exception e){
                 e.printStackTrace();
             }
         }
-        
+
     }
 }

@@ -181,7 +181,7 @@ function buttonPress(){
 
 	    //console.log(modalPopup.length);
 
-	    while(modalPopup.childNodes.length > 5){
+	    while(modalPopup.childNodes.length > 3){
 	    	modalPopup.removeChild(modalPopup.lastChild);
 	    }
 
@@ -203,6 +203,27 @@ function buttonPress(){
 
 	//Format the text in the form {code : "<code>"} and send
 	xhttp.send(JSON.stringify({index:type,code:text}));
+}
+
+function updateConsole(text){
+		//Popup Modal for displaying compilation results
+	    var modalPopup = document.getElementById("outputPopup");
+	    var outputText = document.createElement('out');
+	    //Replace \n in string with <br /> tags for display in HTML
+	    text = text.replace(/(?:\r\n|\r|\n)/g, '<br />');
+
+	    //console.log(modalPopup.length);
+
+	    while(modalPopup.childNodes.length > 4){
+	    	modalPopup.removeChild(modalPopup.lastChild);
+	    }
+
+	    //modalPopup.appendChild(outputText.firstChild);
+	    outputText.innerHTML = text;
+	    while(outputText.firstChild){
+	    	modalPopup.appendChild(outputText.firstChild);
+	    }
+	    showConsole();
 }
 
 function showConsole(){
@@ -254,7 +275,9 @@ function saveButton(message){
 		xhttp.onreadystatechange = function(){
 		  if(xhttp.readyState == 4 && xhttp.status == 200){
 		  	//Place response in the output box
-		    document.getElementById("outputText").value = xhttp.responseText;
+		    //document.getElementById("outputText").value = xhttp.responseText;
+		    var response = xhttp.responseText;
+		    //updateConsole(response);
 		  }
 		};
 

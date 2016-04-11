@@ -19,11 +19,11 @@ public class SocialCanvas{
         fileBody += "<script type=\"text/javascript\" src=\"node_modules/vis/dist/vis.js\"></script>\n";
         fileBody += "<link href=\"node_modules/vis/dist/vis.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
         fileBody += " <style type=\"text/css\">\n";
-	fileBody += "html,\n";
-	fileBody += "body{\n";
-	fileBody += "height:100%;\n";
-	fileBody += "margin:0;\n";
-	fileBody += "}\n";
+      	fileBody += "html,\n";
+      	fileBody += "body{\n";
+      	fileBody += "height:100%;\n";
+      	fileBody += "margin:0;\n";
+      	fileBody += "}\n";
         fileBody += "#myNetwork {\n";
         fileBody += "height: 100%;\n";
         fileBody += "min-height: 100%;\n";
