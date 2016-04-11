@@ -9,6 +9,11 @@ install: ;
 	mkdir ~/bin; \
 	mv swimlaneDrawer/*.class ~/bin; \
 	$(MAKE) -C pml;
+	sudo apt-get install python-pip python-dev build-essential
+	sudo pip install --upgrade pip
+	sudo pip install --upgrade virtualenv
+	sudo pip install selenium
+
 
 clean: ;
 	rm -rf node_modules; \

@@ -344,18 +344,18 @@
 
 <!--Dropdown buttons-->
 <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">File
+    <button id="fileBtn" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">File
     <span class="caret"></span></button>    
     <ul class="dropdown-menu">
         <!--<li><a onclick="browse()">Open File</a></li></li>-->
-        <li><button id="browseBtn" class="btn btn-default btn-file">Browse<input type="file"></button></li>     
+        <li><button id="browseBtn" class="btn btn-default btn-file">Browse<input id="browseFile" type="file"></button></li>     
         <li><a id="localSaveButton" onclick="DownloadLocally()">Save Locally</a></li>
         <li><a id="remoteSaveButton" onclick="saveButton('Enter Filename:')">Save Remotely</a></li>
     </ul>
 </div>
 
 <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">View
+    <button id="viewBtn" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">View
     <span class="caret"></span></button>    
     <ul class="dropdown-menu">
         <li><a onclick="showConsole()">Console</a></li>
@@ -363,7 +363,7 @@
 </div>
 
 <div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Run
+    <button id="runBtn" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Run
     <span class="caret"></span></button>    
     <ul class="dropdown-menu">
         <li><a id="compileButton" onclick="buttonPress()">Compile</a></li>

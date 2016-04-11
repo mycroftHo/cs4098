@@ -296,6 +296,8 @@ function saveButton(message){
 	setFiles();
 }
 
+
+
 function changeKeyMap(type){
 	//var x = element.value;
 	editor.setOption("keyMap", type);
@@ -411,7 +413,6 @@ function getFiles(){
 
 function loadSelected(id){
 	var fname = files[id];
-	saveButton("Would you like to save current work?");
 	var data ='';
 
 	var type = 6;
