@@ -20,12 +20,13 @@ min-height: 100%;
 <script>
 var net = document.getElementById("myNetwork");
 var nodes = new vis.DataSet([
-{id: 2, label: "Boyle"},
-{id: 1, label: "Jack"},
-{id: 0, label: "NONE"}
+{id: 0, label: "NONE"},
+{id: 2, label: "y"},
+{id: 1, label: "x"}
 ]);
 var edges = new vis.DataSet([
-{ from: 1, to: 2, title: "a"}
+{ from: 1, to: 2, title: "a"},
+{ from: 2, to: 3, title: "b"}
 ]);
 var data = {
 nodes : nodes,

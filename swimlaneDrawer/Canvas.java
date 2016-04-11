@@ -3,27 +3,27 @@ import java.io.PrintWriter;
 public class Canvas{
     PrintWriter writer;
     String fileBody = "";
-    private final int topGutter = 20;
-    private final int gutter = 10;
-    private final int textHeight = 25;
-    private final int textAreaHeight = 40;
-    private final int rectangleW = 200;
-    private final int rectangleH = 100;
-    private final int interAgentSpace = 30;
-
-    //I\"m going to call the context ctx
+    String groupBody = "";
+    String itemBody = "";
+    boolean itemAdded;
+    boolean groupAdded;
+    int timeCount = 0;
+    int actionCount = 0;
+    int idNum = 0;
 
     public Canvas(){
         fileBody += "<!DOCTYPE html>\n";
         fileBody += "<html>\n";
         fileBody += "<body>\n";
-        fileBody += "<canvas id=\"myCanvas\" width=\"1200\" height=\"1200\" style=\"border:1px solid #000000;\">\n";
-        fileBody += "</canvas>\n";
+        fileBody += "<script type=\"text/javascript\" src=\"node_modules/vis/dist/vis.js\"></script>\n";
+        fileBody += "<link href=\"node_modules/vis/dist/vis.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
+        fileBody += "<div id=\"timeline\">\n";
+        fileBody += "</div>\n";
         fileBody += "<script>\n";
-        fileBody += "var canvas = document.getElementById(\"myCanvas\");\n";
-        fileBody += "var ctx = canvas.getContext(\"2d\");\n";
-        fileBody += "ctx.font = \"25px Arial\";\n";
-        fileBody += "canvas.style.backgroundColor = \'rgba(255, 255, 255, 1.0)\';\n";
+        fileBody += "var container = document.getElementById(\"timeline\");\n";
+        groupBody += "var groups = new vis.DataSet([\n";
+        itemBody += "var items = new vis.DataSet([\n";
+        fileBody += "var options = {editable: false, showMajorLabels: false, start: 000};\n";
         try{
             writer = new PrintWriter("swimlaneCanvas.html", "UTF-8");
         }
@@ -32,22 +32,52 @@ public class Canvas{
         }
     }
 
-    public void addAction(int agentNumberX, int actionNumberY, String name){
-        int xPos = gutter + (agentNumberX * (rectangleW + interAgentSpace));
-        int yPos = (textAreaHeight * 2) + (actionNumberY * ((3 * textHeight) + rectangleH));
-        //fillRect(x,y,width,height);
-        int textYPos = yPos + textHeight;
-        int textXPos = xPos + textHeight;
-        fileBody += "ctx.fillText(\""+ name +"\"," + textXPos + "," + textYPos + ");\n";
-        fileBody += "ctx.strokeRect(" + xPos + "," + yPos + "," + rectangleW + "," + rectangleH + ");\n";
+    public void addAction(int agentNumber, String name, int actionTime){
+        if(!itemAdded){
+          itemBody += "{id: " + idNum++ + ", content: '" + name + "', start: " + actionTime + ", end: " + (actionTime + 1) + ", group: " + agentNumber + "}";
+          itemAdded = true;
+        }
+        else{
+          itemBody += ",\n{id: " + idNum++ + ", content: '" + name + "', start: " + actionTime + ", end: " + (actionTime + 1) + ", group: " + agentNumber + "}";
+        }
     }
 
-    public void addAgent(int agentNumberX, String name){
-        int xPos = gutter + (agentNumberX * (rectangleW + interAgentSpace));
-        fileBody += "ctx.fillText(\"" + name +"\"," + xPos + "," + topGutter + ");\n";
+    public void addSelection(int startTime, int endTime){
+        if(!itemAdded){
+          itemBody += "{id: " + idNum++ + ", content: \'Sequence\', start: " + startTime + ", end: " + endTime + ", type: \'background\'}";
+          itemAdded = true;
+        }
+        else{
+          itemBody += ",\n{id: " + idNum++ + ", content: \'Sequence\', start: " + startTime + ", end: " + endTime + " type: \'background\'}";
+        }
+    }
+
+    public void addIteration(int startTime, int endTime){
+        if(!itemAdded){
+          itemBody += "{id: " + idNum++ + ", content: \'Iteration\', start: " + startTime + ", end: " + endTime + ", type: \'background\'}";
+          itemAdded = true;
+        }
+        else{
+          itemBody += ",\n{id: " + idNum++ + ", content: \'Iteration\', start: " + startTime + ", end: " + endTime + " type: \'background\'}";
+        }
+    }
+
+    public void addAgent(int agentNumber, String name){
+      if(!groupAdded){
+        groupBody += "{id: " + agentNumber + ", content: '" + name + "'}";
+        groupAdded = true;
+      }
+      else{
+        groupBody += ",\n{id: " + agentNumber + ", content: '" + name + "'}";
+      }
     }
 
     public void FinishUp(){
+        itemBody += "]);\n";
+        groupBody += "]);\n";
+        fileBody += itemBody + "\n";
+        fileBody += groupBody + "\n";
+        fileBody += "var time = new vis.Timeline(container ,items, groups, options);\n";
         fileBody +=  "</script>\n";
         fileBody += "</body>\n";
         fileBody += "</html>\n";
@@ -61,9 +91,6 @@ public class Canvas{
             canvas.addAgent(0, "Jack");
             canvas.addAgent(1, "Andrew");
             canvas.addAgent(2, "Clare");
-            canvas.addAction(0,0,"hello");
-            canvas.addAction(2,0,"heyt");
-            canvas.addAction(1,1,"wow");
             canvas.FinishUp();
         }
         catch(Exception e){
@@ -72,3 +99,16 @@ public class Canvas{
     }
 
 }
+
+/*var items = new vis.DataSet([
+    {id: 'A', content: 'Period A', start: '2014-01-16', end: '2014-01-22', type: 'background', group: 1},
+    {id: 'B', content: 'Period B', start: '2014-01-23', end: '2014-01-26', type: 'background', group: 2},
+    {id: 'C', content: 'Period C', start: '2014-01-27', end: '2014-02-03', type: 'background'}, // no group
+    {id: 'D', content: 'Period D', start: '2014-01-14', end: '2014-01-20', type: 'background', group: 'non-existing'},
+    {id: 1, content: 'item 1<br>start', start: '2014-01-30', group: 1},
+    {id: 2, content: 'item 2', start: '2014-01-18', group: 1},
+    {id: 3, content: 'item 3', start: '2014-01-21', group: 2},
+    {id: 4, content: 'item 4', start: '2014-01-17', end: '2014-01-21', group: 2},
+    {id: 5, content: 'item 5', start: '2014-01-28', type:'point', group: 2},
+    {id: 6, content: 'item 6', start: '2014-01-25', group: 2}
+  ]);*/
