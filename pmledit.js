@@ -23,7 +23,7 @@ CodeMirror.defineSimpleMode("pml", {
 		},
 
 		{	//Defining the keywords
-			regex: /(\s*)(process|sequence|action|branch|iteration|requires|provides|agent|script)[\s{]/,
+			regex: /(\s*)(process|sequence|action|branch|selection|iteration|requires|provides|agent|script)[\s{]/,
 			token: [null, "keyword"]
 		},
 
