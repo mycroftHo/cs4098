@@ -130,6 +130,12 @@ server.post('/', function(req, res, next){
             res.send("swimLaneMade");
         });
     }
+    else if(index == 7){
+        child = exec("java -cp ~/bin SocialDrawer swimData.csv")
+        child.on('close', function(){
+            res.send("socialNetworkMade");
+        });
+    }
 	else if(index == 5){
 		var dir = __dirname + '/accounts/' + email;
 		//create new account directory if doesn't already exist
