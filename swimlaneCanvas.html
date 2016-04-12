@@ -9,12 +9,63 @@
 var container = document.getElementById("timeline");
 var options = {editable: false, showMajorLabels: false, start: 000};
 var items = new vis.DataSet([
-{id: 0, content: 'a', start: 0, end: 1, group: 0},
-{id: 1, content: 'a', start: 0, end: 1, group: 1}]);
+{id: 0, content: 'agreesprintgoal', start: 0, end: 1, group: 0},
+{id: 1, content: 'agreesprintgoal', start: 0, end: 1, group: 1},
+{id: 2, content: 'agreesprintgoal', start: 0, end: 1, group: 2},
+{id: 3, content: 'agreesprintgoal', start: 0, end: 1, group: 3},
+{id: 4, content: 'agreeefforttarget', start: 1, end: 2, group: 3},
+{id: 5, content: 'agreeefforttarget', start: 1, end: 2, group: 0},
+{id: 6, content: 'agreeefforttarget', start: 1, end: 2, group: 1},
+{id: 7, content: 'proposeissue', start: 2, end: 3, group: 2},
+{id: 8, content: 'evalissue', start: 3, end: 4, group: 0},
+{id: 9, content: 'evalissue', start: 3, end: 4, group: 1},
+{id: 10, content: 'evalissue', start: 3, end: 4, group: 3},
+{id: 11, content: 'addissuetobacklog', start: 4, end: 5, group: 2},
+{id: 12, content: 'Selection', start: 4, end: 5, type: 'background', style: "background-color: pink;"},
+{id: 13, content: 'Iteration', start: 2, end: 6, type: 'background'},
+{id: 14, content: 'beginchange', start: 7, end: 8, group: 0},
+{id: 15, content: 'understandissue', start: 8, end: 9, group: 0},
+{id: 16, content: 'understandissue', start: 8, end: 9, group: 2},
+{id: 17, content: 'understandissue', start: 8, end: 9, group: 1},
+{id: 18, content: 'understandissue', start: 8, end: 9, group: 4},
+{id: 19, content: 'understandissue', start: 8, end: 9, group: 5},
+{id: 20, content: 'identifyunit', start: 9, end: 10, group: 0},
+{id: 21, content: 'identifyunit', start: 9, end: 10, group: 4},
+{id: 22, content: 'identifyunit', start: 9, end: 10, group: 5},
+{id: 23, content: 'implementchange', start: 10, end: 11, group: 0},
+{id: 24, content: 'testchange', start: 11, end: 12, group: 0},
+{id: 25, content: 'buildforalternateproduct', start: 12, end: 13, group: 0},
+{id: 26, content: 'unittestalternateproduct', start: 13, end: 14, group: 0},
+{id: 27, content: 'commitchange', start: 14, end: 15, group: 0},
+{id: 28, content: 'requestbuild', start: 15, end: 16, group: 1},
+{id: 29, content: 'createbuild', start: 16, end: 17, group: 5},
+{id: 30, content: 'createbuild', start: 16, end: 17, group: 0},
+{id: 31, content: 'performsystemtest', start: 17, end: 18, group: 1},
+{id: 32, content: 'markresolved', start: 18, end: 19, group: 1},
+{id: 33, content: 'addtopmq', start: 18, end: 19, group: 1},
+{id: 34, content: 'returntodev', start: 18, end: 19, group: 1},
+{id: 35, content: 'Selection', start: 18, end: 19, type: 'background', style: "background-color: pink;"},
+{id: 36, content: 'Iteration', start: 18, end: 20, type: 'background'},
+{id: 37, content: 'reporttocustomer', start: 21, end: 22, group: 6},
+{id: 38, content: 'copytobranch', start: 21, end: 22, group: 0},
+{id: 39, content: 'testchangeonbranch', start: 21, end: 22, group: 7},
+{id: 40, content: 'markforfuture', start: 21, end: 22, group: 0},
+{id: 41, content: 'Selection', start: 21, end: 22, type: 'background', style: "background-color: pink;"},
+{id: 42, content: 'Selection', start: 21, end: 23, type: 'background', style: "background-color: pink;"},
+{id: 43, content: 'Iteration', start: 21, end: 24, type: 'background'},
+{id: 44, content: 'selectissuefordemo', start: 25, end: 26, group: 2},
+{id: 45, content: 'demoissue', start: 26, end: 27, group: 0},
+{id: 46, content: 'Iteration', start: 26, end: 27, type: 'background'}]);
 
 var groups = new vis.DataSet([
-{id: 0, content: 'b'},
-{id: 1, content: 'c'}]);
+{id: 5, content: 'srdeveloper'},
+{id: 4, content: 'architect'},
+{id: 1, content: 'qa'},
+{id: 3, content: 'scrummaster'},
+{id: 6, content: 'supporttech'},
+{id: 7, content: 'externalqa'},
+{id: 0, content: 'developer'},
+{id: 2, content: 'productowner'}]);
 
 var time = new vis.Timeline(container ,items, groups, options);
 </script>
