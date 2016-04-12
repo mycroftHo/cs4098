@@ -58,22 +58,28 @@ public class SwimlaneDrawer{
       if( type == SELECTION || type == BRANCH){
         int selStartTime = currentTime;
         Object thisObject;
+        Boolean flowContained = false;
         for(int i = 0; i < element.size(); i++){
           thisObject = element.get(i);
           if(thisObject instanceof Action){
             Action theAction = (Action)thisObject;
             List<Agent> thisObjectAgentList = theAction.getAgentList();
             for(int j = 0; j < thisObjectAgentList.size(); j++){
-              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), time);
+              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), "orange", currentTime);
             }
           }
           else{
             FlowControl theFlowNest = (FlowControl) thisObject;
+            flowContained = true;
             currentTime = handleNest(theFlowNest, currentTime);
           }
         }
-        currentTime++;
-        canvas.addSelection(selStartTime, currentTime);
+        if(!flowContained){
+          canvas.addSelection(selStartTime, selStartTime + 1);
+        }
+        else{
+          canvas.addSelection(selStartTime, currentTime);
+        }
       }
       if( type == ITERATION){
         Object thisObject;
@@ -88,17 +94,16 @@ public class SwimlaneDrawer{
             List<Agent> thisObjectAgentList = theAction.getAgentList();
             for(int j = 0; j < thisObjectAgentList.size(); j++){
               System.out.println(theAction.getActionName());
-              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), currentTime);
+              canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), "aqua", currentTime);
             }
+            currentTime++;
           }
           else{
             FlowControl theFlowNest = (FlowControl) thisObject;
             currentTime = handleNest(theFlowNest, currentTime);
           }
-          currentTime++;
         }
         canvas.addIteration(iterStartTime, currentTime);
-        currentTime++;
       }
       return currentTime;
     }
@@ -212,6 +217,9 @@ public class SwimlaneDrawer{
                 for(int i = 0; i < agentArray.length; i++){
                     canvas.addAgent(agentArray[i].getAgentNumber(), agentArray[i].getName());
                 }
+
+                //adds blank row at the top to display flow control
+
                 int time = 0;
                 for(int i = 0; i < elements.size(); i++){
                     Object currentObject = elements.get(i);
@@ -219,7 +227,7 @@ public class SwimlaneDrawer{
                       Action theAction = (Action)currentObject;
                       ArrayList<Agent> currentAgents = theAction.getAgentList();
                       for(int j = 0; j < currentAgents.size(); j++){
-                          canvas.addAction(currentAgents.get(j).getAgentNumber(), theAction.getActionName(), time);
+                          canvas.addAction(currentAgents.get(j).getAgentNumber(), theAction.getActionName(), "teal", time);
                       }
                       time++;
                     }

@@ -1,84 +1,16 @@
-action,ReviewNetBeans,1
-agent,"Previous release manager, Sun ONE Studio development team (e.g. Forte'), Sun ONE Studio Marketing Manager ",1
-action,SetReleaseDate,2
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",2
-branchBegin,begin,0
-action,ReviewNetBeansVisionStatmenet,3
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",3
-action,ReviewUncompletedMilestonesFromPreviousRelease,4
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",4
-action,ReviewIssuzillaFeatureRequests,5
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",5
-branchEnd,end,0
 iterationBegin,begin,0
-action,CompileListOfPossibleFeaturesToInclude,6
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",6
-action,CategorizeFeaturesProposedFeatureSet,7
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",7
-action,SendMessageToCommunityForFeedback,8
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",8
-action,ReviewFeedbackFromCommunity,9
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",9
-action,ReviseProposalBasedOnFeedback,10
-agent,"Previous release manager, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",10
-iterationEnd,end,0
-action,PostFinalDevelopmentProposalToNetBeansWebsite,11
-agent,"NetBeans web team, Sun ONE Studio Development team, Sun ONE Studio Marketing Manager ",11
-action,AssignDevelopersToCompleteProjectMilestones,12
-agent,"NetBeans developers (Sun ONE Studio developers, module developers) ",12
-action,SetFeatureFreezeDate,13
-agent,"Previous release manager, Sun ONE Studio Development team ",13
-action,SetMilestoneCompletionDates,14
-agent,"Developer(s) responsible for feature completion ",14
-action,EmailSolicitationForReleaseManager,15
-agent,"PreviousReleaseManager ",15
-action,WaitForVolunteer,16
-agent,"",16
-iterationBegin,begin,0
-action,SendCandidacyAnnouncement,17
-agent,"Release manager candidate ",17
-iterationEnd,end,0
-action,EstablishReleaseManagerConsensus,18
-agent,"NetBeans community (nbdev mailing list) ",18
-action,AnnounceNewReleaseManager,19
-agent,"Previous release manager ",19
-action,SolicitModuleMaintainersForInclusionInUpcomingRelease,20
-agent,"Release manager ",20
-iterationBegin,begin,0
-action,ChangeBuildBranchName,21
-agent,"Release manager, module maintainers ",21
-iterationBegin,begin,1
-action,MakeInstallTarForEachPlatform,22
-agent,"Release manager, build automation script",22
-iterationEnd,end,1
-action,UploadInstallTarFilesToWebRepository,23
-agent,"Release manager ",23
-action,UpdateWebPage,24
-agent,"Web team ",24
-action,MakeReadmeInstallationNotesAndChangelog,25
-agent,"Release manager ",25
-action,SendReleaseNotificationToCommunityInvitingTheCommunityToDownloadAndTestIt,26
-agent,"Release manager",26
-action,ExecuteAutomaticTestScripts,27
-agent,"Sun ONE Studio QA team ",27
-action,ExecuteManualTestScripts,28
-agent,"users, developers, Sun ONE Studio QA team, Sun ONE Studio developers ",28
-iterationBegin,begin,1
-action,ReportIssuesToIssuezilla,29
-agent,"users, developers, Sun ONE Studio QA team, Sun ONE Studio developers ",29
-action,UpdateStandingIssueStatus,30
-agent,"users, developers, Sun ONE Studio QA team, Sun ONE Studio developers ",30
-iterationEnd,end,1
-action,PostBugStats,31
-agent,"Release manager ",31
-action,ExamineTestReport,32
-agent,"developers, Sun ONE development team, module maintainers, module contributors, release manager ",32
-action,WriteBugFix,33
-agent,"developers, Sun ONE development team, module maintainers, module contributors, release manager ",33
-action,VerifyBugFix,34
-agent,"developers, Sun ONE development team, module maintainers, module contributors, release manager ",34
-action,CommitCodeToCvsCodeRepository,35
-agent,"developers, Sun ONE development team, module maintainers, module contributors, release manager ",35
-action,UpdateIssuezillaToReflectChanges,36
-agent,"developers, Sun ONE development team, module maintainers, module contributors, release manager ",36
+action,a,1
+agent,x,1
+selectionBegin,begin,1
+action,b,2
+agent,y,2
+action,c,3
+agent,x,3
+iterationBegin,begin,2
+action,d,4
+agent,z,4
+action,e,5
+agent,x,5
+iterationEnd,end,2
+selectionEnd,end,1
 iterationEnd,end,0
