@@ -24,10 +24,13 @@ driver.find_element_by_css_selector("button[name='login']").click()
 
 sleep(5)
 
-driver.find_element_by_css_selector("button[name='__CONFIRM__']").click()
-print("login complete")
+#elem = 
 
-sleep(5)
+if len(driver.find_elements_by_css_selector("button[name='__CONFIRM__']")) > 0:
+    driver.find_element_by_css_selector("button[name='__CONFIRM__']").click()
+    sleep(2)
+
+print("login complete")
 
 #dropdowns = driver.find_elements_by_css_selector("div[class='dropdown']")
 #dropdowns[2].find_element_by_css_selector("button").click()
@@ -46,7 +49,7 @@ print("Successfully Compiled!")
 print("Syntax Analysis Successful!\n")
 print("Error highlighting successful!\n")
 driver.find_element_by_id('runBtn').click()
-sleep(1)
+sleep(5)
 driver.find_element_by_id('socialButton').click()
 sleep(3)
 print("Social Network validate by inspection!\n")

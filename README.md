@@ -31,6 +31,10 @@ Firstly, to run the server; execute `nodejs server.js` in a terminal window; it 
 
 To run the editor; open Chrome/Chromium or Firefox and navigate to *localhost:1337*, enter the code in the code editor and select compile. The server will then compile the code and return the output.
 
+### Running the test file
+
+Ensure that the server is running; run the command `python testFeatures.py` in a separate terminal window. A firefox window will display and test features, while the console prints progress. 
+
 ## Features
 
 ### Basic Editor Interface
