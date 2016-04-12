@@ -19,6 +19,7 @@ public class Canvas{
         fileBody += "<link href=\"node_modules/vis/dist/vis.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
         fileBody += "<div id=\"timeline\">\n";
         fileBody += "</div>\n";
+        fileBody += "<p>Pink -> Branch/Selection<br/>Blue -> Iteration</p>\n";
         fileBody += "<script>\n";
         fileBody += "var container = document.getElementById(\"timeline\");\n";
         groupBody += "var groups = new vis.DataSet([\n";

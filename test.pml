@@ -1,10 +1,9 @@
-
 process p {
 	iteration{
     	action a{
         	agent{ x }
         }
-        selection{
+        branch{
         	action b{
         		agent{ y }
         	}

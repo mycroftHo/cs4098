@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 iterationBegin,begin,0
 action,a,1
 agent,x,1
-selectionBegin,begin,1
+branchBegin,begin,1
 action,b,2
 agent,y,2
 action,c,3
@@ -13,5 +12,5 @@ agent,z,4
 action,e,5
 agent,x,5
 iterationEnd,end,2
-selectionEnd,end,1
+branchEnd,end,1
 iterationEnd,end,0
