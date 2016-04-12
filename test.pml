@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 process BAU_Sprint_AsIs {
 
     sequence sprint_planning {
@@ -219,5 +220,29 @@ process BAU_Sprint_AsIs {
 		agent { Developer }
 	    }
 	}
+=======
+process p {
+	iteration{
+    	action a{
+        	agent{ x }
+        }
+        branch{
+        	action b{
+        		agent{ y }
+        	}
+            action c{
+            	agent{ x }
+            }
+            iteration{
+            	action d{
+                	agent{ z }
+                }
+                action e{
+                	agent{ x }
+                }
+            }
+        }
+        
+>>>>>>> 62b4b24801385802083c01930de94e874daebbb4
     }
 }
