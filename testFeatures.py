@@ -34,20 +34,25 @@ print("login complete")
 
 #dropdowns = driver.find_elements_by_css_selector("div[class='dropdown']")
 #dropdowns[2].find_element_by_css_selector("button").click()
+btn = driver.find_elements_by_css_selector("div[id='tablePrint'] > button")
 
-driver.find_element_by_css_selector("div[id='tablePrint'] > button").click()
+btn[0].click()
 print("File load onClick successful!\n")
 print("Code Editor successful!\n")
-
 print("Syntax hightlighting successful!\n")
 sleep(3)
 driver.find_element_by_id('runBtn').click()
 sleep(2)
 driver.find_element_by_id('compileButton').click()
 sleep(3)
-print("Successfully Compiled!")
 print("Syntax Analysis Successful!\n")
 print("Error highlighting successful!\n")
+btn[1].click()
+driver.find_element_by_id('runBtn').click()
+sleep(2)
+driver.find_element_by_id('compileButton').click()
+sleep(3)
+print("Successfully Compiled!")
 driver.find_element_by_id('runBtn').click()
 sleep(5)
 driver.find_element_by_id('socialButton').click()
@@ -79,9 +84,16 @@ driver.find_element_by_id('submit_approve_access').click()
 sleep(2)
 print("Google Login Successful!\n")
 
+
+driver.find_element_by_id('runBtn').click()
+sleep(2)
+driver.find_element_by_id('compileButton').click()
+sleep(3)
 print("To Test file save remotely & locally, must be done manually as selenium using phantomjs doesn't support pop-up window interaction!!\n")
 print("To Test key bindings, must be done manually as selenium using phantomjs doesn't support editing of codemirror text field!!\n")
 print("To Test file upload, must be done manually as selenium using phantomjs doesn't support pop-up window interaction!!\n")
+
+driver.close()
 
 
 

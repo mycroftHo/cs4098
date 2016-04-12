@@ -141,7 +141,11 @@ server.post('/', function(req, res, next){
 		//create new account directory if doesn't already exist
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync('accounts/' + email);
-			fs.writeFile(dir+"/exampleTest.pml", "process p{\n\taction a{\n\t\tagent{ b && c }\n\t}\n}", function(err){
+			fs.writeFile(dir+"/validPMLTest.pml", "process p{\n\taction a{\n\t\tagent{ b && c }\n\t}\n}", function(err){
+				  if(err) throw err;
+				  console.log("PML File Written");
+				});
+			fs.writeFile(dir+"/invalidPMLTest.pml", "process p{\n\taction {\n\t\tagent{ b && c }\n\t}\n}", function(err){
 				  if(err) throw err;
 				  console.log("PML File Written");
 				});
