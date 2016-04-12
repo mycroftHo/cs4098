@@ -248,7 +248,7 @@ function swimlane(){
 
 function social(){
 	buttonPress();
-	var type = 4;
+	var type = 7;
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function(){
 		if(xhttp.readyState == 4 && xhttp.status == 200){
