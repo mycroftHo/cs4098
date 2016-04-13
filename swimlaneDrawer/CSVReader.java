@@ -32,7 +32,7 @@ public class CSVReader{
             //in here we do the processing of the csv
             while ((line = fileReader.readLine()) != null) {
                 List<String> currentLine = new ArrayList<String>();
-                String[] tokens = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                String[] tokens = line.split(",");
                 for(int i = 0; i < tokens.length; i++){
                     currentLine.add(tokens[i]);
                 }

@@ -80,11 +80,11 @@ public class SwimlaneDrawer{
         else{
           canvas.addSelection(selStartTime, currentTime);
         }
+        currentTime++;
       }
       if( type == ITERATION){
         Object thisObject;
         int iterStartTime = currentTime;
-        //System.out.println(element.get(0).size());
 
         for(int i = 0; i < element.size(); i++){
           thisObject = element.get(i);
@@ -93,7 +93,6 @@ public class SwimlaneDrawer{
             System.out.println(theAction.getActionName());
             List<Agent> thisObjectAgentList = theAction.getAgentList();
             for(int j = 0; j < thisObjectAgentList.size(); j++){
-              System.out.println(theAction.getActionName());
               canvas.addAction(thisObjectAgentList.get(j).getAgentNumber(), theAction.getActionName(), "aqua", currentTime);
             }
             currentTime++;
@@ -110,6 +109,7 @@ public class SwimlaneDrawer{
     public static ArrayList<Object> mapElement(List<List<String>> lines){
       ArrayList<Object> returnedElements = new ArrayList<Object>();
       List<String> currentLine;
+      int maxLine;
       for(int i=0; i<lines.size(); i++){
           currentLine = lines.get(i);
           if(currentLine.get(ENTRY_TYPE).equals("action")){
@@ -134,6 +134,7 @@ public class SwimlaneDrawer{
                 i = j - 1;
               }
             }
+          System.out.println("I after Action: " + i);
           returnedElements.add(theAction);
         }
         if(currentLine.get(ENTRY_TYPE).equals("selectionBegin")){
@@ -141,7 +142,7 @@ public class SwimlaneDrawer{
           int selectEnd = lines.size() - 1;
           Boolean endFound = false;
           List<String> nestLine;
-          for(int j = i+1; j < lines.size() && !endFound; j ++){
+          for(int j = i+1; j < lines.size() && !endFound; j++){
             nestLine = lines.get(j);
             if((nestLine.get(ENTRY_TYPE).equals("selectionEnd")) && (nestLine.get(ACTION_NUMBER).equals(selectIndex))){
               endFound = true;
@@ -149,9 +150,10 @@ public class SwimlaneDrawer{
             }
           }
           FlowControl select = new FlowControl(SELECTION);
+          System.out.println("Select " + (i+1) + " " + selectEnd);
           select.setList(mapElement(lines.subList(i+1, selectEnd)));
           returnedElements.add(select);
-          i = selectEnd;
+          i = selectEnd - 1;
         }
         if(currentLine.get(ENTRY_TYPE).equals("iterationBegin")){
           String iterIndex = currentLine.get(ACTION_NUMBER);
@@ -166,9 +168,10 @@ public class SwimlaneDrawer{
             }
           }
           FlowControl iter = new FlowControl(ITERATION);
+          System.out.println("Iter " + (i+1) + " " + iterEnd);
           iter.setList(mapElement(lines.subList(i+1, iterEnd)));
           returnedElements.add(iter);
-          i = iterEnd;
+          i = iterEnd-1;
         }
         if(currentLine.get(ENTRY_TYPE).equals("branchBegin")){
           String branchIndex = currentLine.get(ACTION_NUMBER);
@@ -183,12 +186,12 @@ public class SwimlaneDrawer{
             }
           }
           FlowControl branch = new FlowControl(BRANCH);
+          System.out.println("Branch " + (i+1) + " " + branchEnd);
           branch.setList(mapElement(lines.subList(i+1, branchEnd + 1)));
           returnedElements.add(branch);
-          i = branchEnd + 1;
+          i = branchEnd -1;
         }
       }
-      System.out.println(returnedElements.size());
       return returnedElements;
     }
 
